@@ -1,8 +1,8 @@
 # SESSION CONTINUATION — CLAW Command Deck
 
 **Project:** CLAW // Philip Command Deck — the website at https://claw.outtatime.dev
-**Status:** LIVE (rebuilt off Manus)
-**Last Updated:** 2026-06-04
+**Status:** LIVE — full 10-section command center (v3)
+**Last Updated:** 2026-06-04 (v3 — all sections restored)
 
 ## Where everything is
 
@@ -41,3 +41,21 @@
 ```bash
 cd /Volumes/Expansion/claw-command-deck && claude
 ```
+
+## v3 update (same day)
+
+Restored ALL sections from the original Personal Claw (content ported from
+pdubbbbbs/personal-claw source): Command Deck home, Repositories, Search,
+Ask CLAW (local index), Expansion Drive, Topics, Infrastructure (LIVE
+homelab.json feed from the Synology gen-homelab.sh, baked fallback),
+Projects (full 5-phase runbook), Tools & Scripts, Hardware Setup.
+
+Open item: live Infrastructure feed needs an Access-Control-Allow-Origin
+header on roku.philipwright.me/feeds/ to work in browsers (currently the
+deck falls back to the baked snapshot). Add via the cloudflared/Web Station
+config on the Synology, or a Cloudflare response-header rule on the
+philipwright.me zone.
+
+Open item (paused, user deprioritized): delete wellnessbylisa.fit and
+wellness-invoice repos from GitHub — needs `gh auth refresh -h github.com -s delete_repo`.
+They're already excluded from the deck client-side.
