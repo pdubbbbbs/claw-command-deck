@@ -1,0 +1,615 @@
+{
+ "generated": "2026-06-04",
+ "total": 56,
+ "repos": [
+  {
+   "name": "claude-rules",
+   "desc": "Standing rules and behavioral instructions for Claude when working with Philip. Public so any Claude instance can fetch without auth.",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-05-25",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/claude-rules"
+  },
+  {
+   "name": "claw-desktop",
+   "desc": "",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-05-14",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/claw-desktop"
+  },
+  {
+   "name": "jiggler_desktop_app",
+   "desc": "",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-05-14",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/jiggler_desktop_app"
+  },
+  {
+   "name": "jane",
+   "desc": "Dark standalone desktop app for Agent S",
+   "lang": "JavaScript",
+   "stars": 0,
+   "pushed": "2026-04-29",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/jane"
+  },
+  {
+   "name": "jane-app",
+   "desc": "Dark cyberpunk Brave extension for Agent S chat interface",
+   "lang": "CSS",
+   "stars": 0,
+   "pushed": "2026-04-29",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/jane-app"
+  },
+  {
+   "name": "jim-twins-project",
+   "desc": "The Jim Twins & The Science of Free Will \u2014 exploring genetics, neuroscience, and determinism",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-04-15",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/jim-twins-project"
+  },
+  {
+   "name": "blueguard-meet",
+   "desc": "Secure P2P video conferencing by BlueGuard \u2014 self-hosted on MicroCloud",
+   "lang": "TypeScript",
+   "stars": 0,
+   "pushed": "2026-04-09",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/blueguard-meet"
+  },
+  {
+   "name": "blueguard-mcp-server",
+   "desc": "BLE security tools for AI assistants \u2014 scan, analyze, and protect via MCP protocol",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-04-03",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/blueguard-mcp-server"
+  },
+  {
+   "name": "wellnessbylisa.fit",
+   "desc": "",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-04-02",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/wellnessbylisa.fit"
+  },
+  {
+   "name": "BlueGuard-Android",
+   "desc": "",
+   "lang": "Kotlin",
+   "stars": 0,
+   "pushed": "2026-04-02",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/BlueGuard-Android"
+  },
+  {
+   "name": "wellness-invoice",
+   "desc": "",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-04-02",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/wellness-invoice"
+  },
+  {
+   "name": "keep-alive-tray",
+   "desc": "",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/keep-alive-tray"
+  },
+  {
+   "name": "bass-lake-rentals",
+   "desc": "",
+   "lang": "TypeScript",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/bass-lake-rentals"
+  },
+  {
+   "name": "bluetooth-hardening-toolkit",
+   "desc": "\ud83d\udee1\ufe0f Cross-platform Bluetooth security hardening toolkit protecting against BlueBorne and related attacks",
+   "lang": "Shell",
+   "stars": 1,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [
+    "blue-team",
+    "blueborne",
+    "bluetooth",
+    "cybersecurity",
+    "hardening",
+    "infosec",
+    "linux",
+    "macos",
+    "penetration-testing",
+    "security",
+    "vulnerability-assessment",
+    "windows"
+   ],
+   "url": "https://github.com/pdubbbbbs/bluetooth-hardening-toolkit"
+  },
+  {
+   "name": "ferdium-selfhost",
+   "desc": "Self-hosted Ferdium server configuration using Docker",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/ferdium-selfhost"
+  },
+  {
+   "name": "homelab",
+   "desc": "Homelab stacks, templates, and more fun resources! ",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/homelab"
+  },
+  {
+   "name": "jellyfin-rec-post-process",
+   "desc": "Post processing script for recording live TV in Jellyfin",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/jellyfin-rec-post-process"
+  },
+  {
+   "name": "mcp-servers",
+   "desc": "MCP for Warp",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/mcp-servers"
+  },
+  {
+   "name": "MyAndroidApp",
+   "desc": "A basic Android application developed using command-line tools",
+   "lang": "Java",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/MyAndroidApp"
+  },
+  {
+   "name": "nginx-reverse-proxy",
+   "desc": "A simple Nginx reverse proxy setup",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/nginx-reverse-proxy"
+  },
+  {
+   "name": "nginx-reverse-proxy-ufw",
+   "desc": "A comprehensive Nginx reverse proxy setup with UFW firewall configuration",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/nginx-reverse-proxy-ufw"
+  },
+  {
+   "name": "ollama-server-setup",
+   "desc": "A comprehensive guide for setting up an Ollama server with Teri model using Docker or WSL2",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/ollama-server-setup"
+  },
+  {
+   "name": "orangepi-vpn-hotspot",
+   "desc": "A dedicated VPN hotspot solution for OrangePi devices with wireless AP capabilities",
+   "lang": "Shell",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/orangepi-vpn-hotspot"
+  },
+  {
+   "name": "project-template",
+   "desc": "Standard template repository with safeguards and best practices for all future projects",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/project-template"
+  },
+  {
+   "name": "proxmox-backup",
+   "desc": "",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/proxmox-backup"
+  },
+  {
+   "name": "PW-8A",
+   "desc": "",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/PW-8A"
+  },
+  {
+   "name": "session-continuation-system",
+   "desc": "A comprehensive system for maintaining context and continuity across AI assistant sessions",
+   "lang": "Shell",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/session-continuation-system"
+  },
+  {
+   "name": "ssl-cert-generator",
+   "desc": "A Bash script for generating self-signed SSL certificates with customizable attributes",
+   "lang": "Shell",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/ssl-cert-generator"
+  },
+  {
+   "name": "teslamate-setup",
+   "desc": "Configuration and setup files for running TeslaMate",
+   "lang": "Rust",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/teslamate-setup"
+  },
+  {
+   "name": "usb-drive-wiper-iso",
+   "desc": "A bootable ISO that safely wipes USB drives using wipefs",
+   "lang": "Shell",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/usb-drive-wiper-iso"
+  },
+  {
+   "name": "w-hollywood-proposal",
+   "desc": "",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/w-hollywood-proposal"
+  },
+  {
+   "name": "kali-security-mcp",
+   "desc": "",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/kali-security-mcp"
+  },
+  {
+   "name": "de-googled-bluebubbles-server",
+   "desc": "Set up BlueBubbles server with full functionality without Google dependencies - Privacy-focused iMessage access anywhere",
+   "lang": "Shell",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/de-googled-bluebubbles-server"
+  },
+  {
+   "name": "orange-pi-vpn-server",
+   "desc": "Complete Orange Pi Zero VPN & Hotspot server with encrypted DNS, restricted SSH management, and security hardening",
+   "lang": "Shell",
+   "stars": 1,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [
+    "arm",
+    "debian",
+    "doh",
+    "dot",
+    "encrypted-dns",
+    "linux",
+    "orange-pi",
+    "privacy",
+    "raspberry-pi",
+    "security",
+    "vpn",
+    "wifi-hotspot",
+    "wireguard"
+   ],
+   "url": "https://github.com/pdubbbbbs/orange-pi-vpn-server"
+  },
+  {
+   "name": "github-repo-manager",
+   "desc": "A comprehensive desktop application for managing all your GitHub repositories with advanced filtering, bulk operations, and intuitive GUI interface",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [
+    "bulk-operations",
+    "desktop-app",
+    "developer-tools",
+    "github",
+    "github-api",
+    "gui",
+    "python",
+    "python3",
+    "repository-management",
+    "repository-manager",
+    "tkinter"
+   ],
+   "url": "https://github.com/pdubbbbbs/github-repo-manager"
+  },
+  {
+   "name": "zfs-backup-docs",
+   "desc": "",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/zfs-backup-docs"
+  },
+  {
+   "name": "truenas-gmktec-homelab",
+   "desc": "Documentation and setup guide for TrueNAS homelab project on GMKTEC hardware",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/truenas-gmktec-homelab"
+  },
+  {
+   "name": "desktop-media-toggle",
+   "desc": "A desktop toggle button application with dual side-by-side buttons (microphone and camera icons) to control camera and audio input on/off",
+   "lang": "\u2014",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/desktop-media-toggle"
+  },
+  {
+   "name": "macos-desktop-status-widget",
+   "desc": "A sleek, customizable desktop widget for macOS that displays security and privacy status indicators with a cyberpunk aesthetic",
+   "lang": "Swift",
+   "stars": 1,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [
+    "cyberpunk",
+    "desktop-widget",
+    "macos",
+    "privacy",
+    "security",
+    "status-widget",
+    "swift",
+    "swiftui",
+    "transparency"
+   ],
+   "url": "https://github.com/pdubbbbbs/macos-desktop-status-widget"
+  },
+  {
+   "name": "workspace-launcher",
+   "desc": "\ud83d\ude80 Cross-platform workspace launcher that automatically opens your preconfigured browser, terminal, and applications on login",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/workspace-launcher"
+  },
+  {
+   "name": "blueguard-security",
+   "desc": "BlueGuard Security - Bluetooth defense system with patent filings, fundraising materials, and VNC multi-monitor setup",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/blueguard-security"
+  },
+  {
+   "name": "linux-security-dashboard",
+   "desc": "A comprehensive real-time security monitoring and visualization system for Linux environments",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/linux-security-dashboard"
+  },
+  {
+   "name": "claude-code-server",
+   "desc": "Production-grade FastAPI server powered by Claude AI for code execution, analysis, and chat",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/claude-code-server"
+  },
+  {
+   "name": "proxmox-helper-script",
+   "desc": "Cross-platform PowerShell helper script for managing Proxmox VE environments",
+   "lang": "PowerShell",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/proxmox-helper-script"
+  },
+  {
+   "name": "idevicemanager-web",
+   "desc": "",
+   "lang": "TypeScript",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/idevicemanager-web"
+  },
+  {
+   "name": "wallpaper-browser",
+   "desc": "Cross-platform wallpaper browser for multi-monitor spanning setups",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/wallpaper-browser"
+  },
+  {
+   "name": "proxmox-homelab-guide-public",
+   "desc": "",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/proxmox-homelab-guide-public"
+  },
+  {
+   "name": "docker-osx-proxmox",
+   "desc": "Run macOS in Docker on Proxmox VE for BlueBubbles and hackintosh",
+   "lang": "\u2014",
+   "stars": 1,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/docker-osx-proxmox"
+  },
+  {
+   "name": "fastmail-tui",
+   "desc": "Privacy-focused, AI-enhanced terminal email client for Fastmail",
+   "lang": "Python",
+   "stars": 4,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/fastmail-tui"
+  },
+  {
+   "name": "multisearch-homepage",
+   "desc": "MultiSearch - Custom browser homepage with multi-engine search",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/multisearch-homepage"
+  },
+  {
+   "name": "BlueBubbles-Android",
+   "desc": "Native Android client for BlueBubbles iMessage bridge with Jetpack Compose",
+   "lang": "Kotlin",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/BlueBubbles-Android"
+  },
+  {
+   "name": "manus-toolkit",
+   "desc": "Manus DNS Automation Toolkit - Deploy projects with custom domains via Cloudflare DNS",
+   "lang": "Python",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/manus-toolkit"
+  },
+  {
+   "name": "warp-task-tracker",
+   "desc": "A real-time task completion percentage tracker for Warp terminal sessions",
+   "lang": "JavaScript",
+   "stars": 2,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/warp-task-tracker"
+  },
+  {
+   "name": "ca-beach-rentals",
+   "desc": "California Beach House Rentals \u2014 Dogs Welcome, Under $7K/mo",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/ca-beach-rentals"
+  },
+  {
+   "name": "philipwright-portfolio",
+   "desc": "",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/philipwright-portfolio"
+  },
+  {
+   "name": "philipwright-me-site",
+   "desc": "",
+   "lang": "CSS",
+   "stars": 0,
+   "pushed": "2026-03-26",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/philipwright-me-site"
+  }
+ ]
+}

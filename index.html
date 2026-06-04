@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLAW // Philip Command Deck</title>
+  <meta name="description" content="CLAW — Philip S. Wright's command deck. Live GitHub fleet, terminal-cyan, floating glass." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cyan: #22d3ee;
+      --cyan-dim: #123e47;
+      --cyan-glow: rgba(34, 211, 238, 0.45);
+      --bg: #04070a;
+      --panel: rgba(13, 22, 30, 0.55);
+      --panel-edge: rgba(34, 211, 238, 0.14);
+      --gray: #9aa7b3;
+      --gray-dim: #556571;
+      --white: #eaf6f9;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); }
+    body {
+      font-family: var(--mono);
+      color: var(--gray);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(1100px 500px at 75% -10%, rgba(34,211,238,0.07), transparent 60%),
+        radial-gradient(900px 600px at -10% 110%, rgba(123,45,142,0.08), transparent 55%),
+        var(--bg);
+    }
+    /* CRT scanlines + grid floor */
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 3px);
+    }
+    #gridfloor {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .35;
+      background-image:
+        linear-gradient(rgba(34,211,238,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,211,238,0.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 0%, transparent 75%);
+    }
+    canvas#particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    .shell { position: relative; z-index: 1; max-width: 1880px; margin: 0 auto; padding: 34px 48px 80px; }
+
+    /* ───── header ───── */
+    header { user-select: none; }
+    .brand { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+    .bolt {
+      display: inline-block; width: 9px; height: 38px; background: var(--cyan);
+      box-shadow: 0 0 18px var(--cyan-glow), 0 0 42px rgba(34,211,238,.25);
+      transform: skewX(-12deg); align-self: center;
+      animation: boltpulse 3.2s ease-in-out infinite;
+    }
+    @keyframes boltpulse { 0%,100% { opacity: 1 } 50% { opacity: .55 } }
+    h1 {
+      color: var(--cyan); font-size: 44px; font-weight: 700; letter-spacing: .06em;
+      text-shadow: 0 0 22px rgba(34,211,238,.5);
+    }
+    .brand .sub { color: var(--gray); font-size: 19px; font-weight: 600; letter-spacing: .08em; }
+    .brand .clock { margin-left: auto; color: var(--gray-dim); font-size: 17px; letter-spacing: .1em; }
+    .statline {
+      margin-top: 22px; color: var(--gray); font-size: 16.5px; font-weight: 600; letter-spacing: .05em;
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    }
+    .statline .total { color: var(--white); }
+    .statline .lang-chip { color: var(--gray); }
+    .statline .lang-chip b { color: var(--cyan); font-weight: 600; }
+    .statline .live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); display: inline-block;
+      box-shadow: 0 0 10px var(--cyan-glow); animation: boltpulse 2.1s ease-in-out infinite;
+    }
+    .rule { margin-top: 16px; height: 2px; background: linear-gradient(90deg, var(--cyan-dim), rgba(18,62,71,0)); }
+
+    /* ───── controls ───── */
+    .controls { display: flex; gap: 14px; margin-top: 22px; flex-wrap: wrap; align-items: center; }
+    .controls input, .controls select {
+      background: rgba(10, 18, 24, 0.7); border: 1px solid var(--panel-edge); color: var(--white);
+      font-family: var(--mono); font-size: 15px; padding: 10px 14px; border-radius: 8px; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .controls input { width: 340px; }
+    .controls input:focus, .controls select:focus { border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,211,238,.18); }
+    .controls .hint { color: var(--gray-dim); font-size: 13px; letter-spacing: .04em; }
+    .controls .hint kbd {
+      border: 1px solid var(--panel-edge); border-radius: 5px; padding: 2px 7px;
+      color: var(--cyan); background: rgba(34,211,238,.06); font-family: var(--mono); font-size: 12px;
+    }
+
+    /* ───── deck grid ───── */
+    .deck {
+      margin-top: 30px; display: grid; gap: 24px 24px;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    }
+    .card {
+      position: relative; min-height: 172px; padding: 20px 22px 18px; border-radius: 14px;
+      background: var(--panel); border: 1px solid var(--panel-edge);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      cursor: pointer; overflow: hidden;
+      transition: transform .25s cubic-bezier(.2,.9,.3,1.4), box-shadow .25s, border-color .25s;
+      animation: floaty 7s ease-in-out infinite;
+      animation-delay: calc(var(--i) * -0.9s);
+    }
+    @keyframes floaty { 0%,100% { translate: 0 0 } 50% { translate: 0 -5px } }
+    .card::after { /* sheen */
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(115deg, transparent 30%, rgba(34,211,238,.05) 45%, transparent 60%);
+      transform: translateX(-100%); transition: transform .6s;
+    }
+    .card:hover, .card:focus-visible {
+      transform: translateY(-7px) scale(1.015);
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 1px rgba(34,211,238,.35), 0 0 34px rgba(34,211,238,.22), 0 18px 50px rgba(0,0,0,.5);
+      outline: none; animation-play-state: paused;
+    }
+    .card:hover::after, .card:focus-visible::after { transform: translateX(100%); }
+    .card .top { display: flex; align-items: center; gap: 10px; }
+    .card .name { color: var(--white); font-size: 18px; font-weight: 700; letter-spacing: .02em; overflow-wrap: anywhere; }
+    .card:hover .name, .card:focus-visible .name { color: var(--cyan); text-shadow: 0 0 14px rgba(34,211,238,.45); }
+    .lang { display: inline-flex; align-items: center; gap: 7px; margin-left: auto; flex: none;
+      color: var(--gray); font-size: 12.5px; letter-spacing: .03em; }
+    .lang .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
+    .card .desc {
+      margin-top: 12px; color: var(--gray); font-size: 13.5px; line-height: 1.55; font-weight: 400;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 3.2em;
+    }
+    .card .meta { margin-top: 14px; display: flex; gap: 18px; color: var(--gray-dim); font-size: 12.5px; letter-spacing: .04em; }
+    .card .meta .stars { color: #e8d06a; }
+
+    /* ───── detail view ───── */
+    .detail { margin-top: 30px; display: none; }
+    .detail.active { display: block; }
+    .deck.hidden, .controls.hidden { display: none; }
+    .back {
+      color: var(--cyan); background: none; border: 1px solid var(--panel-edge); border-radius: 8px;
+      font-family: var(--mono); font-size: 14px; padding: 9px 16px; cursor: pointer; letter-spacing: .05em;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .back:hover { border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,211,238,.2); }
+    .detail h2 { color: var(--white); font-size: 30px; margin-top: 22px; letter-spacing: .03em;
+      text-shadow: 0 0 18px rgba(34,211,238,.25); overflow-wrap: anywhere; }
+    .detail .dmeta { margin-top: 10px; color: var(--gray); font-size: 14.5px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .detail .dmeta .stars { color: #e8d06a; }
+    .detail .ddesc { margin-top: 16px; color: var(--gray); font-size: 15.5px; line-height: 1.6; max-width: 980px; }
+    .detail .actions { margin-top: 18px; display: flex; gap: 12px; }
+    .detail .actions a {
+      color: var(--bg); background: var(--cyan); text-decoration: none; font-weight: 700; font-size: 14px;
+      padding: 10px 18px; border-radius: 8px; letter-spacing: .04em;
+      box-shadow: 0 0 22px rgba(34,211,238,.35); transition: box-shadow .2s, transform .15s;
+    }
+    .detail .actions a:hover { box-shadow: 0 0 34px rgba(34,211,238,.55); transform: translateY(-2px); }
+    .readme {
+      margin-top: 28px; padding: 30px 34px; border-radius: 14px; max-width: 1100px;
+      background: var(--panel); border: 1px solid var(--panel-edge);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      color: var(--gray); font-size: 14.5px; line-height: 1.65;
+    }
+    .readme h1, .readme h2, .readme h3 { color: var(--white); margin: 1.1em 0 .45em; letter-spacing: .02em; }
+    .readme h1 { font-size: 24px; color: var(--cyan); } .readme h2 { font-size: 19px; } .readme h3 { font-size: 16px; }
+    .readme p { margin: .6em 0; }
+    .readme a { color: var(--cyan); }
+    .readme code { background: rgba(34,211,238,.08); color: var(--cyan); padding: 1px 6px; border-radius: 5px; font-size: 13px; }
+    .readme pre { background: rgba(4,9,12,.8); border: 1px solid var(--panel-edge); padding: 14px 16px; border-radius: 10px; overflow-x: auto; margin: .8em 0; }
+    .readme pre code { background: none; padding: 0; color: var(--gray); }
+    .readme ul, .readme ol { margin: .6em 0 .6em 1.4em; }
+    .readme li { margin: .25em 0; }
+    .readme blockquote { border-left: 3px solid var(--cyan-dim); padding-left: 14px; color: var(--gray-dim); margin: .8em 0; }
+    .readme img { max-width: 100%; border-radius: 8px; }
+    .readme hr { border: none; border-top: 1px solid var(--panel-edge); margin: 1.2em 0; }
+    .readme table { border-collapse: collapse; margin: .8em 0; }
+    .readme th, .readme td { border: 1px solid var(--panel-edge); padding: 6px 12px; }
+    .readme .loading { color: var(--gray-dim); letter-spacing: .08em; }
+
+    /* ───── help overlay ───── */
+    .help-backdrop {
+      position: fixed; inset: 0; z-index: 50; display: none; align-items: flex-start; justify-content: center;
+      background: rgba(2,5,7,.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      padding: 8vh 20px 20px; overflow-y: auto;
+    }
+    .help-backdrop.active { display: flex; }
+    .help {
+      width: min(860px, 100%); border-radius: 16px; padding: 34px 38px;
+      background: rgba(7, 13, 18, 0.92); border: 1px solid var(--panel-edge);
+      box-shadow: 0 0 60px rgba(34,211,238,.12), 0 30px 80px rgba(0,0,0,.6);
+    }
+    .help h3 { color: var(--cyan); font-size: 22px; letter-spacing: .08em; display: flex; align-items: center; gap: 12px; }
+    .help .sect { margin-top: 22px; color: var(--white); font-size: 15px; letter-spacing: .06em; }
+    .help ul { list-style: none; margin-top: 12px; }
+    .help li { margin: 9px 0; font-size: 14px; color: var(--gray); display: flex; gap: 12px; align-items: center; }
+    .help kbd {
+      border: 1px solid rgba(34,211,238,.35); border-radius: 6px; padding: 3px 10px; min-width: 64px; text-align: center;
+      color: var(--cyan); background: rgba(34,211,238,.07); font-family: var(--mono); font-size: 12.5px;
+    }
+    .help .x { float: right; color: var(--gray-dim); cursor: pointer; font-size: 20px; }
+    .help .x:hover { color: var(--cyan); }
+
+    footer { margin-top: 70px; color: var(--gray-dim); font-size: 12.5px; letter-spacing: .08em; text-align: center; }
+    footer a { color: var(--gray); text-decoration: none; }
+    footer a:hover { color: var(--cyan); }
+
+    @media (max-width: 720px) {
+      .shell { padding: 24px 18px 60px; }
+      h1 { font-size: 32px; }
+      .controls input { width: 100%; }
+      .deck { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="gridfloor"></div>
+  <canvas id="particles"></canvas>
+
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <span class="bolt"></span>
+        <h1>CLAW</h1>
+        <span class="sub">// PHILIP COMMAND DECK</span>
+        <span class="clock" id="clock"></span>
+      </div>
+      <div class="statline" id="statline"><span class="live-dot"></span><span>booting deck&hellip;</span></div>
+      <div class="rule"></div>
+    </header>
+
+    <div class="controls" id="controls">
+      <input id="filter" type="search" placeholder="filter repositories&hellip;" autocomplete="off" />
+      <select id="langsel"><option value="">ALL LANGUAGES</option></select>
+      <span class="hint"><kbd>/</kbd> filter &nbsp; <kbd>?</kbd> help &nbsp; <kbd>Esc</kbd> back</span>
+    </div>
+
+    <main class="deck" id="deck" aria-label="repository deck"></main>
+
+    <section class="detail" id="detail">
+      <button class="back" id="backBtn">&larr; BACK TO THE DECK</button>
+      <h2 id="dName"></h2>
+      <div class="dmeta" id="dMeta"></div>
+      <p class="ddesc" id="dDesc"></p>
+      <div class="actions"><a id="dLink" href="#" target="_blank" rel="noopener">OPEN ON GITHUB &nearr;</a></div>
+      <article class="readme" id="readme"></article>
+    </section>
+
+    <footer>
+      CLAW // PHILIP S. WRIGHT &nbsp;&middot;&nbsp;
+      <a href="https://github.com/pdubbbbbs" target="_blank" rel="noopener">github.com/pdubbbbbs</a>
+      &nbsp;&middot;&nbsp; <a href="https://philipwright.me" target="_blank" rel="noopener">philipwright.me</a>
+    </footer>
+  </div>
+
+  <div class="help-backdrop" id="helpWrap">
+    <div class="help">
+      <span class="x" id="helpX">&times;</span>
+      <h3>&#9889; CLAW COMMAND REFERENCE</h3>
+      <div class="sect">KEYBOARD SHORTCUTS</div>
+      <ul>
+        <li><kbd>?</kbd> Toggle this help panel</li>
+        <li><kbd>/</kbd> Focus repository filter</li>
+        <li><kbd>Esc</kbd> Back to the deck / close panels</li>
+        <li><kbd>&uarr;&darr;&larr;&rarr;</kbd> Move between repo cards</li>
+        <li><kbd>Enter</kbd> Open focused repo detail</li>
+      </ul>
+      <div class="sect">THE DECK</div>
+      <ul>
+        <li>Live overview of the public GitHub fleet — name, language, last push, stars</li>
+        <li>Click any floating card to open its detail page with the full README</li>
+        <li>Data refreshes live from the GitHub API with a baked-in fallback</li>
+      </ul>
+    </div>
+  </div>
+
+<script>
+(() => {
+  "use strict";
+  const LANG_COLORS = {
+    Python: "#3572A5", JavaScript: "#F1E05A", TypeScript: "#3178C6",
+    HTML: "#E34C26", Shell: "#89E051", CSS: "#563D7C", Kotlin: "#A97BFF",
+    Java: "#B07219", Rust: "#DEA584", Go: "#00ADD8", Swift: "#F05138",
+    PowerShell: "#012456", Dockerfile: "#384D54", C: "#555555", "—": "#6B7A86"
+  };
+  const USER = "pdubbbbbs";
+  const $ = (id) => document.getElementById(id);
+  let repos = [], view = [];
+
+  /* ── clock ── */
+  function tickClock() {
+    const d = new Date();
+    let h = d.getHours(); const m = String(d.getMinutes()).padStart(2, "0");
+    const ap = h >= 12 ? "PM" : "AM"; h = h % 12 || 12;
+    $("clock").textContent = `${h}:${m} ${ap} // ${d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()}`;
+  }
+  tickClock(); setInterval(tickClock, 20000);
+
+  /* ── particles (drifting embers) ── */
+  const cv = $("particles"), cx = cv.getContext("2d");
+  let P = [];
+  function sizeCanvas() {
+    cv.width = innerWidth; cv.height = innerHeight;
+    const n = Math.min(70, Math.floor(innerWidth / 26));
+    P = Array.from({ length: n }, () => ({
+      x: Math.random() * cv.width, y: Math.random() * cv.height,
+      r: Math.random() * 1.7 + .4, s: Math.random() * .35 + .08,
+      a: Math.random() * Math.PI * 2, tw: Math.random() * Math.PI * 2
+    }));
+  }
+  sizeCanvas(); addEventListener("resize", sizeCanvas);
+  (function drawP(t) {
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (const p of P) {
+      p.y -= p.s; p.x += Math.sin(p.a += .004) * .15;
+      if (p.y < -4) { p.y = cv.height + 4; p.x = Math.random() * cv.width; }
+      const tw = .25 + .35 * (1 + Math.sin(t / 900 + p.tw)) / 2;
+      cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7);
+      cx.fillStyle = `rgba(34, 211, 238, ${tw})`; cx.fill();
+    }
+    requestAnimationFrame(drawP);
+  })(0);
+
+  /* ── data ── */
+  function normalizeApi(list) {
+    return list.filter(r => !r.fork || r.stargazers_count > 0).map(r => ({
+      name: r.name, desc: r.description || "", lang: r.language || "—",
+      stars: r.stargazers_count, pushed: (r.pushed_at || "").slice(0, 10),
+      url: r.html_url, topics: r.topics || [], branch: r.default_branch || "main"
+    }));
+  }
+  async function loadRepos() {
+    try {
+      const res = await fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=pushed`, {
+        headers: { Accept: "application/vnd.github+json" }
+      });
+      if (!res.ok) throw new Error(res.status);
+      const live = normalizeApi(await res.json());
+      if (live.length) return { repos: live, src: "LIVE" };
+      throw new Error("empty");
+    } catch {
+      const res = await fetch("repos.json");
+      const baked = await res.json();
+      return { repos: baked.repos.map(r => ({ branch: "main", topics: [], ...r })), src: "CACHED" };
+    }
+  }
+
+  function statline(src) {
+    const counts = {};
+    for (const r of repos) counts[r.lang] = (counts[r.lang] || 0) + 1;
+    const top = Object.entries(counts).filter(([l]) => l !== "—").sort((a, b) => b[1] - a[1]).slice(0, 5);
+    $("statline").innerHTML =
+      `<span class="live-dot"></span><span class="total">${repos.length} REPOSITORIES</span><span>//</span>` +
+      top.map(([l, c]) => `<span class="lang-chip">${l} <b>${c}</b></span>`).join("") +
+      `<span style="color:var(--gray-dim)">// ${src}</span>`;
+    const sel = $("langsel");
+    sel.length = 1;
+    for (const [l] of Object.entries(counts).sort((a, b) => b[1] - a[1])) sel.add(new Option(l.toUpperCase(), l));
+  }
+
+  /* ── deck render ── */
+  function render() {
+    const q = $("filter").value.trim().toLowerCase();
+    const lang = $("langsel").value;
+    view = repos.filter(r =>
+      (!lang || r.lang === lang) &&
+      (!q || r.name.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q) || (r.topics || []).join(" ").includes(q))
+    );
+    const deck = $("deck");
+    deck.innerHTML = view.map((r, i) => `
+      <div class="card" tabindex="0" data-i="${i}" style="--i:${i % 8}">
+        <div class="top">
+          <span class="name">${esc(r.name)}</span>
+          <span class="lang"><span class="dot" style="background:${LANG_COLORS[r.lang] || "#6B7A86"};color:${LANG_COLORS[r.lang] || "#6B7A86"}"></span>${esc(r.lang)}</span>
+        </div>
+        <div class="desc">${esc(r.desc) || '<span style="color:var(--gray-dim)">no description</span>'}</div>
+        <div class="meta">
+          ${r.stars ? `<span class="stars">&#9733; ${r.stars}</span>` : ""}
+          <span>pushed ${esc(r.pushed)}</span>
+        </div>
+      </div>`).join("");
+    deck.querySelectorAll(".card").forEach(el => {
+      el.addEventListener("click", () => openDetail(view[+el.dataset.i]));
+      el.addEventListener("keydown", e => { if (e.key === "Enter") openDetail(view[+el.dataset.i]); });
+    });
+  }
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* ── detail + README ── */
+  async function openDetail(r) {
+    $("deck").classList.add("hidden"); $("controls").classList.add("hidden");
+    $("detail").classList.add("active");
+    $("dName").textContent = r.name;
+    $("dMeta").innerHTML =
+      `<span style="color:${LANG_COLORS[r.lang] || "#6B7A86"}">&#9679; ${esc(r.lang)}</span>` +
+      (r.stars ? `<span class="stars">&#9733; ${r.stars}</span>` : "") +
+      `<span>pushed ${esc(r.pushed)}</span>` +
+      (r.topics?.length ? `<span style="color:var(--gray-dim)">${r.topics.map(esc).join(" · ")}</span>` : "");
+    $("dDesc").textContent = r.desc;
+    $("dLink").href = r.url;
+    const box = $("readme");
+    box.innerHTML = '<div class="loading">FETCHING README&hellip;</div>';
+    scrollTo({ top: 0, behavior: "instant" });
+    try {
+      const res = await fetch(`https://api.github.com/repos/${USER}/${r.name}/readme`, {
+        headers: { Accept: "application/vnd.github.html+json" }
+      });
+      if (!res.ok) throw new Error(res.status);
+      box.innerHTML = sanitize(await res.text());
+    } catch {
+      box.innerHTML = '<div class="loading">NO README AVAILABLE // OPEN ON GITHUB FOR SOURCE</div>';
+    }
+  }
+  function sanitize(html) {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    doc.querySelectorAll("script, style, iframe, object, embed, form, link, meta").forEach(n => n.remove());
+    doc.querySelectorAll("*").forEach(n => {
+      for (const a of [...n.attributes]) {
+        const an = a.name.toLowerCase();
+        if (an.startsWith("on") || (["href", "src"].includes(an) && /^\s*javascript:/i.test(a.value))) n.removeAttribute(a.name);
+      }
+    });
+    doc.querySelectorAll("a[href]").forEach(a => { a.target = "_blank"; a.rel = "noopener"; });
+    return doc.body.innerHTML;
+  }
+  function closeDetail() {
+    $("detail").classList.remove("active");
+    $("deck").classList.remove("hidden"); $("controls").classList.remove("hidden");
+  }
+  $("backBtn").addEventListener("click", closeDetail);
+
+  /* ── keyboard ── */
+  const helpWrap = $("helpWrap");
+  function toggleHelp(force) {
+    helpWrap.classList.toggle("active", force ?? !helpWrap.classList.contains("active"));
+  }
+  $("helpX").addEventListener("click", () => toggleHelp(false));
+  helpWrap.addEventListener("click", e => { if (e.target === helpWrap) toggleHelp(false); });
+  addEventListener("keydown", e => {
+    const typing = /INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName || "");
+    if (e.key === "Escape") {
+      if (helpWrap.classList.contains("active")) return toggleHelp(false);
+      if ($("detail").classList.contains("active")) return closeDetail();
+      if (typing) document.activeElement.blur();
+      return;
+    }
+    if (typing) return;
+    if (e.key === "?") { e.preventDefault(); toggleHelp(); }
+    if (e.key === "/") { e.preventDefault(); $("filter").focus(); }
+    if (["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"].includes(e.key) && !$("detail").classList.contains("active")) {
+      const cards = [...document.querySelectorAll(".card")];
+      if (!cards.length) return;
+      const cur = cards.indexOf(document.activeElement);
+      const cols = Math.max(1, Math.round($("deck").offsetWidth / (cards[0].offsetWidth + 24)));
+      let next = cur < 0 ? 0 : cur + { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols }[e.key];
+      if (next >= 0 && next < cards.length) { e.preventDefault(); cards[next].focus(); cards[next].scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+    }
+  });
+  $("filter").addEventListener("input", render);
+  $("langsel").addEventListener("change", render);
+
+  /* ── boot ── */
+  loadRepos().then(({ repos: r, src }) => {
+    repos = r.sort((a, b) => (b.pushed || "").localeCompare(a.pushed || ""));
+    statline(src);
+    render();
+  }).catch(() => {
+    $("statline").innerHTML = '<span class="live-dot"></span><span style="color:#e86a6a">REPOSITORIES OFFLINE // github api unreachable</span>';
+  });
+})();
+</script>
+</body>
+</html>
