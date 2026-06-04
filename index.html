@@ -42,41 +42,41 @@
     /* ── layout: sidebar + main ── */
     .app { position: relative; z-index: 1; display: flex; min-height: 100vh; }
     aside {
-      width: 340px; flex: none; padding: 36px 26px; border-right: 1px solid var(--edge);
+      width: 505px; flex: none; padding: 48px 36px; border-right: 1px solid var(--edge);
       background: linear-gradient(180deg, rgba(34,211,238,.05), rgba(6,11,15,.78) 30%);
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       box-shadow: inset -1px 0 0 rgba(34,211,238,.1), 8px 0 40px rgba(0,0,0,.35);
       position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column;
     }
-    .logo { display: flex; align-items: center; gap: 14px; user-select: none; cursor: pointer; }
-    .bolt { width: 10px; height: 44px; background: var(--cyan); transform: skewX(-12deg);
-      box-shadow: 0 0 22px var(--cyan-glow), 0 0 50px rgba(34,211,238,.25); animation: pulse 3.2s ease-in-out infinite; }
+    .logo { display: flex; align-items: center; gap: 20px; user-select: none; cursor: pointer; }
+    .bolt { width: 15px; height: 64px; background: var(--cyan); transform: skewX(-12deg);
+      box-shadow: 0 0 28px var(--cyan-glow), 0 0 64px rgba(34,211,238,.25); animation: pulse 3.2s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
-    .logo b { color: var(--cyan); font-size: 38px; letter-spacing: .1em; text-shadow: 0 0 26px var(--cyan-glow); }
-    .logo span { color: var(--gray-dim); font-size: 11.5px; letter-spacing: .18em; }
-    nav { margin-top: 38px; display: flex; flex-direction: column; gap: 10px; }
+    .logo b { color: var(--cyan); font-size: 56px; letter-spacing: .1em; text-shadow: 0 0 32px var(--cyan-glow); }
+    .logo span { color: var(--gray-dim); font-size: 16px; letter-spacing: .2em; }
+    nav { margin-top: 50px; display: flex; flex-direction: column; gap: 15px; }
     nav a {
-      display: flex; align-items: center; gap: 15px; padding: 16px 18px; border-radius: 12px;
-      color: var(--gray); text-decoration: none; font-size: 17px; letter-spacing: .05em; font-weight: 500;
+      display: flex; align-items: center; gap: 22px; padding: 23px 26px; border-radius: 15px;
+      color: var(--gray); text-decoration: none; font-size: 25px; letter-spacing: .05em; font-weight: 500;
       border: 1px solid rgba(34,211,238,.07); background: rgba(10,18,24,.3); transition: all .18s; white-space: nowrap;
     }
-    nav a .k { margin-left: auto; color: var(--gray-dim); font-size: 11px; border: 1px solid var(--edge);
-      border-radius: 6px; padding: 3px 8px; opacity: .75; white-space: nowrap; flex: none; }
+    nav a .k { margin-left: auto; color: var(--gray-dim); font-size: 15px; border: 1px solid var(--edge);
+      border-radius: 8px; padding: 5px 12px; opacity: .75; white-space: nowrap; flex: none; }
     nav a:hover { color: var(--cyan); background: rgba(34,211,238,.07); border-color: rgba(34,211,238,.3);
-      transform: translateX(4px); box-shadow: 0 0 18px rgba(34,211,238,.1); }
+      transform: translateX(5px); box-shadow: 0 0 22px rgba(34,211,238,.12); }
     nav a.on { color: var(--cyan); border-color: rgba(34,211,238,.45); background: rgba(34,211,238,.1);
-      box-shadow: 0 0 22px rgba(34,211,238,.14), inset 0 0 18px rgba(34,211,238,.06);
-      text-shadow: 0 0 12px rgba(34,211,238,.5); }
+      box-shadow: 0 0 28px rgba(34,211,238,.16), inset 0 0 22px rgba(34,211,238,.06);
+      text-shadow: 0 0 14px rgba(34,211,238,.5); }
     nav a.on .k { color: var(--cyan); border-color: rgba(34,211,238,.4); }
-    nav a .ic { width: 26px; text-align: center; flex: none; font-size: 19px; color: var(--cyan);
-      text-shadow: 0 0 12px rgba(34,211,238,.4); opacity: .85; }
-    .side-foot { margin-top: auto; padding-top: 26px; display: flex; flex-direction: column; gap: 13px; }
-    .clock2 { color: var(--gray-dim); font-size: 13px; letter-spacing: .12em; }
-    .fontsize { display: flex; gap: 8px; }
+    nav a .ic { width: 38px; text-align: center; flex: none; font-size: 28px; color: var(--cyan);
+      text-shadow: 0 0 14px rgba(34,211,238,.4); opacity: .85; }
+    .side-foot { margin-top: auto; padding-top: 32px; display: flex; flex-direction: column; gap: 17px; }
+    .clock2 { color: var(--gray-dim); font-size: 17px; letter-spacing: .12em; }
+    .fontsize { display: flex; gap: 11px; }
     .fontsize button { background: rgba(10,18,24,.7); border: 1px solid var(--edge); color: var(--gray);
-      font-family: var(--mono); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 13px; }
-    .fontsize button.on { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 12px rgba(34,211,238,.2); }
-    .side-foot .who { color: var(--gray-dim); font-size: 11px; letter-spacing: .08em; line-height: 1.7; }
+      font-family: var(--mono); border-radius: 10px; padding: 11px 19px; cursor: pointer; font-size: 17px; }
+    .fontsize button.on { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,211,238,.2); }
+    .side-foot .who { color: var(--gray-dim); font-size: 14px; letter-spacing: .08em; line-height: 1.7; }
     .side-foot a { color: var(--gray-dim); text-decoration: none; } .side-foot a:hover { color: var(--cyan); }
 
     main { flex: 1; min-width: 0; padding: 34px 44px 90px; max-width: 1620px; }
@@ -321,7 +321,7 @@
 
     .menubtn { display: none; }
     @media (max-width: 920px) {
-      aside { position: fixed; z-index: 40; transform: translateX(-100%); transition: transform .25s; width: 240px; }
+      aside { position: fixed; z-index: 40; transform: translateX(-100%); transition: transform .25s; width: min(420px, 88vw); }
       aside.open { transform: none; box-shadow: 30px 0 80px rgba(0,0,0,.6); }
       main { padding: 22px 18px 70px; }
       .menubtn { display: inline-flex; position: fixed; z-index: 41; top: 14px; left: 14px;
