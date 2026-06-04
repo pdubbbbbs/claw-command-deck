@@ -4,254 +4,309 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CLAW // Philip Command Deck</title>
-  <meta name="description" content="CLAW — Philip S. Wright's command deck. Live GitHub fleet, terminal-cyan, floating glass." />
+  <meta name="description" content="CLAW — Philip S. Wright's command center. GitHub fleet, homelab infrastructure, runbooks, tools. Terminal-cyan, floating glass." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --cyan: #22d3ee;
-      --cyan-dim: #123e47;
-      --cyan-glow: rgba(34, 211, 238, 0.45);
-      --bg: #04070a;
-      --panel: rgba(13, 22, 30, 0.55);
-      --panel-edge: rgba(34, 211, 238, 0.14);
-      --gray: #9aa7b3;
-      --gray-dim: #556571;
-      --white: #eaf6f9;
+      --cyan: #22d3ee; --cyan-dim: #123e47; --cyan-glow: rgba(34,211,238,.45);
+      --bg: #04070a; --panel: rgba(13,22,30,.55); --edge: rgba(34,211,238,.14);
+      --gray: #9aa7b3; --gray-dim: #556571; --white: #eaf6f9;
+      --green: #4ade80; --red: #f87171; --yellow: #e8d06a;
       --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --fs: 16px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { background: var(--bg); }
+    html { background: var(--bg); font-size: var(--fs); }
     body {
-      font-family: var(--mono);
-      color: var(--gray);
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: var(--mono); color: var(--gray); min-height: 100vh; overflow-x: hidden;
       background:
-        radial-gradient(1100px 500px at 75% -10%, rgba(34,211,238,0.07), transparent 60%),
-        radial-gradient(900px 600px at -10% 110%, rgba(123,45,142,0.08), transparent 55%),
+        radial-gradient(1100px 500px at 75% -10%, rgba(34,211,238,.07), transparent 60%),
+        radial-gradient(900px 600px at -10% 110%, rgba(123,45,142,.08), transparent 55%),
         var(--bg);
     }
-    /* CRT scanlines + grid floor */
-    body::before {
-      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      background: repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 3px);
-    }
-    #gridfloor {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .35;
-      background-image:
-        linear-gradient(rgba(34,211,238,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34,211,238,0.05) 1px, transparent 1px);
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px); }
+    #gridfloor { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .35;
+      background-image: linear-gradient(rgba(34,211,238,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,211,238,.05) 1px, transparent 1px);
       background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 0%, transparent 75%);
       -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 0%, transparent 75%);
-    }
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 0%, transparent 75%); }
     canvas#particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
-    .shell { position: relative; z-index: 1; max-width: 1880px; margin: 0 auto; padding: 34px 48px 80px; }
+    /* ── layout: sidebar + main ── */
+    .app { position: relative; z-index: 1; display: flex; min-height: 100vh; }
+    aside {
+      width: 248px; flex: none; padding: 28px 18px; border-right: 1px solid var(--edge);
+      background: rgba(6,11,15,.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; user-select: none; cursor: pointer; }
+    .bolt { width: 7px; height: 30px; background: var(--cyan); transform: skewX(-12deg);
+      box-shadow: 0 0 16px var(--cyan-glow); animation: pulse 3.2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+    .logo b { color: var(--cyan); font-size: 26px; letter-spacing: .08em; text-shadow: 0 0 18px var(--cyan-glow); }
+    .logo span { color: var(--gray-dim); font-size: 10px; letter-spacing: .12em; }
+    nav { margin-top: 30px; display: flex; flex-direction: column; gap: 4px; }
+    nav a {
+      display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px;
+      color: var(--gray); text-decoration: none; font-size: 13px; letter-spacing: .05em;
+      border: 1px solid transparent; transition: all .18s;
+    }
+    nav a .k { margin-left: auto; color: var(--gray-dim); font-size: 10px; border: 1px solid var(--edge);
+      border-radius: 4px; padding: 1px 5px; opacity: .7; }
+    nav a:hover { color: var(--cyan); background: rgba(34,211,238,.05); }
+    nav a.on { color: var(--cyan); border-color: var(--edge); background: rgba(34,211,238,.08);
+      box-shadow: 0 0 14px rgba(34,211,238,.08) inset; }
+    nav a .ic { width: 16px; text-align: center; flex: none; }
+    .side-foot { margin-top: auto; padding-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .clock2 { color: var(--gray-dim); font-size: 11px; letter-spacing: .1em; }
+    .fontsize { display: flex; gap: 6px; }
+    .fontsize button { background: rgba(10,18,24,.7); border: 1px solid var(--edge); color: var(--gray);
+      font-family: var(--mono); border-radius: 6px; padding: 4px 9px; cursor: pointer; font-size: 11px; }
+    .fontsize button.on { color: var(--cyan); border-color: var(--cyan); }
+    .side-foot .who { color: var(--gray-dim); font-size: 10px; letter-spacing: .08em; }
+    .side-foot a { color: var(--gray-dim); text-decoration: none; } .side-foot a:hover { color: var(--cyan); }
 
-    /* ───── header ───── */
-    header { user-select: none; }
-    .brand { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
-    .bolt {
-      display: inline-block; width: 9px; height: 38px; background: var(--cyan);
-      box-shadow: 0 0 18px var(--cyan-glow), 0 0 42px rgba(34,211,238,.25);
-      transform: skewX(-12deg); align-self: center;
-      animation: boltpulse 3.2s ease-in-out infinite;
-    }
-    @keyframes boltpulse { 0%,100% { opacity: 1 } 50% { opacity: .55 } }
-    h1 {
-      color: var(--cyan); font-size: 44px; font-weight: 700; letter-spacing: .06em;
-      text-shadow: 0 0 22px rgba(34,211,238,.5);
-    }
-    .brand .sub { color: var(--gray); font-size: 19px; font-weight: 600; letter-spacing: .08em; }
-    .brand .clock { margin-left: auto; color: var(--gray-dim); font-size: 17px; letter-spacing: .1em; }
-    .statline {
-      margin-top: 22px; color: var(--gray); font-size: 16.5px; font-weight: 600; letter-spacing: .05em;
-      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-    }
-    .statline .total { color: var(--white); }
-    .statline .lang-chip { color: var(--gray); }
-    .statline .lang-chip b { color: var(--cyan); font-weight: 600; }
-    .statline .live-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); display: inline-block;
-      box-shadow: 0 0 10px var(--cyan-glow); animation: boltpulse 2.1s ease-in-out infinite;
-    }
-    .rule { margin-top: 16px; height: 2px; background: linear-gradient(90deg, var(--cyan-dim), rgba(18,62,71,0)); }
+    main { flex: 1; min-width: 0; padding: 34px 44px 90px; max-width: 1620px; }
+    .pagehead h1 { color: var(--cyan); font-size: 30px; letter-spacing: .06em; text-shadow: 0 0 18px rgba(34,211,238,.35); text-transform: uppercase; }
+    .pagehead .sub { color: var(--gray-dim); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; margin-top: 5px; }
+    .rule { margin-top: 14px; height: 2px; background: linear-gradient(90deg, var(--cyan-dim), transparent); }
 
-    /* ───── controls ───── */
-    .controls { display: flex; gap: 14px; margin-top: 22px; flex-wrap: wrap; align-items: center; }
-    .controls input, .controls select {
-      background: rgba(10, 18, 24, 0.7); border: 1px solid var(--panel-edge); color: var(--white);
-      font-family: var(--mono); font-size: 15px; padding: 10px 14px; border-radius: 8px; outline: none;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .controls input { width: 340px; }
-    .controls input:focus, .controls select:focus { border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,211,238,.18); }
-    .controls .hint { color: var(--gray-dim); font-size: 13px; letter-spacing: .04em; }
-    .controls .hint kbd {
-      border: 1px solid var(--panel-edge); border-radius: 5px; padding: 2px 7px;
-      color: var(--cyan); background: rgba(34,211,238,.06); font-family: var(--mono); font-size: 12px;
-    }
-
-    /* ───── deck grid ───── */
-    .deck {
-      margin-top: 30px; display: grid; gap: 24px 24px;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    }
-    .card {
-      position: relative; min-height: 172px; padding: 20px 22px 18px; border-radius: 14px;
-      background: var(--panel); border: 1px solid var(--panel-edge);
+    /* ── shared glass panel & cards ── */
+    .glass { background: var(--panel); border: 1px solid var(--edge); border-radius: 14px;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    .panel { padding: 22px 24px; margin-top: 22px; }
+    .panel h2 { color: var(--cyan); font-size: 13.5px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .deckgrid { margin-top: 24px; display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(390px, 1fr)); }
+    .card { position: relative; min-height: 168px; padding: 20px 22px 18px; border-radius: 14px;
+      background: var(--panel); border: 1px solid var(--edge);
       backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       cursor: pointer; overflow: hidden;
       transition: transform .25s cubic-bezier(.2,.9,.3,1.4), box-shadow .25s, border-color .25s;
-      animation: floaty 7s ease-in-out infinite;
-      animation-delay: calc(var(--i) * -0.9s);
-    }
-    @keyframes floaty { 0%,100% { translate: 0 0 } 50% { translate: 0 -5px } }
-    .card::after { /* sheen */
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(115deg, transparent 30%, rgba(34,211,238,.05) 45%, transparent 60%);
-      transform: translateX(-100%); transition: transform .6s;
-    }
-    .card:hover, .card:focus-visible {
-      transform: translateY(-7px) scale(1.015);
-      border-color: var(--cyan);
+      animation: floaty 7s ease-in-out infinite; animation-delay: calc(var(--i) * -0.9s); }
+    @keyframes floaty { 0%,100%{translate:0 0} 50%{translate:0 -5px} }
+    .card:hover, .card:focus-visible { transform: translateY(-7px) scale(1.015); border-color: var(--cyan);
       box-shadow: 0 0 0 1px rgba(34,211,238,.35), 0 0 34px rgba(34,211,238,.22), 0 18px 50px rgba(0,0,0,.5);
-      outline: none; animation-play-state: paused;
-    }
-    .card:hover::after, .card:focus-visible::after { transform: translateX(100%); }
+      outline: none; animation-play-state: paused; }
     .card .top { display: flex; align-items: center; gap: 10px; }
-    .card .name { color: var(--white); font-size: 18px; font-weight: 700; letter-spacing: .02em; overflow-wrap: anywhere; }
-    .card:hover .name, .card:focus-visible .name { color: var(--cyan); text-shadow: 0 0 14px rgba(34,211,238,.45); }
-    .lang { display: inline-flex; align-items: center; gap: 7px; margin-left: auto; flex: none;
-      color: var(--gray); font-size: 12.5px; letter-spacing: .03em; }
+    .card .name { color: var(--white); font-size: 17px; font-weight: 700; overflow-wrap: anywhere; }
+    .card:hover .name { color: var(--cyan); text-shadow: 0 0 14px rgba(34,211,238,.45); }
+    .lang { display: inline-flex; align-items: center; gap: 7px; margin-left: auto; flex: none; color: var(--gray); font-size: 12px; }
     .lang .dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
-    .card .desc {
-      margin-top: 12px; color: var(--gray); font-size: 13.5px; line-height: 1.55; font-weight: 400;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 3.2em;
-    }
-    .card .meta { margin-top: 14px; display: flex; gap: 18px; color: var(--gray-dim); font-size: 12.5px; letter-spacing: .04em; }
-    .card .meta .stars { color: #e8d06a; }
+    .card .desc { margin-top: 11px; color: var(--gray); font-size: 13px; line-height: 1.55; min-height: 3.1em;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card .meta { margin-top: 13px; display: flex; gap: 18px; color: var(--gray-dim); font-size: 12px; }
+    .stars { color: var(--yellow); }
 
-    /* ───── detail view ───── */
-    .detail { margin-top: 30px; display: none; }
-    .detail.active { display: block; }
-    .deck.hidden, .controls.hidden { display: none; }
-    .back {
-      color: var(--cyan); background: none; border: 1px solid var(--panel-edge); border-radius: 8px;
-      font-family: var(--mono); font-size: 14px; padding: 9px 16px; cursor: pointer; letter-spacing: .05em;
-      transition: border-color .2s, box-shadow .2s;
-    }
+    .controls { display: flex; gap: 14px; margin-top: 20px; flex-wrap: wrap; align-items: center; }
+    input[type=search], select {
+      background: rgba(10,18,24,.7); border: 1px solid var(--edge); color: var(--white);
+      font-family: var(--mono); font-size: 14px; padding: 10px 14px; border-radius: 8px; outline: none;
+      transition: border-color .2s, box-shadow .2s; }
+    input[type=search]:focus, select:focus { border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,211,238,.18); }
+    .hint { color: var(--gray-dim); font-size: 12px; }
+    kbd { border: 1px solid rgba(34,211,238,.35); border-radius: 5px; padding: 2px 8px;
+      color: var(--cyan); background: rgba(34,211,238,.07); font-family: var(--mono); font-size: 11.5px; }
+
+    /* ── home stats ── */
+    .statrow { margin-top: 24px; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+    .stat { padding: 20px 22px; }
+    .stat .v { color: var(--white); font-size: 34px; font-weight: 700; text-shadow: 0 0 16px rgba(34,211,238,.25); }
+    .stat .v .unit { color: var(--gray-dim); font-size: 15px; }
+    .stat .l { color: var(--gray-dim); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; margin-top: 6px; }
+    .stat.live .v { color: var(--green); }
+    .quick { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); margin-top: 6px; }
+    .quick a { display: block; padding: 17px 18px; border-radius: 11px; border: 1px solid var(--edge);
+      background: rgba(10,18,24,.45); color: var(--gray); text-decoration: none; transition: all .2s; }
+    .quick a:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 22px rgba(34,211,238,.13); transform: translateY(-3px); }
+    .quick .t { color: var(--white); font-weight: 700; font-size: 14.5px; display: flex; gap: 9px; align-items: center; }
+    .quick a:hover .t { color: var(--cyan); }
+    .quick .d { font-size: 11.5px; margin-top: 6px; color: var(--gray-dim); line-height: 1.5; }
+    .chips { display: flex; flex-wrap: wrap; gap: 9px; }
+    .chip { border: 1px solid var(--edge); background: rgba(34,211,238,.05); color: var(--gray);
+      border-radius: 999px; padding: 6px 14px; font-size: 12px; cursor: pointer; transition: all .18s; }
+    .chip:hover, .chip.on { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,211,238,.14); }
+    .chip b { color: var(--cyan); }
+    .actrow { display: flex; justify-content: space-between; gap: 14px; padding: 9px 4px; border-bottom: 1px dashed rgba(34,211,238,.08); font-size: 12.5px; cursor: pointer; }
+    .actrow:hover .an { color: var(--cyan); }
+    .actrow .an { color: var(--white); }
+    .actrow .ad { color: var(--gray-dim); flex: none; }
+
+    /* ── infra ── */
+    .igroups { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); margin-top: 22px; }
+    .inode { display: flex; align-items: center; gap: 11px; padding: 10px 6px; border-bottom: 1px dashed rgba(34,211,238,.08); }
+    .inode:last-child { border-bottom: 0; }
+    .ind { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+    .ind.up { background: var(--green); box-shadow: 0 0 10px rgba(74,222,128,.6); animation: pulse 2.4s ease-in-out infinite; }
+    .ind.dn { background: var(--red); box-shadow: 0 0 10px rgba(248,113,113,.5); }
+    .inode .nm { color: var(--white); font-size: 13.5px; min-width: 0; overflow-wrap: anywhere; }
+    .inode .host { color: var(--gray-dim); font-size: 11px; }
+    .inode .ms { margin-left: auto; flex: none; color: var(--cyan); font-size: 11.5px; }
+    .inode .ms.dn { color: var(--red); }
+    .inote { color: var(--gray-dim); font-size: 10.5px; margin-top: 2px; }
+    .ibadge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
+    .srcbadge { color: var(--gray-dim); font-size: 11px; letter-spacing: .08em; }
+
+    /* ── runbooks (projects/hardware) ── */
+    .progress { height: 8px; border-radius: 99px; background: rgba(10,18,24,.8); overflow: hidden; margin-top: 10px; }
+    .progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--cyan), #3b82f6); transition: width .4s; box-shadow: 0 0 12px rgba(34,211,238,.4); }
+    .phase { margin-top: 18px; overflow: hidden; }
+    .phase > .ph { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; user-select: none; }
+    .phase > .ph:hover { background: rgba(34,211,238,.04); }
+    .phase .pt { color: var(--white); font-size: 13.5px; letter-spacing: .07em; font-weight: 700; }
+    .phase .est { color: var(--gray-dim); font-size: 10.5px; border: 1px solid var(--edge); padding: 2px 8px; border-radius: 6px; }
+    .phase .chev { margin-left: auto; color: var(--gray-dim); transition: transform .2s; }
+    .phase.open .chev { transform: rotate(90deg); }
+    .phase .body { display: none; padding: 4px 20px 18px; }
+    .phase.open .body { display: block; }
+    .verify { border: 1px solid rgba(74,222,128,.25); background: rgba(74,222,128,.05); border-radius: 9px; padding: 12px 14px; margin-bottom: 12px; }
+    .verify .vt { color: var(--green); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; }
+    .verify p { color: rgba(74,222,128,.8); font-size: 12px; margin-top: 5px; line-height: 1.55; }
+    .step { display: flex; gap: 12px; padding: 13px 14px; border: 1px solid var(--edge); border-radius: 10px; margin-top: 10px; background: rgba(8,14,19,.4); }
+    .step.done { border-color: rgba(74,222,128,.3); background: rgba(74,222,128,.05); }
+    .step .ck { flex: none; width: 19px; height: 19px; margin-top: 1px; border-radius: 50%; border: 2px solid var(--cyan-dim); cursor: pointer; transition: all .15s; }
+    .step .ck:hover { border-color: var(--cyan); box-shadow: 0 0 10px rgba(34,211,238,.3); }
+    .step.done .ck { border-color: var(--green); background: var(--green);
+      box-shadow: 0 0 10px rgba(74,222,128,.45); }
+    .step .st { color: var(--white); font-size: 13.5px; font-weight: 600; }
+    .step.done .st { color: var(--green); text-decoration: line-through; opacity: .6; }
+    .step .sd { color: var(--gray); font-size: 12px; margin-top: 4px; line-height: 1.55; }
+    .step .warn { color: rgba(232,208,106,.85); font-size: 11.5px; margin-top: 6px; border-left: 2px solid rgba(232,208,106,.4); padding-left: 9px; }
+    .step pre { position: relative; background: rgba(4,9,12,.85); border: 1px solid var(--edge); border-radius: 8px;
+      padding: 12px 14px; margin-top: 9px; font-size: 11.5px; color: var(--gray); overflow-x: auto; line-height: 1.6; }
+    .copybtn { position: absolute; top: 7px; right: 7px; background: rgba(34,211,238,.08); color: var(--cyan);
+      border: 1px solid var(--edge); border-radius: 6px; font-family: var(--mono); font-size: 10px;
+      padding: 3px 8px; cursor: pointer; opacity: 0; transition: opacity .15s; }
+    .step pre:hover .copybtn { opacity: 1; }
+    .asciibox { font-size: 11px; color: var(--gray); overflow-x: auto; line-height: 1.5; white-space: pre; }
+    .nodegrid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+    .nodecard { border: 1px solid var(--edge); border-radius: 9px; padding: 12px 14px; background: rgba(8,14,19,.4); }
+    .nodecard .nn { color: var(--cyan); font-size: 12.5px; font-weight: 700; }
+    .nodecard .nd { color: var(--gray-dim); font-size: 11px; margin-top: 4px; }
+
+    /* ── detail/readme ── */
+    .back { color: var(--cyan); background: none; border: 1px solid var(--edge); border-radius: 8px;
+      font-family: var(--mono); font-size: 13px; padding: 9px 16px; cursor: pointer; letter-spacing: .05em; }
     .back:hover { border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,211,238,.2); }
-    .detail h2 { color: var(--white); font-size: 30px; margin-top: 22px; letter-spacing: .03em;
-      text-shadow: 0 0 18px rgba(34,211,238,.25); overflow-wrap: anywhere; }
-    .detail .dmeta { margin-top: 10px; color: var(--gray); font-size: 14.5px; display: flex; gap: 16px; flex-wrap: wrap; }
-    .detail .dmeta .stars { color: #e8d06a; }
-    .detail .ddesc { margin-top: 16px; color: var(--gray); font-size: 15.5px; line-height: 1.6; max-width: 980px; }
-    .detail .actions { margin-top: 18px; display: flex; gap: 12px; }
-    .detail .actions a {
-      color: var(--bg); background: var(--cyan); text-decoration: none; font-weight: 700; font-size: 14px;
-      padding: 10px 18px; border-radius: 8px; letter-spacing: .04em;
-      box-shadow: 0 0 22px rgba(34,211,238,.35); transition: box-shadow .2s, transform .15s;
-    }
-    .detail .actions a:hover { box-shadow: 0 0 34px rgba(34,211,238,.55); transform: translateY(-2px); }
-    .readme {
-      margin-top: 28px; padding: 30px 34px; border-radius: 14px; max-width: 1100px;
-      background: var(--panel); border: 1px solid var(--panel-edge);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      color: var(--gray); font-size: 14.5px; line-height: 1.65;
-    }
-    .readme h1, .readme h2, .readme h3 { color: var(--white); margin: 1.1em 0 .45em; letter-spacing: .02em; }
-    .readme h1 { font-size: 24px; color: var(--cyan); } .readme h2 { font-size: 19px; } .readme h3 { font-size: 16px; }
-    .readme p { margin: .6em 0; }
-    .readme a { color: var(--cyan); }
-    .readme code { background: rgba(34,211,238,.08); color: var(--cyan); padding: 1px 6px; border-radius: 5px; font-size: 13px; }
-    .readme pre { background: rgba(4,9,12,.8); border: 1px solid var(--panel-edge); padding: 14px 16px; border-radius: 10px; overflow-x: auto; margin: .8em 0; }
+    .dethead h2 { color: var(--white); font-size: 27px; margin-top: 20px; text-shadow: 0 0 18px rgba(34,211,238,.25); overflow-wrap: anywhere; }
+    .dmeta { margin-top: 9px; color: var(--gray); font-size: 13.5px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .ddesc { margin-top: 14px; color: var(--gray); font-size: 14.5px; line-height: 1.6; max-width: 960px; }
+    .ghbtn { display: inline-block; margin-top: 16px; color: var(--bg); background: var(--cyan); text-decoration: none;
+      font-weight: 700; font-size: 13px; padding: 10px 18px; border-radius: 8px;
+      box-shadow: 0 0 22px rgba(34,211,238,.35); transition: all .15s; }
+    .ghbtn:hover { box-shadow: 0 0 34px rgba(34,211,238,.55); transform: translateY(-2px); }
+    .readme { margin-top: 26px; padding: 28px 32px; max-width: 1080px; color: var(--gray); font-size: 14px; line-height: 1.65; }
+    .readme h1,.readme h2,.readme h3 { color: var(--white); margin: 1.1em 0 .45em; }
+    .readme h1 { font-size: 23px; color: var(--cyan); } .readme h2 { font-size: 18px; } .readme h3 { font-size: 15.5px; }
+    .readme p { margin: .6em 0; } .readme a { color: var(--cyan); }
+    .readme code { background: rgba(34,211,238,.08); color: var(--cyan); padding: 1px 6px; border-radius: 5px; font-size: 12.5px; }
+    .readme pre { background: rgba(4,9,12,.8); border: 1px solid var(--edge); padding: 14px 16px; border-radius: 10px; overflow-x: auto; margin: .8em 0; }
     .readme pre code { background: none; padding: 0; color: var(--gray); }
-    .readme ul, .readme ol { margin: .6em 0 .6em 1.4em; }
-    .readme li { margin: .25em 0; }
+    .readme ul,.readme ol { margin: .6em 0 .6em 1.4em; } .readme li { margin: .25em 0; }
     .readme blockquote { border-left: 3px solid var(--cyan-dim); padding-left: 14px; color: var(--gray-dim); margin: .8em 0; }
     .readme img { max-width: 100%; border-radius: 8px; }
-    .readme hr { border: none; border-top: 1px solid var(--panel-edge); margin: 1.2em 0; }
-    .readme table { border-collapse: collapse; margin: .8em 0; }
-    .readme th, .readme td { border: 1px solid var(--panel-edge); padding: 6px 12px; }
-    .readme .loading { color: var(--gray-dim); letter-spacing: .08em; }
+    .readme table { border-collapse: collapse; margin: .8em 0; } .readme th,.readme td { border: 1px solid var(--edge); padding: 6px 12px; }
+    .loadtxt { color: var(--gray-dim); letter-spacing: .1em; font-size: 12.5px; }
 
-    /* ───── help overlay ───── */
-    .help-backdrop {
-      position: fixed; inset: 0; z-index: 50; display: none; align-items: flex-start; justify-content: center;
-      background: rgba(2,5,7,.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      padding: 8vh 20px 20px; overflow-y: auto;
-    }
+    /* ── chat ── */
+    .chatlog { min-height: 280px; max-height: 56vh; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 6px 2px; }
+    .msg { max-width: 88%; padding: 13px 16px; border-radius: 12px; font-size: 13.5px; line-height: 1.6; }
+    .msg.you { align-self: flex-end; background: rgba(34,211,238,.1); border: 1px solid rgba(34,211,238,.3); color: var(--white); }
+    .msg.claw { align-self: flex-start; background: rgba(8,14,19,.65); border: 1px solid var(--edge); }
+    .msg.claw .from { color: var(--cyan); font-size: 10.5px; letter-spacing: .14em; margin-bottom: 6px; }
+    .msg a { color: var(--cyan); }
+    .chatbar { display: flex; gap: 10px; margin-top: 16px; }
+    .chatbar input { flex: 1; background: rgba(10,18,24,.7); border: 1px solid var(--edge); color: var(--white);
+      font-family: var(--mono); font-size: 14px; padding: 12px 16px; border-radius: 9px; outline: none; }
+    .chatbar input:focus { border-color: var(--cyan); box-shadow: 0 0 14px rgba(34,211,238,.18); }
+    .chatbar button { background: var(--cyan); color: var(--bg); border: 0; border-radius: 9px; font-family: var(--mono);
+      font-weight: 700; font-size: 13px; padding: 0 22px; cursor: pointer; box-shadow: 0 0 18px rgba(34,211,238,.3); }
+    .modebadge { display: inline-block; font-size: 10.5px; letter-spacing: .12em; color: var(--yellow);
+      border: 1px solid rgba(232,208,106,.35); background: rgba(232,208,106,.06); border-radius: 6px; padding: 3px 10px; }
+
+    /* ── search ── */
+    .hl { color: var(--cyan); background: rgba(34,211,238,.14); border-radius: 3px; padding: 0 2px; }
+    .sres { padding: 14px 16px; border: 1px solid var(--edge); border-radius: 10px; margin-top: 12px;
+      background: rgba(8,14,19,.4); cursor: pointer; transition: all .18s; }
+    .sres:hover { border-color: var(--cyan); box-shadow: 0 0 18px rgba(34,211,238,.1); }
+    .sres .rn { color: var(--white); font-weight: 700; font-size: 14px; }
+    .sres .rk { color: var(--gray-dim); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; margin-left: 8px; }
+    .sres .rd { color: var(--gray); font-size: 12.5px; margin-top: 5px; line-height: 1.55; }
+
+    /* ── tools ── */
+    .tool { padding: 18px 20px; margin-top: 14px; }
+    .tool .tn { color: var(--white); font-weight: 700; font-size: 15px; }
+    .tool .tf { color: var(--cyan); font-size: 11.5px; margin-top: 3px; }
+    .tool .td { color: var(--gray); font-size: 12.5px; margin-top: 8px; line-height: 1.6; }
+    .tool ol { margin: 10px 0 0 1.3em; }
+    .tool li { font-size: 12px; color: var(--gray); margin: 5px 0; line-height: 1.5; }
+    .tool li code { color: var(--cyan); background: rgba(34,211,238,.07); padding: 1px 5px; border-radius: 4px; }
+    .envv { padding: 10px 0; border-bottom: 1px dashed rgba(34,211,238,.08); }
+    .envv code { color: var(--cyan); font-size: 13px; }
+    .envv p { color: var(--gray-dim); font-size: 11.5px; margin-top: 3px; }
+
+    /* ── help overlay ── */
+    .help-backdrop { position: fixed; inset: 0; z-index: 50; display: none; align-items: flex-start; justify-content: center;
+      background: rgba(2,5,7,.7); backdrop-filter: blur(6px); padding: 7vh 20px 20px; overflow-y: auto; }
     .help-backdrop.active { display: flex; }
-    .help {
-      width: min(860px, 100%); border-radius: 16px; padding: 34px 38px;
-      background: rgba(7, 13, 18, 0.92); border: 1px solid var(--panel-edge);
-      box-shadow: 0 0 60px rgba(34,211,238,.12), 0 30px 80px rgba(0,0,0,.6);
-    }
-    .help h3 { color: var(--cyan); font-size: 22px; letter-spacing: .08em; display: flex; align-items: center; gap: 12px; }
-    .help .sect { margin-top: 22px; color: var(--white); font-size: 15px; letter-spacing: .06em; }
-    .help ul { list-style: none; margin-top: 12px; }
-    .help li { margin: 9px 0; font-size: 14px; color: var(--gray); display: flex; gap: 12px; align-items: center; }
-    .help kbd {
-      border: 1px solid rgba(34,211,238,.35); border-radius: 6px; padding: 3px 10px; min-width: 64px; text-align: center;
-      color: var(--cyan); background: rgba(34,211,238,.07); font-family: var(--mono); font-size: 12.5px;
-    }
-    .help .x { float: right; color: var(--gray-dim); cursor: pointer; font-size: 20px; }
-    .help .x:hover { color: var(--cyan); }
+    .help { width: min(880px, 100%); border-radius: 16px; padding: 32px 36px;
+      background: rgba(7,13,18,.93); border: 1px solid var(--edge);
+      box-shadow: 0 0 60px rgba(34,211,238,.12), 0 30px 80px rgba(0,0,0,.6); }
+    .help h3 { color: var(--cyan); font-size: 21px; letter-spacing: .08em; }
+    .help .sect { margin-top: 20px; color: var(--white); font-size: 14px; letter-spacing: .07em; }
+    .help ul { list-style: none; margin-top: 10px; columns: 2; column-gap: 40px; }
+    .help li { margin: 8px 0; font-size: 13px; color: var(--gray); display: flex; gap: 12px; align-items: center; break-inside: avoid; }
+    .help .x { float: right; color: var(--gray-dim); cursor: pointer; font-size: 20px; } .help .x:hover { color: var(--cyan); }
 
-    footer { margin-top: 70px; color: var(--gray-dim); font-size: 12.5px; letter-spacing: .08em; text-align: center; }
-    footer a { color: var(--gray); text-decoration: none; }
-    footer a:hover { color: var(--cyan); }
-
-    @media (max-width: 720px) {
-      .shell { padding: 24px 18px 60px; }
-      h1 { font-size: 32px; }
-      .controls input { width: 100%; }
-      .deck { grid-template-columns: 1fr; }
+    .menubtn { display: none; }
+    @media (max-width: 920px) {
+      aside { position: fixed; z-index: 40; transform: translateX(-100%); transition: transform .25s; width: 240px; }
+      aside.open { transform: none; box-shadow: 30px 0 80px rgba(0,0,0,.6); }
+      main { padding: 22px 18px 70px; }
+      .menubtn { display: inline-flex; position: fixed; z-index: 41; top: 14px; left: 14px;
+        background: rgba(7,13,18,.9); color: var(--cyan); border: 1px solid var(--edge); border-radius: 8px;
+        font-family: var(--mono); font-size: 16px; padding: 7px 12px; cursor: pointer; }
+      .pagehead { margin-top: 36px; }
+      .help ul { columns: 1; }
     }
   </style>
 </head>
 <body>
   <div id="gridfloor"></div>
   <canvas id="particles"></canvas>
+  <button class="menubtn" id="menubtn">☰</button>
 
-  <div class="shell">
-    <header>
-      <div class="brand">
+  <div class="app">
+    <aside id="sidebar">
+      <div class="logo" onclick="location.hash='#/'">
         <span class="bolt"></span>
-        <h1>CLAW</h1>
-        <span class="sub">// PHILIP COMMAND DECK</span>
-        <span class="clock" id="clock"></span>
+        <div><b>CLAW</b><br /><span>PHILIP COMMAND DECK</span></div>
       </div>
-      <div class="statline" id="statline"><span class="live-dot"></span><span>booting deck&hellip;</span></div>
-      <div class="rule"></div>
-    </header>
+      <nav id="nav">
+        <a href="#/"         data-r="home"     ><span class="ic">⌂</span>Command Deck<span class="k">g h</span></a>
+        <a href="#/repos"    data-r="repos"    ><span class="ic">⎇</span>Repositories<span class="k">g r</span></a>
+        <a href="#/search"   data-r="search"   ><span class="ic">⌕</span>Search<span class="k">g s</span></a>
+        <a href="#/chat"     data-r="chat"     ><span class="ic">✦</span>Ask CLAW<span class="k">g c</span></a>
+        <a href="#/drive"    data-r="drive"    ><span class="ic">⛁</span>Expansion Drive<span class="k">g d</span></a>
+        <a href="#/topics"   data-r="topics"   ><span class="ic">#</span>Topics<span class="k">g t</span></a>
+        <a href="#/infra"    data-r="infra"    ><span class="ic">▣</span>Infrastructure<span class="k">g i</span></a>
+        <a href="#/projects" data-r="projects" ><span class="ic">☰</span>Projects<span class="k">g p</span></a>
+        <a href="#/tools"    data-r="tools"    ><span class="ic">⚙</span>Tools &amp; Scripts<span class="k">g o</span></a>
+        <a href="#/hardware" data-r="hardware" ><span class="ic">⌗</span>Hardware Setup<span class="k">g w</span></a>
+      </nav>
+      <div class="side-foot">
+        <div class="fontsize" id="fontsize">
+          <button data-fs="16px">A</button><button data-fs="18px">A+</button><button data-fs="20px">A++</button>
+        </div>
+        <span class="clock2" id="clock"></span>
+        <span class="who">PHILIP S. WRIGHT<br/><a href="https://github.com/pdubbbbbs" target="_blank" rel="noopener">github.com/pdubbbbbs</a> · <a href="https://philipwright.me" target="_blank" rel="noopener">philipwright.me</a></span>
+      </div>
+    </aside>
 
-    <div class="controls" id="controls">
-      <input id="filter" type="search" placeholder="filter repositories&hellip;" autocomplete="off" />
-      <select id="langsel"><option value="">ALL LANGUAGES</option></select>
-      <span class="hint"><kbd>/</kbd> filter &nbsp; <kbd>?</kbd> help &nbsp; <kbd>Esc</kbd> back</span>
-    </div>
-
-    <main class="deck" id="deck" aria-label="repository deck"></main>
-
-    <section class="detail" id="detail">
-      <button class="back" id="backBtn">&larr; BACK TO THE DECK</button>
-      <h2 id="dName"></h2>
-      <div class="dmeta" id="dMeta"></div>
-      <p class="ddesc" id="dDesc"></p>
-      <div class="actions"><a id="dLink" href="#" target="_blank" rel="noopener">OPEN ON GITHUB &nearr;</a></div>
-      <article class="readme" id="readme"></article>
-    </section>
-
-    <footer>
-      CLAW // PHILIP S. WRIGHT &nbsp;&middot;&nbsp;
-      <a href="https://github.com/pdubbbbbs" target="_blank" rel="noopener">github.com/pdubbbbbs</a>
-      &nbsp;&middot;&nbsp; <a href="https://philipwright.me" target="_blank" rel="noopener">philipwright.me</a>
-    </footer>
+    <main id="main"></main>
   </div>
 
   <div class="help-backdrop" id="helpWrap">
@@ -261,213 +316,560 @@
       <div class="sect">KEYBOARD SHORTCUTS</div>
       <ul>
         <li><kbd>?</kbd> Toggle this help panel</li>
-        <li><kbd>/</kbd> Focus repository filter</li>
-        <li><kbd>Esc</kbd> Back to the deck / close panels</li>
-        <li><kbd>&uarr;&darr;&larr;&rarr;</kbd> Move between repo cards</li>
-        <li><kbd>Enter</kbd> Open focused repo detail</li>
+        <li><kbd>/</kbd> Focus search/filter on current page</li>
+        <li><kbd>Esc</kbd> Back / close panels</li>
+        <li><kbd>g h</kbd> Go to Command Deck</li>
+        <li><kbd>g r</kbd> Go to Repositories</li>
+        <li><kbd>g s</kbd> Go to Search</li>
+        <li><kbd>g c</kbd> Go to Ask CLAW</li>
+        <li><kbd>g d</kbd> Go to Expansion Drive</li>
+        <li><kbd>g t</kbd> Go to Topics</li>
+        <li><kbd>g i</kbd> Go to Infrastructure</li>
+        <li><kbd>g p</kbd> Go to Projects</li>
+        <li><kbd>g o</kbd> Go to Tools</li>
+        <li><kbd>g w</kbd> Go to Hardware Setup</li>
+        <li><kbd>↑↓←→</kbd> + <kbd>Enter</kbd> Navigate repo cards</li>
       </ul>
-      <div class="sect">THE DECK</div>
-      <ul>
-        <li>Live overview of the public GitHub fleet — name, language, last push, stars</li>
-        <li>Click any floating card to open its detail page with the full README</li>
-        <li>Data refreshes live from the GitHub API with a baked-in fallback</li>
+      <div class="sect">SECTIONS</div>
+      <ul style="columns:1">
+        <li>Command Deck — fleet overview, infra summary, topic clusters, recent activity</li>
+        <li>Repositories — every public repo as a floating glass card, README detail views</li>
+        <li>Infrastructure — live homelab status from the Synology feed (refreshes every 60s)</li>
+        <li>Projects / Hardware — the full homelab rebuild runbook with progress tracking</li>
       </ul>
     </div>
   </div>
 
 <script>
 (() => {
-  "use strict";
-  const LANG_COLORS = {
-    Python: "#3572A5", JavaScript: "#F1E05A", TypeScript: "#3178C6",
-    HTML: "#E34C26", Shell: "#89E051", CSS: "#563D7C", Kotlin: "#A97BFF",
-    Java: "#B07219", Rust: "#DEA584", Go: "#00ADD8", Swift: "#F05138",
-    PowerShell: "#012456", Dockerfile: "#384D54", C: "#555555", "—": "#6B7A86"
-  };
-  const USER = "pdubbbbbs";
-  const $ = (id) => document.getElementById(id);
-  let repos = [], view = [];
+"use strict";
+/* ═══════════════ data ═══════════════ */
+const USER = "pdubbbbbs";
+const EXCLUDE = /wellness/i; // client-work repos — never shown on the deck
+const FEED_LIVE = "https://roku.philipwright.me/feeds/homelab.json";
+const LANG_COLORS = { Python:"#3572A5", JavaScript:"#F1E05A", TypeScript:"#3178C6", HTML:"#E34C26",
+  Shell:"#89E051", CSS:"#563D7C", Kotlin:"#A97BFF", Java:"#B07219", Rust:"#DEA584", Go:"#00ADD8",
+  Swift:"#F05138", PowerShell:"#012456", Dockerfile:"#384D54", C:"#555555", "—":"#6B7A86" };
+const TOPIC_RULES = [
+  ["security",   /secur|hardening|vuln|pentest|kali|wipe|cert|harden/i],
+  ["bluetooth",  /blueguard|bluetooth|ble\b/i],
+  ["homelab",    /homelab|proxmox|truenas|microcloud|utm|nas\b/i],
+  ["ai-claude",  /claude|ai\b|llm|ollama|agent|jane\b/i],
+  ["mcp",        /mcp/i],
+  ["docker",     /docker|container|compose/i],
+  ["dashboard",  /dashboard|monitor|status|tracker/i],
+  ["server",     /server|fastapi|nginx|proxy|hosting/i],
+  ["privacy",    /privacy|de-?google|degoogle|selfhost|self-host/i],
+  ["ios-swift",  /ios|swift|macos|catalyst|widget/i],
+  ["media",      /jellyfin|media|tv\b|roku|bluebubbles|imessage/i],
+  ["automation", /automation|script|helper|bootstrap|workflow/i],
+  ["web",        /website|site|page|html|portfolio/i],
+  ["cli",        /cli|terminal|tui|warp/i],
+  ["email",      /mail|fastmail|smtp/i],
+  ["vpn",        /vpn|wireguard|tailscale/i],
+  ["hardware",   /firmware|nrf|dongle|pi\b|orange-?pi|iso\b|usb/i],
+];
+const $ = (id) => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let repos = [], repoSrc = "...", infra = null, infraSrc = "...", chatLog = [];
 
-  /* ── clock ── */
-  function tickClock() {
-    const d = new Date();
-    let h = d.getHours(); const m = String(d.getMinutes()).padStart(2, "0");
-    const ap = h >= 12 ? "PM" : "AM"; h = h % 12 || 12;
-    $("clock").textContent = `${h}:${m} ${ap} // ${d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()}`;
-  }
-  tickClock(); setInterval(tickClock, 20000);
+/* runbook data — ported verbatim from the original Personal Claw (Manus, May 2026) */
+const PRE_HW = ["USB flash drive (8GB+) for Ubuntu installer","Ethernet cables for all 5 nodes + NAS (6 total)","Network switch with 8+ ports","Monitor + keyboard for initial OS installs","Paperclip for Synology RESET pinhole","8TB Expansion Drive + USB 3.0 cable","Router admin access (for static DHCP or IP reservations)","Notepad for recording assigned IPs during install","Strong password ready for all nodes (same user: philip)","Mac with Terminal for SSH access after installs"];
+const NODE_INV = [
+  ["node-mac-mini-1","192.168.1.101","Mac Mini 16GB Intel"],["node-mac-mini-2","192.168.1.102","Mac Mini 16GB Intel"],
+  ["node-dell-tower","192.168.1.103","Dell Tower PC"],["node-gmktec","192.168.1.104","GMKtec G2 Plus (2x NIC)"],
+  ["node-imac","192.168.1.105","iMac 16GB (2019)"],["synology-ds223","192.168.1.100","Synology DS223 + 8TB USB"]];
+const TOPOLOGY = `┌───────────────────────────────────────────────────────────────────┐
+│          HOMELAB NETWORK — 192.168.1.0/24                         │
+├───────────────────────────────────────────────────────────────────┤
+│   [ISP Modem/ONT]                                                 │
+│         │                                                         │
+│   ┌─────┴─────────────────────────────┐                           │
+│   │  ER605 Router (.1)                │                           │
+│   │  WAN1=ISP  LAN1→SW1               │                           │
+│   │  Firewall: SPI + No UPnP          │                           │
+│   └─────┬─────────────────────────────┘                           │
+│         │ LAN1                                                    │
+│   ┌─────┴──────────────────────────────────────────────────┐      │
+│   │  SW1-CORE  TL-SG108E #1 (.2)                           │      │
+│   │  P1   P2   P3   P4   P5   P6   P7   P8                 │      │
+│   │  ER   MM1  MM2  DLL  GMK  iMC  NAS  →SW2               │      │
+│   └──────────────────────────────────────────────────┬─────┘      │
+│                                                      │ P8→P1      │
+│   ┌──────────────────────────────────────────────────┴─────┐      │
+│   │  SW2-AUX  TL-SG108E #2 (.3)                            │      │
+│   │  P1=SW1  P2=GMK-NIC2  P3-P8 (disabled)                 │      │
+│   └────────────────────────────────────────────────────────┘      │
+│                                                                   │
+│   .101 Mac Mini #1   .102 Mac Mini #2   .103 Dell Tower           │
+│   .104 GMKtec G2+    .105 iMac 2019     .100 Synology DS223       │
+│                                              └──[8TB USB Exp]     │
+│   MicroCloud Cluster: .101-.105 (LXD + Ceph + OVN)                │
+│   Gateway/Uplink: GMKtec G2+ (.104, dual NIC)                     │
+└───────────────────────────────────────────────────────────────────┘`;
+const PORTMAP = `┌─────────────────────────────────────────────────────┐
+│  ER605 (192.168.1.1)                                │
+│  [WAN1=ISP] [WAN2] [LAN1→SW1] [LAN2] [LAN3]         │
+│                                                     │
+│  SW1-CORE (TL-SG108E #1)                            │
+│  │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │                  │
+│  │ER │MM1│MM2│DLL│GMK│iMC│NAS│→S2│                  │
+│                                                     │
+│  SW2-AUX (TL-SG108E #2)                             │
+│  │ 1 │ 2 │ 3-8        │                             │
+│  │SW1│GMK NIC2│ unused │                            │
+│                                                     │
+│  ER=ER605  MM1=MacMini1(.101)  MM2=MacMini2(.102)   │
+│  DLL=Dell(.103)  GMK=GMKtec(.104)  iMC=iMac(.105)   │
+│  NAS=DS223(.100)  GMK NIC2=Ceph/OVN traffic         │
+└─────────────────────────────────────────────────────┘`;
+const PHASES = [
+ {id:"phase-0",t:"PHASE 0 — NETWORK CONFIG & SECURITY HARDENING",est:"~45 min",
+  verify:"From your Mac: ping 192.168.1.1 (router), access ER605 web UI with new admin password, verify DHCP reservations show all planned IPs. Access each switch UI and confirm port LEDs match expected connections. Run 'nmap 192.168.1.0/24' to confirm only expected devices are visible.",
+  steps:[
+   {id:"0-1",t:"Log into ER605 (http://192.168.1.1)",d:"Default credentials: admin / admin. You'll change these immediately.",n:"If you can't reach 192.168.1.1, your Mac may be on a different subnet. Set Mac to DHCP and reconnect."},
+   {id:"0-2",t:"Change ER605 admin password",d:"System Tools → Admin Setup → change password to your strong password. Write it down."},
+   {id:"0-3",t:"Set ER605 LAN IP to 192.168.1.1/24",d:"Network → LAN → LAN Settings. Set IP: 192.168.1.1, Subnet: 255.255.255.0. This is your gateway."},
+   {id:"0-4",t:"Configure DHCP range (leave room for static IPs)",d:"Network → LAN → DHCP Server. Set range: 192.168.1.150 – 192.168.1.250. This reserves .1-.149 for static assignments.",c:"# Static IP plan (reserved outside DHCP range):\n# 192.168.1.1    — ER605 Router\n# 192.168.1.2    — Switch #1 (SW1-CORE)\n# 192.168.1.3    — Switch #2 (SW2-AUX)\n# 192.168.1.100  — Synology DS223\n# 192.168.1.101  — Mac Mini #1\n# 192.168.1.102  — Mac Mini #2\n# 192.168.1.103  — Dell Tower\n# 192.168.1.104  — GMKtec G2+\n# 192.168.1.105  — iMac 2019"},
+   {id:"0-5",t:"Add DHCP Address Reservations",d:"Network → LAN → DHCP Address Reservation. Add a reservation for each device using its MAC address. You'll get MACs after first boot.",n:"You can also set static IPs directly on each device during Ubuntu install (Phase 2). Reservations are a backup."},
+   {id:"0-6",t:"Set DNS servers (DoH-ready)",d:"Network → LAN → DHCP Server → DNS. Set Primary: 1.1.1.1, Secondary: 8.8.8.8. DoH-capable clients encrypt DNS automatically.",n:"The ER605 itself doesn't proxy DoH. For full network DoH, consider adding a Pi-hole or AdGuard Home later."},
+   {id:"0-7",t:"Disable UPnP",d:"Transmission → NAT → UPnP. Uncheck 'Enable UPnP'. This prevents devices from opening ports without your knowledge."},
+   {id:"0-8",t:"Enable SPI Firewall",d:"Firewall → Firewall. Enable 'SPI Firewall' for stateful packet inspection."},
+   {id:"0-9",t:"Block WAN ping",d:"Firewall → Firewall. Check 'Block Ping from WAN'. Prevents external ping sweeps from finding your router."},
+   {id:"0-10",t:"Disable remote management",d:"System Tools → Admin Setup → Remote Management. Ensure 'Enable' is UNCHECKED. Router admin only from LAN."},
+   {id:"0-11",t:"Set up Access Control (optional)",d:"Firewall → Access Control. Whitelist only known MAC addresses for strict device control.",n:"Skip while still adding devices. Come back after all nodes are online."},
+   {id:"0-12",t:"Configure Switch #1 (SW1-CORE)",d:"Access switch at default IP (192.168.0.1) — may need to temp-set Mac to 192.168.0.x. Default login: admin / admin.",c:"# Temporarily set Mac IP to access switch:\n# System Preferences → Network → Ethernet → Manual\n# IP: 192.168.0.100, Subnet: 255.255.255.0\n\n# After login, change switch IP to:\n# System → IP Setting → 192.168.1.2 / 255.255.255.0 / GW 192.168.1.1\n# Then reconnect at http://192.168.1.2"},
+   {id:"0-13",t:"Change Switch #1 admin password",d:"System → User Management. Change from default admin/admin."},
+   {id:"0-14",t:"Enable Loop Prevention on Switch #1",d:"Switching → Loop Prevention. Enable globally — prevents broadcast storms from accidental loops."},
+   {id:"0-15",t:"Enable Storm Control on Switch #1",d:"Switching → Storm Control. Enable on all ports, threshold ~500 pps for broadcast/multicast/unknown unicast."},
+   {id:"0-16",t:"Disable unused ports on Switch #1 (Port 8 reserved for SW2 link)",d:"Switching → Port Setting. Currently used: Ports 1-7 + Port 8 (to SW2).",n:"All 8 ports are in use for this setup. Skip disabling for now."},
+   {id:"0-17",t:"Configure Switch #2 (SW2-AUX) — same process",d:"Access at default IP, set IP to 192.168.1.3, change password, enable loop prevention + storm control.",c:"# Switch #2 settings:\n# IP: 192.168.1.3 / 255.255.255.0 / GW 192.168.1.1\n# Loop Prevention: Enabled\n# Storm Control: Enabled (500 pps)\n# Disable unused ports: 3-8 (P1 = SW1 link, P2 = GMKtec NIC2)"},
+   {id:"0-18",t:"Disable unused ports on Switch #2",d:"Switching → Port Setting. Disable Ports 3-8 — prevents unauthorized devices from connecting."},
+   {id:"0-19",t:"Save all switch configs",d:"On both switches: System → System Tools → Config Save → 'Save'.",n:"Critical! TL-SG108E does NOT auto-save. You must manually save."},
+   {id:"0-20",t:"Enable Bandwidth Control (rate limiting)",d:"Transmission → Bandwidth Control. Enable globally; per-IP limits as desired (e.g. guests 50 Mbps). Leave homelab nodes unlimited.",n:"Prevents any single device from saturating the uplink."},
+   {id:"0-21",t:"Verify: ping router and both switches from Mac",d:"Set Mac back to DHCP, then verify all three management IPs respond.",c:"ping -c 2 192.168.1.1   # ER605\nping -c 2 192.168.1.2   # Switch #1\nping -c 2 192.168.1.3   # Switch #2"}]},
+ {id:"phase-1",t:"PHASE 1 — SYNOLOGY DS223 FACTORY RESET",est:"~30 min",
+  verify:"Open find.synology.com — DS223 should appear with DSM 7.2 running. Expansion Drive visible under External Devices. Static IP 192.168.1.100 responds to ping.",
+  steps:[
+   {id:"1-1",t:"Power off the DS223",d:"Shut down via the power button (hold 4 seconds) or unplug.",n:"Back up any existing data first — factory reset is destructive."},
+   {id:"1-2",t:"Perform hardware reset",d:"RESET pinhole on the back panel: paperclip, press 4 seconds until a beep; wait for second beep (10s) then release.",n:"This resets network settings and admin password. For FULL factory reset, hold 10+ seconds until the second long beep."},
+   {id:"1-3",t:"Connect to network and find the NAS",d:"Ethernet to switch, then find.synology.com or Synology Assistant.",c:"arp -a | grep -i synology\ndns-sd -B _http._tcp"},
+   {id:"1-4",t:"Run DSM Setup Wizard",d:"Navigate to the NAS IP. Install DSM 7.2 (latest). Set admin credentials.",n:"Strong password; enable 2FA after setup."},
+   {id:"1-5",t:"Connect 8TB Expansion Drive via USB",d:"USB 3.0 port on the back. Appears under External Devices in DSM.",n:"Format as ext4 if not already (Control Panel → External Devices → Format)."},
+   {id:"1-6",t:"Create shared folder for Claw",d:"Control Panel → Shared Folder → Create → 'claw-index'.",c:"# /volume1/claw-index/    ← main indexed storage\n# /volumeUSB1/usbshare/   ← Expansion Drive mount point"},
+   {id:"1-7",t:"Enable WebAPI access",d:"Control Panel → Application Portal → enable Web Station. Install Synology Drive Server from Package Center.",n:"Enables the File Station API that Claw uses for file metadata."},
+   {id:"1-8",t:"Set static IP for DS223",d:"Control Panel → Network → Network Interface → Edit.",c:"# DS223:   192.168.1.100\n# Subnet:  255.255.255.0\n# Gateway: 192.168.1.1\n# DNS:     1.1.1.1, 8.8.8.8"}]},
+ {id:"phase-2",t:"PHASE 2 — UBUNTU SERVER REINSTALL (ALL 5 NODES)",est:"~2 hours",
+  verify:"SSH into all 5 nodes from your Mac: ssh philip@192.168.1.{101-105}. All respond with Ubuntu 24.04 LTS. Run 'hostnamectl' on each to confirm hostname.",
+  steps:[
+   {id:"2-1",t:"Download Ubuntu Server 24.04 LTS ISO",d:"Latest 24.04.x LTS from ubuntu.com.",c:"curl -LO https://releases.ubuntu.com/24.04/ubuntu-24.04.2-live-server-amd64.iso"},
+   {id:"2-2",t:"Create bootable USB installer",d:"Flash with balenaEtcher or dd.",c:"diskutil list\ndiskutil unmountDisk /dev/diskN\nsudo dd if=ubuntu-24.04.2-live-server-amd64.iso of=/dev/rdiskN bs=4m",n:"One USB installer — use it on all 5 nodes sequentially."},
+   {id:"2-3",t:"Install Ubuntu Server on Mac Mini #1",d:"Boot from USB (hold Option on Intel Mac).",c:"# Hostname: node-mac-mini-1\n# Username: philip\n# Static IP: 192.168.1.101/24  GW .1  DNS 1.1.1.1\n# OpenSSH server: YES\n# Disk: entire disk (wipe macOS)"},
+   {id:"2-4",t:"Install Ubuntu Server on Mac Mini #2",d:"Same process, different identity.",c:"# Hostname: node-mac-mini-2\n# Static IP: 192.168.1.102/24"},
+   {id:"2-5",t:"Install Ubuntu Server on Dell Tower",d:"F12 boot menu on Dell.",c:"# Hostname: node-dell-tower\n# Static IP: 192.168.1.103/24"},
+   {id:"2-6",t:"Install Ubuntu Server on GMKtec G2 Plus",d:"F7/Del for BIOS. Dual NIC — primary NIC gets the static IP.",c:"# Hostname: node-gmktec\n# Static IP: 192.168.1.104/24 (primary NIC)\n# Second NIC: OVN/Ceph traffic",n:"Dual NIC separates management from storage/overlay traffic."},
+   {id:"2-7",t:"Install Ubuntu Server on iMac 2019",d:"Hold Option at boot. Intel iMac runs Ubuntu Server fine.",c:"# Hostname: node-imac\n# Static IP: 192.168.1.105/24",n:"Runs headless after install — display off."},
+   {id:"2-8",t:"Verify SSH access to all nodes",d:"From your daily-driver Mac, SSH into all 5.",c:"ssh philip@192.168.1.101  # Mac Mini 1\nssh philip@192.168.1.102  # Mac Mini 2\nssh philip@192.168.1.103  # Dell Tower\nssh philip@192.168.1.104  # GMKtec\nssh philip@192.168.1.105  # iMac"}]},
+ {id:"phase-3",t:"PHASE 3 — MICROCLOUD BOOTSTRAP",est:"~45 min",
+  verify:"Run 'sudo lxc cluster list' on node1 — all 5 nodes ONLINE. 'sudo microcloud cluster list' confirms. Launch a test container to verify networking.",
+  steps:[
+   {id:"3-1",t:"Install snap dependencies on all nodes",d:"Run on ALL 5 nodes.",c:"for i in 101 102 103 104 105; do\n  ssh philip@192.168.1.$i 'sudo snap install lxd --channel=latest/stable'\n  ssh philip@192.168.1.$i 'sudo snap install microceph --channel=latest/stable'\n  ssh philip@192.168.1.$i 'sudo snap install microovn --channel=latest/stable'\n  ssh philip@192.168.1.$i 'sudo snap install microcloud --channel=latest/stable'\ndone"},
+   {id:"3-2",t:"Initialize MicroCloud from the first node",d:"The init wizard auto-discovers the other nodes.",c:"ssh philip@192.168.1.101\nsudo microcloud init\n# 1. discovers nodes  2. select all 5\n# 3. MicroOVN networking  4. MicroCeph storage\n# 5. LXD clustering",n:"YES to all discovered nodes. Skip MicroCeph without dedicated disks. For OVN uplink select the GMKtec second NIC."},
+   {id:"3-3",t:"Verify cluster status",d:"All nodes clustered after init.",c:"sudo microcloud cluster list\nsudo lxc cluster list\nsudo microceph status\nsudo microovn status\n# Expected: 5 nodes, all ONLINE"},
+   {id:"3-4",t:"Configure storage pool",d:"Pool all nodes can use for containers.",c:"sudo lxc storage create local dir\n# or with MicroCeph:\nsudo lxc storage create ceph ceph\nsudo lxc profile device add default root disk pool=local path=/"},
+   {id:"3-5",t:"Configure network",d:"OVN network for containers.",c:"sudo lxc network create ovn-net --type=ovn\n# or simple bridge:\nsudo lxc network create lxdbr0 --type=bridge\nsudo lxc profile device add default eth0 nic network=ovn-net"},
+   {id:"3-6",t:"Launch a test container",d:"Verify the cluster works.",c:"sudo lxc launch ubuntu:24.04 test-container\nsudo lxc list\nsudo lxc exec test-container -- cat /etc/hostname\nsudo lxc delete test-container --force"}]},
+ {id:"phase-4",t:"PHASE 4 — CLAW INTEGRATION",est:"~30 min",
+  verify:"Open claw.outtatime.dev → Infrastructure shows nodes. Drive page lists files from DS223. Search returns results from both sources.",
+  steps:[
+   {id:"4-1",t:"Install sync agent on node1",d:"Lightweight script reporting cluster status to Claw every hour (see Tools page for the full script).",n:"Requires a CLAW_TOKEN. The static deck currently reads the Synology homelab.json feed instead — simpler and already live."},
+   {id:"4-2",t:"Install Synology sync script",d:"Scheduled task on the DS223 that publishes the homelab/file index feed.",c:"# Today this is gen-homelab.sh on the Synology:\n# writes /volume1/roku-tv/www/feeds/homelab.json every 60s\n# served via roku.philipwright.me (cloudflared)"},
+   {id:"4-3",t:"Set up cron on node1 for MicroCloud sync",d:"Hourly cron for the cluster sync script.",c:"echo '0 * * * * /opt/claw-agent/sync.sh >> /var/log/claw-sync.log 2>&1' | sudo tee -a /etc/cron.d/claw-sync"},
+   {id:"4-4",t:"Test the full pipeline",d:"Run both sync scripts manually, verify data appears on the deck.",c:"curl -s https://roku.philipwright.me/feeds/homelab.json | head\n# then check the Infrastructure page"},
+   {id:"4-5",t:"Verify deck data freshness",d:"Infrastructure page shows the feed 'generated' timestamp; repos refresh live from the GitHub API on every load."}]}];
+const HW_SECTIONS = [
+ {id:"gather",t:"GATHER EQUIPMENT",d:"Collect everything before you start. Don't make multiple trips.",steps:[
+  {id:"hw-1",t:"TP-Link ER605 router (1x)",d:"5-port Gigabit Multi-WAN VPN Router"},{id:"hw-2",t:"TP-Link TL-SG108E switch #1 (1x)",d:"8-port Gigabit Easy Smart Switch"},{id:"hw-3",t:"TP-Link TL-SG108E switch #2 (1x)",d:"8-port Gigabit Easy Smart Switch"},{id:"hw-4",t:"Mac Mini #1",d:"Intel, 16GB RAM"},{id:"hw-5",t:"Mac Mini #2",d:"Intel, 16GB RAM"},{id:"hw-6",t:"Dell Tower PC",d:"MicroCloud node"},{id:"hw-7",t:"GMKtec G2 Plus",d:"Dual NIC — network gateway node"},{id:"hw-8",t:"iMac 2019",d:"16GB RAM — runs headless after setup"},{id:"hw-9",t:"Synology DS223 NAS",d:"2-bay NAS"},{id:"hw-10",t:"8TB Expansion Drive",d:"USB 3.0 external"},{id:"hw-11",t:"Ethernet cables (Cat6, 8x minimum)",d:"1 per device + 2 spares. Label them."},{id:"hw-12",t:"Power strips / UPS (if available)",d:"Enough outlets for all 9 devices"},{id:"hw-13",t:"Label maker or masking tape + marker",d:"For cable and port labeling"},{id:"hw-14",t:"USB flash drive (8GB+)",d:"For Ubuntu Server installer"}]},
+ {id:"placement",t:"PHYSICAL PLACEMENT",d:"Position devices before cabling. Keep airflow in mind.",steps:[
+  {id:"pl-1",t:"Place ER605 router near your ISP modem/ONT",d:"WAN port needs to reach your internet source"},{id:"pl-2",t:"Place Switch #1 next to the ER605",d:"Core switch — connects router to all nodes"},{id:"pl-3",t:"Place Switch #2 near overflow devices",d:"Daisy-chains from Switch #1"},{id:"pl-4",t:"Position Mac Minis with rear ports accessible",d:"Ethernet + power. No display after OS install."},{id:"pl-5",t:"Position Dell Tower with rear ports accessible",d:"Ethernet + power. Adequate airflow."},{id:"pl-6",t:"Position GMKtec G2+ with BOTH ethernet ports accessible",d:"Dual NIC — both used (management + storage/overlay)"},{id:"pl-7",t:"Position iMac (can face wall — runs headless)",d:"Ethernet + power only after initial install"},{id:"pl-8",t:"Position Synology DS223 with USB port accessible",d:"Ethernet + power + USB 3.0 for Expansion Drive"},{id:"pl-9",t:"Plug Expansion Drive into DS223 USB 3.0 port",d:"Back panel, blue USB 3.0 port"},{id:"pl-10",t:"Connect all power cables — DO NOT power on yet",w:"Cable everything first, then power on in order"}]},
+ {id:"cabling",t:"CABLING (FOLLOW THIS ORDER)",d:"Plug cables in this exact order. Label each cable at both ends as you go.",steps:[
+  {id:"cb-1",t:"ISP Modem/ONT → ER605 WAN1 port",d:"Label: 'WAN' — internet uplink"},{id:"cb-2",t:"ER605 LAN1 → Switch #1 Port 1",d:"Label: 'CORE-UPLINK'"},{id:"cb-3",t:"Switch #1 Port 8 → Switch #2 Port 1",d:"Label: 'SW-LINK' — daisy-chain (last port each)"},{id:"cb-4",t:"Switch #1 Port 2 → Mac Mini #1",d:"Label: 'NODE1-MGMT'"},{id:"cb-5",t:"Switch #1 Port 3 → Mac Mini #2",d:"Label: 'NODE2-MGMT'"},{id:"cb-6",t:"Switch #1 Port 4 → Dell Tower",d:"Label: 'NODE3-MGMT'"},{id:"cb-7",t:"Switch #1 Port 5 → GMKtec NIC #1 (left)",d:"Label: 'NODE4-MGMT' — management/primary"},{id:"cb-8",t:"Switch #2 Port 2 → GMKtec NIC #2 (right)",d:"Label: 'NODE4-STORAGE' — Ceph/OVN traffic"},{id:"cb-9",t:"Switch #1 Port 6 → iMac 2019",d:"Label: 'NODE5-MGMT'"},{id:"cb-10",t:"Switch #1 Port 7 → Synology DS223",d:"Label: 'NAS'"}]},
+ {id:"labels",t:"LABEL EVERYTHING",d:"Future you will thank present you. Label both ends of every cable.",steps:[
+  {id:"lb-1",t:"Label ER605: 'ROUTER — 192.168.1.1'",d:"On top or front of device"},{id:"lb-2",t:"Label Switch #1: 'SW1-CORE'",d:"Primary switch"},{id:"lb-3",t:"Label Switch #2: 'SW2-AUX'",d:"Secondary/overflow"},{id:"lb-4",t:"Label each node with hostname + IP",d:"e.g. 'node-mac-mini-1 / .101'"},{id:"lb-5",t:"Label DS223: 'NAS — 192.168.1.100'",d:"On the front where visible"},{id:"lb-6",t:"Take a photo of the final cable layout",d:"Save to your phone for troubleshooting"}]},
+ {id:"power-on",t:"POWER ON SEQUENCE",d:"Power on in this order. Wait for each device to fully boot before the next.",steps:[
+  {id:"pw-1",t:"Power on ISP Modem/ONT",d:"Wait for solid internet light (1-2 min)"},{id:"pw-2",t:"Power on ER605 router",d:"Wait for SYS LED solid green (30-60 sec)",w:"Do NOT proceed until SYS light is solid"},{id:"pw-3",t:"Power on Switch #1 (SW1-CORE)",d:"Connected port LEDs light within 5 sec"},{id:"pw-4",t:"Power on Switch #2 (SW2-AUX)",d:"Port 1 LED lights (link to SW1)"},{id:"pw-5",t:"Power on Synology DS223",d:"Power button until beep; STATUS LED solid green (2-3 min)"},{id:"pw-6",t:"DO NOT power on compute nodes yet",d:"Nodes power on during Phase 2 (Ubuntu install)",w:"Nodes need the USB boot installer first"}]},
+ {id:"verify",t:"VERIFY CONNECTIVITY",d:"Quick checks before moving to software configuration.",steps:[
+  {id:"vf-1",t:"From your Mac, open http://192.168.1.1",d:"ER605 login page. Default: admin/admin"},{id:"vf-2",t:"Check ER605 WAN status shows 'Connected'",d:"System Status → WAN shows ISP-assigned IP"},{id:"vf-3",t:"Reach the switch UI",d:"TL-SG108E default 192.168.0.1 — may need temp Mac IP 192.168.0.x"},{id:"vf-4",t:"Verify DS223 reachable at find.synology.com or via IP",d:"Factory fresh → find.synology.com"},{id:"vf-5",t:"Run: ping 8.8.8.8 from your Mac",d:"Confirms internet through ER605. Fail → check WAN cable."},{id:"vf-6",t:"All good? → Projects → Phase 0 (Network Config)",d:"Hardware done. Software next."}]}];
+const TOOLS = [
+ {n:"Claw Drive Sync",f:"claw-drive-sync.sh",d:"Watches the Expansion Drive mount point for new/changed files and pushes metadata to the Claw index. Uses fswatch for real-time monitoring.",
+  s:["Install fswatch: brew install fswatch","Copy script to ~/Scripts/claw-drive-sync.sh","Make executable: chmod +x ~/Scripts/claw-drive-sync.sh","Set your sync token: export CLAW_SYNC_TOKEN='your-token'","Run: ./claw-drive-sync.sh scan (one-time) or ./claw-drive-sync.sh watch (continuous)","Or install the launchd plist below for auto-start"]},
+ {n:"Drive Sync LaunchDaemon",f:"com.philip.claw-drive-sync.plist",d:"macOS launchd plist that auto-starts the drive sync watcher when the Expansion Drive mounts. Uses PathState to detect mount events.",
+  s:["Edit the plist: set CLAW_SYNC_TOKEN to your actual token","Copy to ~/Library/LaunchAgents/com.philip.claw-drive-sync.plist","Load: launchctl load ~/Library/LaunchAgents/com.philip.claw-drive-sync.plist","Verify: launchctl list | grep claw","Auto-starts whenever /Volumes/Expansion appears"]},
+ {n:"Force Mount Expansion",f:"force-mount-expansion.sh",d:"Forces macOS to mount the Expansion Drive when it fails to auto-mount at boot. Detects the disk and triggers a mount.",
+  s:["Copy to ~/Scripts/force-mount-expansion.sh","chmod +x ~/Scripts/force-mount-expansion.sh","Run when the drive doesn't mount: sudo ~/Scripts/force-mount-expansion.sh","Or install the companion launchd plist for auto-mount at login"]},
+ {n:"Homelab Feed Generator",f:"gen-homelab.sh",d:"Runs on the Synology (cron, 60s): ICMP/TCP/HTTP-probes the whole topology — gateway, switch, AP, MicroCloud nodes, Rokus, services — and publishes homelab.json. Powers the Infrastructure page.",
+  s:["Lives on the Synology DSM box (root cron)","Writes /volume1/roku-tv/www/feeds/homelab.json","Served via roku.philipwright.me (cloudflared tunnel)","Local copy: /Volumes/Expansion/claude-drive/gen-homelab.sh"]}];
 
-  /* ── particles (drifting embers) ── */
-  const cv = $("particles"), cx = cv.getContext("2d");
-  let P = [];
-  function sizeCanvas() {
-    cv.width = innerWidth; cv.height = innerHeight;
-    const n = Math.min(70, Math.floor(innerWidth / 26));
-    P = Array.from({ length: n }, () => ({
-      x: Math.random() * cv.width, y: Math.random() * cv.height,
-      r: Math.random() * 1.7 + .4, s: Math.random() * .35 + .08,
-      a: Math.random() * Math.PI * 2, tw: Math.random() * Math.PI * 2
-    }));
-  }
-  sizeCanvas(); addEventListener("resize", sizeCanvas);
-  (function drawP(t) {
-    cx.clearRect(0, 0, cv.width, cv.height);
-    for (const p of P) {
-      p.y -= p.s; p.x += Math.sin(p.a += .004) * .15;
-      if (p.y < -4) { p.y = cv.height + 4; p.x = Math.random() * cv.width; }
-      const tw = .25 + .35 * (1 + Math.sin(t / 900 + p.tw)) / 2;
-      cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7);
-      cx.fillStyle = `rgba(34, 211, 238, ${tw})`; cx.fill();
-    }
-    requestAnimationFrame(drawP);
-  })(0);
+/* ═══════════════ chrome ═══════════════ */
+function tickClock(){ const d=new Date(); let h=d.getHours(); const m=String(d.getMinutes()).padStart(2,"0");
+  const ap=h>=12?"PM":"AM"; h=h%12||12;
+  $("clock").textContent=`${h}:${m} ${ap} // ${d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}).toUpperCase()}`; }
+tickClock(); setInterval(tickClock,20000);
 
-  /* ── data ── */
-  function normalizeApi(list) {
-    return list.filter(r => !r.fork || r.stargazers_count > 0).map(r => ({
-      name: r.name, desc: r.description || "", lang: r.language || "—",
-      stars: r.stargazers_count, pushed: (r.pushed_at || "").slice(0, 10),
-      url: r.html_url, topics: r.topics || [], branch: r.default_branch || "main"
-    }));
-  }
-  async function loadRepos() {
-    try {
-      const res = await fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=pushed`, {
-        headers: { Accept: "application/vnd.github+json" }
-      });
-      if (!res.ok) throw new Error(res.status);
-      const live = normalizeApi(await res.json());
-      if (live.length) return { repos: live, src: "LIVE" };
-      throw new Error("empty");
-    } catch {
-      const res = await fetch("repos.json");
-      const baked = await res.json();
-      return { repos: baked.repos.map(r => ({ branch: "main", topics: [], ...r })), src: "CACHED" };
-    }
-  }
+const cv=$("particles"),cx=cv.getContext("2d"); let P=[];
+function sizeCv(){ cv.width=innerWidth; cv.height=innerHeight;
+  P=Array.from({length:Math.min(70,Math.floor(innerWidth/26))},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,
+    r:Math.random()*1.7+.4,s:Math.random()*.35+.08,a:Math.random()*7,tw:Math.random()*7})); }
+sizeCv(); addEventListener("resize",sizeCv);
+(function dp(t){ cx.clearRect(0,0,cv.width,cv.height);
+  for(const p of P){ p.y-=p.s; p.x+=Math.sin(p.a+=.004)*.15; if(p.y<-4){p.y=cv.height+4;p.x=Math.random()*cv.width;}
+    cx.beginPath(); cx.arc(p.x,p.y,p.r,0,7); cx.fillStyle=`rgba(34,211,238,${.25+.35*(1+Math.sin(t/900+p.tw))/2})`; cx.fill(); }
+  requestAnimationFrame(dp); })(0);
 
-  function statline(src) {
-    const counts = {};
-    for (const r of repos) counts[r.lang] = (counts[r.lang] || 0) + 1;
-    const top = Object.entries(counts).filter(([l]) => l !== "—").sort((a, b) => b[1] - a[1]).slice(0, 5);
-    $("statline").innerHTML =
-      `<span class="live-dot"></span><span class="total">${repos.length} REPOSITORIES</span><span>//</span>` +
-      top.map(([l, c]) => `<span class="lang-chip">${l} <b>${c}</b></span>`).join("") +
-      `<span style="color:var(--gray-dim)">// ${src}</span>`;
-    const sel = $("langsel");
-    sel.length = 1;
-    for (const [l] of Object.entries(counts).sort((a, b) => b[1] - a[1])) sel.add(new Option(l.toUpperCase(), l));
-  }
+/* font size (accessibility, from the original) */
+const fsSaved=localStorage.getItem("claw-fs")||"16px";
+document.documentElement.style.setProperty("--fs",fsSaved);
+$("fontsize").querySelectorAll("button").forEach(b=>{
+  b.classList.toggle("on",b.dataset.fs===fsSaved);
+  b.onclick=()=>{ document.documentElement.style.setProperty("--fs",b.dataset.fs);
+    localStorage.setItem("claw-fs",b.dataset.fs);
+    $("fontsize").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); };});
 
-  /* ── deck render ── */
-  function render() {
-    const q = $("filter").value.trim().toLowerCase();
-    const lang = $("langsel").value;
-    view = repos.filter(r =>
-      (!lang || r.lang === lang) &&
-      (!q || r.name.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q) || (r.topics || []).join(" ").includes(q))
-    );
-    const deck = $("deck");
-    deck.innerHTML = view.map((r, i) => `
-      <div class="card" tabindex="0" data-i="${i}" style="--i:${i % 8}">
-        <div class="top">
-          <span class="name">${esc(r.name)}</span>
-          <span class="lang"><span class="dot" style="background:${LANG_COLORS[r.lang] || "#6B7A86"};color:${LANG_COLORS[r.lang] || "#6B7A86"}"></span>${esc(r.lang)}</span>
-        </div>
-        <div class="desc">${esc(r.desc) || '<span style="color:var(--gray-dim)">no description</span>'}</div>
-        <div class="meta">
-          ${r.stars ? `<span class="stars">&#9733; ${r.stars}</span>` : ""}
-          <span>pushed ${esc(r.pushed)}</span>
-        </div>
-      </div>`).join("");
-    deck.querySelectorAll(".card").forEach(el => {
-      el.addEventListener("click", () => openDetail(view[+el.dataset.i]));
-      el.addEventListener("keydown", e => { if (e.key === "Enter") openDetail(view[+el.dataset.i]); });
-    });
-  }
-  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+$("menubtn").onclick=()=>$("sidebar").classList.toggle("open");
 
-  /* ── detail + README ── */
-  async function openDetail(r) {
-    $("deck").classList.add("hidden"); $("controls").classList.add("hidden");
-    $("detail").classList.add("active");
-    $("dName").textContent = r.name;
-    $("dMeta").innerHTML =
-      `<span style="color:${LANG_COLORS[r.lang] || "#6B7A86"}">&#9679; ${esc(r.lang)}</span>` +
-      (r.stars ? `<span class="stars">&#9733; ${r.stars}</span>` : "") +
-      `<span>pushed ${esc(r.pushed)}</span>` +
-      (r.topics?.length ? `<span style="color:var(--gray-dim)">${r.topics.map(esc).join(" · ")}</span>` : "");
-    $("dDesc").textContent = r.desc;
-    $("dLink").href = r.url;
-    const box = $("readme");
-    box.innerHTML = '<div class="loading">FETCHING README&hellip;</div>';
-    scrollTo({ top: 0, behavior: "instant" });
-    try {
-      const res = await fetch(`https://api.github.com/repos/${USER}/${r.name}/readme`, {
-        headers: { Accept: "application/vnd.github.html+json" }
-      });
-      if (!res.ok) throw new Error(res.status);
-      box.innerHTML = sanitize(await res.text());
-    } catch {
-      box.innerHTML = '<div class="loading">NO README AVAILABLE // OPEN ON GITHUB FOR SOURCE</div>';
-    }
-  }
-  function sanitize(html) {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    doc.querySelectorAll("script, style, iframe, object, embed, form, link, meta").forEach(n => n.remove());
-    doc.querySelectorAll("*").forEach(n => {
-      for (const a of [...n.attributes]) {
-        const an = a.name.toLowerCase();
-        if (an.startsWith("on") || (["href", "src"].includes(an) && /^\s*javascript:/i.test(a.value))) n.removeAttribute(a.name);
-      }
-    });
-    doc.querySelectorAll("a[href]").forEach(a => { a.target = "_blank"; a.rel = "noopener"; });
-    return doc.body.innerHTML;
-  }
-  function closeDetail() {
-    $("detail").classList.remove("active");
-    $("deck").classList.remove("hidden"); $("controls").classList.remove("hidden");
-  }
-  $("backBtn").addEventListener("click", closeDetail);
+/* ═══════════════ data loads ═══════════════ */
+function normalizeApi(list){ return list.filter(r=>(!r.fork||r.stargazers_count>0)&&!EXCLUDE.test(r.name)).map(r=>({
+  name:r.name,desc:r.description||"",lang:r.language||"—",stars:r.stargazers_count,
+  pushed:(r.pushed_at||"").slice(0,10),url:r.html_url,topics:r.topics||[]})); }
+async function loadRepos(){
+  try{ const res=await fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=pushed`,{headers:{Accept:"application/vnd.github+json"}});
+    if(!res.ok) throw 0; const live=normalizeApi(await res.json()); if(!live.length) throw 0;
+    repos=live; repoSrc="LIVE";
+  }catch{ try{ const baked=await (await fetch("repos.json")).json();
+    repos=baked.repos.filter(r=>!EXCLUDE.test(r.name)).map(r=>({topics:[],...r})); repoSrc="CACHED"; }catch{ repos=[]; repoSrc="OFFLINE"; } }
+  repos.sort((a,b)=>(b.pushed||"").localeCompare(a.pushed||""));
+}
+async function loadInfra(){
+  try{ const res=await fetch(FEED_LIVE,{cache:"no-store"}); if(!res.ok) throw 0;
+    infra=await res.json(); infraSrc="LIVE"; }
+  catch{ try{ infra=await (await fetch("homelab.json")).json(); infraSrc="SNAPSHOT"; }catch{ infra=null; infraSrc="OFFLINE"; } }
+}
+function topicsOf(r){ const set=new Set(r.topics||[]);
+  for(const [t,rx] of TOPIC_RULES) if(rx.test(r.name+" "+r.desc)) set.add(t); return [...set]; }
+function topicClusters(){ const m={};
+  for(const r of repos) for(const t of topicsOf(r)) (m[t]=m[t]||[]).push(r);
+  return Object.entries(m).sort((a,b)=>b[1].length-a[1].length); }
+function langCounts(){ const c={}; for(const r of repos) c[r.lang]=(c[r.lang]||0)+1;
+  return Object.entries(c).filter(([l])=>l!=="—").sort((a,b)=>b[1]-a[1]); }
 
-  /* ── keyboard ── */
-  const helpWrap = $("helpWrap");
-  function toggleHelp(force) {
-    helpWrap.classList.toggle("active", force ?? !helpWrap.classList.contains("active"));
-  }
-  $("helpX").addEventListener("click", () => toggleHelp(false));
-  helpWrap.addEventListener("click", e => { if (e.target === helpWrap) toggleHelp(false); });
-  addEventListener("keydown", e => {
-    const typing = /INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName || "");
-    if (e.key === "Escape") {
-      if (helpWrap.classList.contains("active")) return toggleHelp(false);
-      if ($("detail").classList.contains("active")) return closeDetail();
-      if (typing) document.activeElement.blur();
-      return;
-    }
-    if (typing) return;
-    if (e.key === "?") { e.preventDefault(); toggleHelp(); }
-    if (e.key === "/") { e.preventDefault(); $("filter").focus(); }
-    if (["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"].includes(e.key) && !$("detail").classList.contains("active")) {
-      const cards = [...document.querySelectorAll(".card")];
-      if (!cards.length) return;
-      const cur = cards.indexOf(document.activeElement);
-      const cols = Math.max(1, Math.round($("deck").offsetWidth / (cards[0].offsetWidth + 24)));
-      let next = cur < 0 ? 0 : cur + { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols }[e.key];
-      if (next >= 0 && next < cards.length) { e.preventDefault(); cards[next].focus(); cards[next].scrollIntoView({ block: "nearest", behavior: "smooth" }); }
-    }
-  });
-  $("filter").addEventListener("input", render);
-  $("langsel").addEventListener("change", render);
+/* progress stores */
+const store=(k)=>({ get:()=>new Set(JSON.parse(localStorage.getItem(k)||"[]")),
+  toggle(id){ const s=this.get(); s.has(id)?s.delete(id):s.add(id);
+    localStorage.setItem(k,JSON.stringify([...s])); return s; } });
+const projStore=store("claw-project-progress"), hwStore=store("claw-hardware-progress");
 
-  /* ── boot ── */
-  loadRepos().then(({ repos: r, src }) => {
-    repos = r.sort((a, b) => (b.pushed || "").localeCompare(a.pushed || ""));
-    statline(src);
-    render();
-  }).catch(() => {
-    $("statline").innerHTML = '<span class="live-dot"></span><span style="color:#e86a6a">REPOSITORIES OFFLINE // github api unreachable</span>';
-  });
+/* ═══════════════ router ═══════════════ */
+const M=$("main");
+function route(){ const h=location.hash.replace(/^#\/?/,"");
+  const [r,arg]=h.split("/").map(decodeURIComponent);
+  document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",(a.dataset.r==="home"&&!r)||a.dataset.r===r));
+  $("sidebar").classList.remove("open");
+  scrollTo({top:0,behavior:"instant"});
+  if(!r) return pageHome();
+  if(r==="repos"&&arg) return pageRepoDetail(arg);
+  const pages={repos:pageRepos,search:pageSearch,chat:pageChat,drive:pageDrive,topics:pageTopics,
+    infra:pageInfra,projects:pageProjects,tools:pageTools,hardware:pageHardware};
+  (pages[r]||pageHome)(arg);
+}
+addEventListener("hashchange",route);
+
+const head=(t,sub)=>`<div class="pagehead"><h1>${t}</h1><div class="sub">${sub}</div><div class="rule"></div></div>`;
+
+/* ═══════════════ pages ═══════════════ */
+function pageHome(){
+  const langs=langCounts().slice(0,5);
+  const up=infra?.summary?.up, total=infra?.summary?.total;
+  const clusters=topicClusters().slice(0,14);
+  M.innerHTML = head("CLAW // COMMAND DECK","Fleet Overview // "+new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})) + `
+  <div class="statrow">
+    <div class="glass stat"><div class="v">${repos.length||"—"}</div><div class="l">Public Repositories · ${repoSrc}</div></div>
+    <div class="glass stat"><div class="v">${langs.length?langs.length:"—"}<span class="unit">+</span></div><div class="l">Languages · ${langs.map(([l,c])=>l+" "+c).join(" · ")||"—"}</div></div>
+    <div class="glass stat ${up!=null?"live":""}"><div class="v">${up!=null?up+"<span class=unit>/"+total+"</span>":"—"}</div><div class="l">Homelab Nodes Up · ${infraSrc}</div></div>
+    <div class="glass stat"><div class="v">${clusters.length||"—"}</div><div class="l">Topic Clusters</div></div>
+  </div>
+  <div class="glass panel"><h2>Quick Access</h2><div class="quick">
+    <a href="#/repos"><div class="t">⎇ Repositories</div><div class="d">Every public repo as a floating glass card — README detail views, filter, language map</div></a>
+    <a href="#/infra"><div class="t">▣ Infrastructure</div><div class="d">Live homelab status — gateway, switches, MicroCloud nodes, NAS, Rokus, services</div></a>
+    <a href="#/search"><div class="t">⌕ Search</div><div class="d">Full-text search across the fleet with keyword highlighting</div></a>
+    <a href="#/chat"><div class="t">✦ Ask CLAW</div><div class="d">Query the local index — grounded answers from the deck's data</div></a>
+    <a href="#/projects"><div class="t">☰ Projects</div><div class="d">Homelab rebuild runbook — 5 phases, 48 steps, progress tracking</div></a>
+    <a href="#/hardware"><div class="t">⌗ Hardware Setup</div><div class="d">Physical wiring checklist, port map, power-on sequence</div></a>
+  </div></div>
+  <div class="glass panel"><h2>Topic Clusters</h2><div class="chips">${
+    clusters.map(([t,rs])=>`<span class="chip" onclick="location.hash='#/topics/${encodeURIComponent(t)}'">${esc(t)} <b>${rs.length}</b></span>`).join("")||'<span class="loadtxt">indexing…</span>'
+  }</div></div>
+  <div class="glass panel"><h2>Recent Activity</h2>${
+    repos.slice(0,10).map(r=>`<div class="actrow" onclick="location.hash='#/repos/${encodeURIComponent(r.name)}'">
+      <span class="an">${esc(r.name)}</span><span class="ad">pushed ${esc(r.pushed)}</span></div>`).join("")||'<span class="loadtxt">loading…</span>'
+  }</div>`;
+}
+
+function repoCard(r,i){ return `<div class="card" tabindex="0" style="--i:${i%8}" onclick="location.hash='#/repos/${encodeURIComponent(r.name)}'" onkeydown="if(event.key==='Enter')location.hash='#/repos/${encodeURIComponent(r.name)}'">
+  <div class="top"><span class="name">${esc(r.name)}</span>
+    <span class="lang"><span class="dot" style="background:${LANG_COLORS[r.lang]||"#6B7A86"};color:${LANG_COLORS[r.lang]||"#6B7A86"}"></span>${esc(r.lang)}</span></div>
+  <div class="desc">${esc(r.desc)||'<span style="color:var(--gray-dim)">no description</span>'}</div>
+  <div class="meta">${r.stars?`<span class="stars">★ ${r.stars}</span>`:""}<span>pushed ${esc(r.pushed)}</span></div></div>`; }
+
+function pageRepos(){
+  const langs=langCounts();
+  M.innerHTML = head("Repositories",`${repos.length} repos // ${langs.slice(0,5).map(([l,c])=>l+" "+c).join("  ")} // ${repoSrc}`) + `
+  <div class="controls">
+    <input id="rfilter" type="search" placeholder="filter repositories…" style="width:330px" autocomplete="off" />
+    <select id="rlang"><option value="">ALL LANGUAGES</option>${langs.map(([l])=>`<option>${esc(l)}</option>`).join("")}</select>
+    <span class="hint"><kbd>/</kbd> filter · <kbd>?</kbd> help · <kbd>Esc</kbd> back</span>
+  </div><div class="deckgrid" id="rdeck"></div>`;
+  const render=()=>{ const q=$("rfilter").value.trim().toLowerCase(), lang=$("rlang").value;
+    const v=repos.filter(r=>(!lang||r.lang===lang)&&(!q||r.name.toLowerCase().includes(q)||r.desc.toLowerCase().includes(q)||topicsOf(r).join(" ").includes(q)));
+    $("rdeck").innerHTML=v.map(repoCard).join("")||'<span class="loadtxt">no matches</span>'; };
+  $("rfilter").oninput=render; $("rlang").onchange=render; render();
+}
+
+async function pageRepoDetail(name){
+  const r=repos.find(x=>x.name===name);
+  if(!r){ location.hash="#/repos"; return; }
+  M.innerHTML = head("Repositories","repo detail") + `
+  <div style="margin-top:22px"><button class="back" onclick="location.hash='#/repos'">&larr; BACK TO THE DECK</button></div>
+  <div class="dethead"><h2>${esc(r.name)}</h2>
+  <div class="dmeta"><span style="color:${LANG_COLORS[r.lang]||"#6B7A86"}">● ${esc(r.lang)}</span>
+    ${r.stars?`<span class="stars">★ ${r.stars}</span>`:""}<span>pushed ${esc(r.pushed)}</span>
+    ${topicsOf(r).length?`<span style="color:var(--gray-dim)">${topicsOf(r).map(esc).join(" · ")}</span>`:""}</div>
+  <p class="ddesc">${esc(r.desc)}</p>
+  <a class="ghbtn" href="${esc(r.url)}" target="_blank" rel="noopener">OPEN ON GITHUB ↗</a></div>
+  <article class="glass readme" id="readme"><div class="loadtxt">FETCHING README…</div></article>`;
+  try{ const res=await fetch(`https://api.github.com/repos/${USER}/${encodeURIComponent(r.name)}/readme`,{headers:{Accept:"application/vnd.github.html+json"}});
+    if(!res.ok) throw 0; $("readme").innerHTML=sanitize(await res.text());
+  }catch{ $("readme").innerHTML='<div class="loadtxt">NO README AVAILABLE // OPEN ON GITHUB FOR SOURCE</div>'; }
+}
+function sanitize(html){ const doc=new DOMParser().parseFromString(html,"text/html");
+  doc.querySelectorAll("script,style,iframe,object,embed,form,link,meta").forEach(n=>n.remove());
+  doc.querySelectorAll("*").forEach(n=>{ for(const a of [...n.attributes]){ const an=a.name.toLowerCase();
+    if(an.startsWith("on")||(["href","src"].includes(an)&&/^\s*javascript:/i.test(a.value))) n.removeAttribute(a.name); }});
+  doc.querySelectorAll("a[href]").forEach(a=>{a.target="_blank";a.rel="noopener";});
+  return doc.body.innerHTML; }
+
+function pageSearch(){
+  M.innerHTML = head("Search","Full-text // repos · topics · infrastructure · runbooks") + `
+  <div class="controls"><input id="q" type="search" placeholder="search the deck…" style="width:min(560px,100%)" autocomplete="off" /></div>
+  <div id="sout" style="margin-top:8px"></div>`;
+  const idx=[ ...repos.map(r=>({k:"repo",n:r.name,d:r.desc+" "+topicsOf(r).join(" "),go:`#/repos/${encodeURIComponent(r.name)}`})),
+    ...PHASES.flatMap(p=>p.steps.map(s=>({k:"runbook",n:p.t+" · "+s.t,d:s.d||"",go:"#/projects"}))),
+    ...HW_SECTIONS.flatMap(p=>p.steps.map(s=>({k:"hardware",n:p.t+" · "+s.t,d:s.d||"",go:"#/hardware"}))),
+    ...TOOLS.map(t=>({k:"tool",n:t.n,d:t.d,go:"#/tools"})),
+    ...(infra?infra.groups.flatMap(g=>g.nodes.map(n=>({k:"infra",n:g.name+" · "+n.name,d:(n.host||"")+" "+(n.note||""),go:"#/infra"}))):[]) ];
+  const hl=(s,q)=>esc(s).replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")})`,"ig"),'<span class="hl">$1</span>');
+  $("q").oninput=()=>{ const q=$("q").value.trim();
+    if(q.length<2){ $("sout").innerHTML='<p class="loadtxt" style="margin-top:18px">type 2+ characters…</p>'; return; }
+    const ql=q.toLowerCase();
+    const hits=idx.filter(e=>(e.n+" "+e.d).toLowerCase().includes(ql)).slice(0,40);
+    $("sout").innerHTML=hits.map(e=>`<div class="sres" onclick="location.hash='${e.go}'">
+      <span class="rn">${hl(e.n,q)}</span><span class="rk">${e.k}</span>
+      <div class="rd">${hl(e.d.slice(0,220),q)}</div></div>`).join("")||'<p class="loadtxt" style="margin-top:18px">no hits</p>'; };
+  setTimeout(()=>$("q").focus(),50);
+}
+
+function pageChat(){
+  M.innerHTML = head("Ask CLAW","Grounded answers from the deck's local index") + `
+  <div style="margin-top:18px"><span class="modebadge">LOCAL INDEX MODE — static deployment, no LLM backend wired</span></div>
+  <div class="glass panel"><div class="chatlog" id="clog"></div>
+  <div class="chatbar"><input id="cin" placeholder="ask about a repo, node, runbook step…" autocomplete="off" />
+  <button id="csend">SEND</button></div></div>`;
+  const log=$("clog");
+  const push=(who,html)=>{ const d=document.createElement("div"); d.className="msg "+who;
+    d.innerHTML=(who==="claw"?'<div class="from">CLAW //</div>':"")+html; log.appendChild(d); log.scrollTop=log.scrollHeight; };
+  if(!chatLog.length) chatLog.push(["claw",`Deck online. ${repos.length} repos indexed (${repoSrc}), homelab feed ${infraSrc}${infra?` — ${infra.summary.up}/${infra.summary.total} nodes up`:""}. Ask me about a repo, an infra node, or a runbook step. <i>(Local index search — the LLM backend from the Manus build isn't wired on static hosting; point me at an endpoint and I'll come alive.)</i>`]);
+  chatLog.forEach(([w,h])=>push(w,h));
+  const answer=(q)=>{ const ql=q.toLowerCase();
+    const rs=repos.filter(r=>(r.name+" "+r.desc+" "+topicsOf(r).join(" ")).toLowerCase().includes(ql)).slice(0,5);
+    const ns=infra?infra.groups.flatMap(g=>g.nodes.filter(n=>(n.name+" "+(n.note||"")).toLowerCase().includes(ql)).map(n=>({...n,g:g.name}))):[];
+    const ps=PHASES.flatMap(p=>p.steps.filter(s=>(s.t+" "+(s.d||"")).toLowerCase().includes(ql)).map(s=>({p:p.t,s}))).slice(0,4);
+    let out="";
+    if(rs.length) out+=`<b>REPOS</b><br>`+rs.map(r=>`▸ <a href="#/repos/${encodeURIComponent(r.name)}">${esc(r.name)}</a> — ${esc(r.desc.slice(0,110))||"no description"}`).join("<br>")+"<br>";
+    if(ns.length) out+=`<b>INFRA</b><br>`+ns.map(n=>`▸ ${esc(n.name)} [${esc(n.g)}] ${n.up?'<span style="color:var(--green)">UP'+(n.ms?` ${n.ms}ms`:"")+"</span>":'<span style="color:var(--red)">DOWN</span>'} ${esc(n.note||"")}`).join("<br>")+"<br>";
+    if(ps.length) out+=`<b>RUNBOOK</b><br>`+ps.map(x=>`▸ <a href="#/projects">${esc(x.s.t)}</a> <span style="color:var(--gray-dim)">(${esc(x.p)})</span>`).join("<br>");
+    return out||`No index hits for “${esc(q)}”. Try a repo name, node name (e.g. <i>pineapple</i>, <i>NAS</i>), or a runbook keyword.`; };
+  const send=()=>{ const q=$("cin").value.trim(); if(!q) return; $("cin").value="";
+    chatLog.push(["you",esc(q)]); push("you",esc(q));
+    const a=answer(q); chatLog.push(["claw",a]); push("claw",a); };
+  $("csend").onclick=send; $("cin").onkeydown=e=>{ if(e.key==="Enter") send(); };
+  setTimeout(()=>$("cin").focus(),50);
+}
+
+function pageDrive(){
+  M.innerHTML = head("Expansion Drive","8TB fleet storage // index") + `
+  <div class="glass panel"><h2>🔒 Private Index</h2>
+    <p style="font-size:13.5px;line-height:1.7;max-width:880px">The Expansion Drive file index (uploads, summaries, auto-tags) from the original
+    Personal Claw required an authenticated backend — it is <b style="color:var(--white)">deliberately not published</b> on this public static deck.
+    The drive's file metadata stays on the homelab.</p>
+    <p style="font-size:12.5px;color:var(--gray-dim);margin-top:12px;line-height:1.7">To browse the drive: mount it on the Mac (<code style="color:var(--cyan)">/Volumes/Expansion</code>) or via the Synology share.
+    The sync tooling lives in <a href="#/tools" style="color:var(--cyan)">Tools &amp; Scripts</a> — drive watcher, launchd auto-start, force-mount helper.</p></div>
+  <div class="glass panel"><h2>Drive Facts</h2>
+    <div class="nodegrid">
+      <div class="nodecard"><div class="nn">/Volumes/Expansion</div><div class="nd">8TB USB 3.0 — primary working drive (ALWAYS work from here)</div></div>
+      <div class="nodecard"><div class="nn">Synology DS223</div><div class="nd">2-bay NAS — drive attaches via USB 3.0, publishes feeds</div></div>
+      <div class="nodecard"><div class="nn">/volumeUSB1/usbshare</div><div class="nd">Expansion mount point on the NAS</div></div>
+      <div class="nodecard"><div class="nn">claw-drive-sync.sh</div><div class="nd">fswatch watcher → pushes metadata to the index</div></div>
+    </div></div>`;
+}
+
+function pageTopics(arg){
+  const clusters=topicClusters();
+  const sel=arg||null;
+  M.innerHTML = head("Topics",`${clusters.length} auto-detected clusters // GitHub topics + keyword rules`) + `
+  <div class="glass panel"><div class="chips">${clusters.map(([t,rs])=>
+    `<span class="chip ${sel===t?"on":""}" onclick="location.hash='#/topics/${encodeURIComponent(t)}'">${esc(t)} <b>${rs.length}</b></span>`).join("")}</div></div>
+  <div class="deckgrid" id="tdeck"></div>`;
+  const list=sel?(clusters.find(([t])=>t===sel)?.[1]||[]):[];
+  $("tdeck").innerHTML = sel? list.map(repoCard).join("") :
+    `<p class="loadtxt" style="margin-top:10px">select a topic cluster…</p>`;
+}
+
+function fmtAgo(iso){ if(!iso) return ""; const s=(Date.now()-new Date(iso))/1000;
+  if(s<90) return Math.round(s)+"s ago"; if(s<5400) return Math.round(s/60)+"m ago";
+  if(s<129600) return Math.round(s/3600)+"h ago"; return Math.round(s/86400)+"d ago"; }
+function pageInfra(){
+  const f=infra;
+  M.innerHTML = head("Infrastructure",`Homelab topology // live Synology feed`) + `
+  <div style="margin-top:16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+    ${f?`<span class="ibadge"><span class="ind ${f.summary.up===f.summary.total?"up":(f.summary.up?"up":"dn")}"></span>
+      <b style="color:var(--white)">${f.summary.up}/${f.summary.total}</b>&nbsp;nodes up</span>
+      <span class="srcbadge">${infraSrc} · generated ${fmtAgo(f.generated)} (${esc(f.generated)})</span>`
+      :`<span class="srcbadge">FEED OFFLINE</span>`}
+    <button class="back" style="padding:6px 13px;font-size:11.5px" id="irefresh">↻ REFRESH</button>
+  </div>
+  <div class="igroups" id="igroups"></div>
+  <div class="glass panel"><h2>Feed Source</h2>
+    <p style="font-size:12.5px;line-height:1.7;color:var(--gray-dim)"><code style="color:var(--cyan)">gen-homelab.sh</code> runs on the Synology every 60s —
+    ICMP for routed hosts, TCP-connect for service ports, HTTP /ready for the cloudflared tunnel, df/uptime for NAS health. Unreachable hosts are reported
+    honestly (<code style="color:var(--cyan)">"up": false</code>, never faked). Published at <code style="color:var(--cyan)">roku.philipwright.me/feeds/homelab.json</code>.
+    ${infraSrc==="SNAPSHOT"?'<br><b style="color:var(--yellow)">Showing baked snapshot — live feed blocked by CORS; add Access-Control-Allow-Origin on the origin to go live.</b>':""}</p></div>`;
+  if(f) $("igroups").innerHTML=f.groups.map(g=>`<div class="glass panel" style="margin-top:0"><h2>${esc(g.name)}</h2>${
+    g.nodes.map(n=>`<div class="inode"><span class="ind ${n.up?"up":"dn"}"></span>
+      <div style="min-width:0"><div class="nm">${esc(n.name)} <span class="host">${esc(n.host||"")}</span></div>
+      ${n.note?`<div class="inote">${esc(n.note)}</div>`:""}</div>
+      <span class="ms ${n.up?"":"dn"}">${n.up?(n.ms!=null?n.ms+" ms":"UP"):"DOWN"}</span></div>`).join("")}</div>`).join("");
+  $("irefresh").onclick=async()=>{ $("irefresh").textContent="↻ …"; await loadInfra(); pageInfra(); };
+}
+
+window.__toggleStep=(storeName,id)=>{ (storeName==="p"?projStore:hwStore).toggle(id); route(); };
+
+function pageProjects(){
+  const allIds=new Set([...PRE_HW.map((_,i)=>"pre-"+(i+1)),...PHASES.flatMap(p=>p.steps.map(s=>s.id))]);
+  const done=projStore.get();
+  const total=allIds.size;
+  const dc=[...done].filter(id=>allIds.has(id)).length;
+  const pct=total?Math.round(dc/total*100):0;
+  const open=new Set(JSON.parse(sessionStorage.getItem("claw-proj-open")||'["phase-0"]'));
+  window.__togglePhase=(id)=>{ open.has(id)?open.delete(id):open.add(id);
+    sessionStorage.setItem("claw-proj-open",JSON.stringify([...open])); route(); };
+  M.innerHTML = head("Homelab Rebuild Project","MicroCloud Cluster + Synology DS223 + Expansion Drive → Claw Integration")
+   + `<div class="glass panel"><div style="display:flex;justify-content:space-between;font-size:12px">
+      <span style="color:var(--cyan);letter-spacing:.12em">PROGRESS</span><span>${dc}/${total} steps (${pct}%)</span></div>
+      <div class="progress"><i style="width:${pct}%"></i></div></div>`
+   + `<div class="glass panel"><h2>Pre-Hardware Checklist</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:8px">${
+      PRE_HW.map((l,i)=>{ const id="pre-"+(i+1), d=done.has(id);
+        return `<div class="step ${d?"done":""}" style="margin-top:0;padding:9px 12px"><span class="ck" onclick="__toggleStep('p','${id}')"></span><span class="st" style="font-size:12px">${esc(l)}</span></div>`; }).join("")}</div></div>`
+   + `<div class="glass panel"><h2>Final Network Topology</h2><div class="asciibox">${esc(TOPOLOGY)}</div></div>`
+   + `<div class="glass panel"><h2>Node Inventory</h2><div class="nodegrid">${
+      NODE_INV.map(([n,ip,hw])=>`<div class="nodecard"><div class="nn">${esc(n)}</div><div class="nd">${esc(ip)} — ${esc(hw)}</div></div>`).join("")}</div></div>`
+   + PHASES.map(p=>{ const pdone=p.steps.every(s=>done.has(s.id)); const isOpen=open.has(p.id);
+      return `<div class="glass phase ${isOpen?"open":""}">
+      <div class="ph" onclick="__togglePhase('${p.id}')"><span class="pt">${esc(p.t)} ${pdone?'<span style="color:var(--green)">✓</span>':""}</span>
+        ${p.est?`<span class="est">${esc(p.est)}</span>`:""}<span class="chev">›</span></div>
+      <div class="body">
+        ${p.verify?`<div class="verify"><div class="vt">✓ Verification Check</div><p>${esc(p.verify)}</p></div>`:""}
+        ${p.steps.map(s=>`<div class="step ${done.has(s.id)?"done":""}">
+          <span class="ck" onclick="__toggleStep('p','${s.id}')"></span>
+          <div style="flex:1;min-width:0"><div class="st">${esc(s.t)}</div><div class="sd">${esc(s.d||"")}</div>
+          ${s.c?`<pre>${esc(s.c)}<button class="copybtn" onclick="navigator.clipboard.writeText(this.parentNode.textContent.replace(/COPY|✓/g,'').trim());this.textContent='✓'">COPY</button></pre>`:""}
+          ${s.n?`<div class="warn">⚠ ${esc(s.n)}</div>`:""}</div></div>`).join("")}
+      </div></div>`; }).join("");
+}
+
+function pageHardware(){
+  const allIds=new Set(HW_SECTIONS.flatMap(p=>p.steps.map(s=>s.id)));
+  const done=hwStore.get();
+  const total=HW_SECTIONS.reduce((a,s)=>a+s.steps.length,0);
+  const dc=[...done].filter(id=>allIds.has(id)).length;
+  const pct=Math.round(dc/total*100);
+  M.innerHTML = head("Hardware Setup","Physical Wiring // Cable Map // Power Sequence")
+   + `<div class="glass panel"><div style="display:flex;justify-content:space-between;font-size:12px">
+      <span style="color:var(--cyan);letter-spacing:.12em">PROGRESS</span><span>${dc}/${total} (${pct}%)</span></div>
+      <div class="progress"><i style="width:${pct}%"></i></div></div>`
+   + `<div class="glass panel"><h2>Port Map</h2><div class="asciibox">${esc(PORTMAP)}</div></div>`
+   + HW_SECTIONS.map(sec=>{ const sdone=sec.steps.every(s=>done.has(s.id));
+     return `<div class="glass panel"><h2>${esc(sec.t)} ${sdone?'<span style="color:var(--green)">✓</span>':""}</h2>
+     <p style="font-size:12px;color:var(--gray-dim);margin:-6px 0 12px">${esc(sec.d)}</p>
+     ${sec.steps.map(s=>`<div class="step ${done.has(s.id)?"done":""}">
+       <span class="ck" onclick="__toggleStep('h','${s.id}')"></span>
+       <div style="flex:1;min-width:0"><div class="st">${esc(s.t)}</div>${s.d?`<div class="sd">${esc(s.d)}</div>`:""}
+       ${s.w?`<div class="warn">⚠ ${esc(s.w)}</div>`:""}</div></div>`).join("")}</div>`; }).join("")
+   + `<div class="glass panel" style="border-left:4px solid rgba(34,211,238,.5)"><h2>What's next?</h2>
+      <p style="font-size:13px">Once all hardware is wired and powered on, head to <a href="#/projects" style="color:var(--cyan)">Projects</a> → Phase 0 (Network Configuration).</p></div>`;
+}
+
+function pageTools(){
+  M.innerHTML = head("Tools & Scripts","Sync Scripts // Mount Helpers // Automation")
+   + `<div class="glass panel"><h2>Quick Setup</h2>
+     <p style="font-size:13px;line-height:1.65;max-width:900px">To get the Expansion Drive auto-syncing into the deck's index, install the drive sync script and launchd plist.
+     The watcher starts automatically when the drive mounts.</p>
+     <pre style="position:relative;background:rgba(4,9,12,.85);border:1px solid var(--edge);border-radius:8px;padding:13px 15px;margin-top:11px;font-size:12px;color:var(--gray);overflow-x:auto"># One-liner setup (run on Mac Mini):
+brew install fswatch && mkdir -p ~/Scripts && \\
+cp /Volumes/Expansion/claude-drive/scripts/claw-drive-sync.sh ~/Scripts/ 2>/dev/null && \\
+chmod +x ~/Scripts/claw-drive-sync.sh && echo "Done! Run: ~/Scripts/claw-drive-sync.sh watch"</pre></div>`
+   + TOOLS.map(t=>`<div class="glass tool"><div class="tn">${esc(t.n)}</div><div class="tf">${esc(t.f)}</div>
+     <div class="td">${esc(t.d)}</div><ol>${t.s.map(s=>`<li><code>${esc(s)}</code></li>`).join("")}</ol></div>`).join("")
+   + `<div class="glass panel"><h2>Required Environment Variables</h2>
+     <div class="envv"><code>CLAW_SYNC_TOKEN</code><p>Authentication token for the sync endpoints. Generate on the homelab.</p></div>
+     <div class="envv" style="border-bottom:0"><code>CLAW_URL</code><p>The deck URL — https://claw.outtatime.dev</p></div></div>`
+   + `<div class="glass panel"><h2>Desktop App — Claw Command Deck</h2>
+     <p style="font-size:13px;line-height:1.7;max-width:920px">Chromeless macOS shell — no address bar, no tabs, just CLAW in a secure WebKit window.
+     Navigation locked to claw.outtatime.dev. Compiles locally with the system Swift toolchain — no pre-built binary trust needed.</p>
+     <p style="font-size:12px;color:var(--gray-dim);margin-top:10px">Source: <code style="color:var(--cyan)">/Volumes/Expansion/command_center/files/claw-command-center/</code> — build with <code style="color:var(--cyan)">make</code>, installs to /Applications.</p>
+     <p style="font-size:11.5px;color:var(--gray-dim);margin-top:10px">Security: WKWebView · domain-locked · no dev tools · no arbitrary URLs · Touch ID gate optional</p></div>`;
+}
+
+/* ═══════════════ keyboard ═══════════════ */
+const helpWrap=$("helpWrap");
+const toggleHelp=f=>helpWrap.classList.toggle("active",f??!helpWrap.classList.contains("active"));
+$("helpX").onclick=()=>toggleHelp(false);
+helpWrap.onclick=e=>{ if(e.target===helpWrap) toggleHelp(false); };
+let gPend=false, gTimer=null;
+addEventListener("keydown",e=>{
+  const typing=/INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName||"");
+  if(e.key==="Escape"){ if(helpWrap.classList.contains("active")) return toggleHelp(false);
+    if(typing) return document.activeElement.blur();
+    if(/^#\/repos\/./.test(location.hash)) return location.hash="#/repos"; return; }
+  if(typing) return;
+  if(e.key==="?"){ e.preventDefault(); return toggleHelp(); }
+  if(e.key==="/"){ e.preventDefault();
+    const inp=document.querySelector('#rfilter,#q,#cin'); if(inp) return inp.focus();
+    location.hash="#/search"; return; }
+  if(gPend){ gPend=false; clearTimeout(gTimer);
+    const map={h:"#/",r:"#/repos",s:"#/search",c:"#/chat",d:"#/drive",t:"#/topics",i:"#/infra",p:"#/projects",o:"#/tools",w:"#/hardware"};
+    if(map[e.key]){ e.preventDefault(); location.hash=map[e.key]; } return; }
+  if(e.key==="g"){ gPend=true; gTimer=setTimeout(()=>gPend=false,900); return; }
+  if(["ArrowRight","ArrowLeft","ArrowUp","ArrowDown"].includes(e.key)){
+    const cards=[...document.querySelectorAll(".card")]; if(!cards.length) return;
+    const cur=cards.indexOf(document.activeElement);
+    const cols=Math.max(1,Math.round(cards[0].parentElement.offsetWidth/(cards[0].offsetWidth+22)));
+    let nx=cur<0?0:cur+{ArrowRight:1,ArrowLeft:-1,ArrowDown:cols,ArrowUp:-cols}[e.key];
+    if(nx>=0&&nx<cards.length){ e.preventDefault(); cards[nx].focus(); cards[nx].scrollIntoView({block:"nearest",behavior:"smooth"}); } }
+});
+
+/* ═══════════════ boot ═══════════════ */
+(async()=>{ await Promise.all([loadRepos(),loadInfra()]); route();
+  setInterval(async()=>{ if(infraSrc==="LIVE"){ await loadInfra();
+    if(location.hash.startsWith("#/infra")) route(); } },60000); })();
 })();
 </script>
 </body>

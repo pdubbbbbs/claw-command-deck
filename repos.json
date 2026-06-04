@@ -1,6 +1,6 @@
 {
  "generated": "2026-06-04",
- "total": 56,
+ "total": 54,
  "repos": [
   {
    "name": "claude-rules",
@@ -83,16 +83,6 @@
    "url": "https://github.com/pdubbbbbs/blueguard-mcp-server"
   },
   {
-   "name": "wellnessbylisa.fit",
-   "desc": "",
-   "lang": "HTML",
-   "stars": 0,
-   "pushed": "2026-04-02",
-   "private": false,
-   "topics": [],
-   "url": "https://github.com/pdubbbbbs/wellnessbylisa.fit"
-  },
-  {
    "name": "BlueGuard-Android",
    "desc": "",
    "lang": "Kotlin",
@@ -101,16 +91,6 @@
    "private": false,
    "topics": [],
    "url": "https://github.com/pdubbbbbs/BlueGuard-Android"
-  },
-  {
-   "name": "wellness-invoice",
-   "desc": "",
-   "lang": "HTML",
-   "stars": 0,
-   "pushed": "2026-04-02",
-   "private": false,
-   "topics": [],
-   "url": "https://github.com/pdubbbbbs/wellness-invoice"
   },
   {
    "name": "keep-alive-tray",

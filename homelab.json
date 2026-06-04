@@ -1,0 +1,47 @@
+{
+  "generated":"2026-06-04T11:48:01Z",
+  "summary":{"up":11,"total":16},
+  "groups":[
+    {
+      "name":"Network",
+      "nodes":[
+      {"name":"UCG-Ultra","host":"10.10.10.1","up":true,"ms":0.515,"note":"gateway / router"},
+      {"name":"DGS-1100 switch","host":"10.10.10.10","up":true,"ms":0.962,"note":"D-Link 24-port"},
+      {"name":"WAX210PA AP","host":"10.10.10.219","up":true,"ms":0.554,"note":"Netgear Wi-Fi AP"},
+      {"name":"NAS","host":"10.10.10.188","up":true,"ms":0.055,"note":"Synology origin host"}
+      ]
+    },
+    {
+      "name":"Compute",
+      "nodes":[
+      {"name":"pineapple","host":"10.10.10.109","up":false,"ms":null,"note":"unreachable (node re-add in progress)"},
+      {"name":"jellybean","host":"10.10.10.107","up":false,"ms":null,"note":"unreachable (node re-add in progress)"},
+      {"name":"nutella","host":"10.10.10.108","up":false,"ms":null,"note":"unreachable (node re-add in progress)"},
+      {"name":"sriracha","host":"10.10.10.158","up":false,"ms":null,"note":"unreachable (node re-add in progress)"},
+      {"name":"peanutbutter","host":"10.10.10.191","up":false,"ms":null,"note":"unreachable (node re-add in progress)"}
+      ]
+    },
+    {
+      "name":"Services",
+      "nodes":[
+      {"name":"multicast","host":"localhost:8002","up":true,"ms":5.9,"note":"multicast controller"},
+      {"name":"roku-origin","host":"localhost:8090","up":true,"ms":5.9,"note":"static HTTP origin"},
+      {"name":"cloudflared","host":"tunnel","up":true,"ms":1.0,"note":"Cloudflare tunnel healthy"}
+      ]
+    },
+    {
+      "name":"Storage",
+      "nodes":[
+      {"name":"NAS /volume1","host":"10.10.10.188","up":true,"ms":null,"note":"0.05% used (1.8 GB / 3.8 TB)"},
+      {"name":"NAS health","host":"10.10.10.188","up":true,"ms":null,"note":"up 107.1h, load 0.01 0.06 0.05"}
+      ]
+    },
+    {
+      "name":"Roku",
+      "nodes":[
+      {"name":"Roku-1","host":"192.168.12.182","up":true,"ms":3.84,"note":"Roku player"},
+      {"name":"Roku-2","host":"192.168.12.189","up":true,"ms":2.15,"note":"Roku player"}
+      ]
+    }
+  ]
+}
