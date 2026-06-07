@@ -1,7 +1,17 @@
 {
- "generated": "2026-06-04",
- "total": 54,
+ "generated": "2026-06-07",
+ "total": 56,
  "repos": [
+  {
+   "name": "claw-command-deck",
+   "desc": "CLAW // Philip Command Deck \u2014 cybernetic-noir GitHub fleet dashboard at claw.outtatime.dev",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-06-04",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/claw-command-deck"
+  },
   {
    "name": "claude-rules",
    "desc": "Standing rules and behavioral instructions for Claude when working with Philip. Public so any Claude instance can fetch without auth.",
@@ -91,6 +101,16 @@
    "private": false,
    "topics": [],
    "url": "https://github.com/pdubbbbbs/BlueGuard-Android"
+  },
+  {
+   "name": "wellness-invoice",
+   "desc": "",
+   "lang": "HTML",
+   "stars": 0,
+   "pushed": "2026-04-02",
+   "private": false,
+   "topics": [],
+   "url": "https://github.com/pdubbbbbs/wellness-invoice"
   },
   {
    "name": "keep-alive-tray",
