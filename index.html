@@ -354,6 +354,7 @@
         <a href="#/projects" data-r="projects" ><span class="ic">☰</span>Projects<span class="k">g p</span></a>
         <a href="#/tools"    data-r="tools"    ><span class="ic">⚙</span>Tools &amp; Scripts<span class="k">g o</span></a>
         <a href="#/hardware" data-r="hardware" ><span class="ic">⌗</span>Hardware Setup<span class="k">g w</span></a>
+        <a href="#/hooks"    data-r="hooks"    ><span class="ic">⊟</span>Hooks Glossary<span class="k">g k</span></a>
       </nav>
       <div class="side-foot">
         <div class="fontsize" id="fontsize">
@@ -636,7 +637,7 @@ function route(){ const h=location.hash.replace(/^#\/?/,"");
   if(!r) return pageHome();
   if(r==="repos"&&arg) return pageRepoDetail(arg);
   const pages={repos:pageRepos,search:pageSearch,chat:pageChat,drive:pageDrive,topics:pageTopics,
-    infra:pageInfra,projects:pageProjects,tools:pageTools,hardware:pageHardware};
+    infra:pageInfra,projects:pageProjects,tools:pageTools,hardware:pageHardware,hooks:pageHooks};
   (pages[r]||pageHome)(arg);
 }
 addEventListener("hashchange",route);
@@ -644,6 +645,32 @@ addEventListener("hashchange",route);
 const head=(t,sub)=>`<div class="pagehead"><h1>${t}</h1><div class="sub">${sub}</div><div class="rule"></div></div>`;
 
 /* ═══════════════ pages ═══════════════ */
+function pageHooks(){
+  const events=[
+    ["SessionStart","once, at session open","inject context","session-boot-hierarchy.sh"],
+    ["UserPromptSubmit","every message, before the model sees it","inject context","anti-confabulation.sh"],
+    ["PreToolUse","before any tool runs","<b style='color:var(--cyan)'>BLOCK (exit 2)</b> or inject","block-dead-subnet.sh"],
+    ["PostToolUse","after a tool runs","inspect / inject","—"],
+    ["Stop / SessionEnd","response / session ends","side effects (logging)","save-session.sh"],
+    ["Notification / PreCompact","misc events","inject / side effects","—"],
+  ];
+  const walls=[
+    ["block-dead-subnet.sh","PreToolUse · Bash","Blocks any command referencing 192.168.12.x — dead subnet; live net is 10.10.10.0/24. Verified live 2026-06-14."],
+  ];
+  const candidates=[
+    "Block asking Philip for a GitHub/OAuth token → redirect to the pass store.",
+    "Block rm/overwrite inside the hierarchy → enforce append-and-rename-only.",
+    "Block SSH to a node as the wrong user → point at onnode (me310, 10.10.10.x).",
+  ];
+  const row=(c)=>`<div class="actrow"><span class="an" style="min-width:170px">${c[0]}</span><span class="ad" style="flex:1">${c[1]}</span><span class="ad" style="min-width:150px;color:var(--cyan)">${c[2]}</span><span class="ad" style="min-width:190px">${c[3]||""}</span></div>`;
+  M.innerHTML = head("HOOKS // GLOSSARY","The enforcement layer — code that runs whether the model cooperates or not")+`
+  <div class="glass panel"><h2>Files influence. Hooks enforce.</h2>
+    <p style="font-size:13px;line-height:1.6">CLAUDE.md, the hierarchy, and memory make the right answer <i>available</i> — they can't force the model to use it. A <b>hook</b> is a shell command Claude Code runs at a fixed event, in code. Claude Code pipes the event as JSON on stdin; <b>stdout</b> injects context (a louder sign), <b>exit code 2</b> on <code>PreToolUse</code> blocks the tool call (a wall). For any <i>settled, recurring</i> failure, build a wall — not another instruction file.</p></div>
+  <div class="glass panel"><h2>Events</h2>${events.map(row).join("")}</div>
+  <div class="glass panel"><h2>Walls standing (live)</h2>${walls.map(w=>`<div class="actrow"><span class="an" style="min-width:200px;color:var(--cyan)">${w[0]}</span><span class="ad" style="min-width:140px">${w[1]}</span><span class="ad" style="flex:1">${w[2]}</span></div>`).join("")}</div>
+  <div class="glass panel"><h2>Candidate walls — build when the failure recurs</h2>${candidates.map(c=>`<div class="actrow"><span class="ad">▸ ${c}</span></div>`).join("")}</div>
+  <div class="glass panel"><h2>Source of truth</h2><p style="font-size:13px">Canonical: <code>My Hierarchy/AI Tooling/references/hooks-glossary.md</code>. This page mirrors it.</p></div>`;
+}
 function pageHome(){
   const langs=langCounts().slice(0,3);
   const up=infra?.summary?.up, total=infra?.summary?.total;
