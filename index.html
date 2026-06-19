@@ -355,6 +355,7 @@
         <a href="#/tools"    data-r="tools"    ><span class="ic">⚙</span>Tools &amp; Scripts<span class="k">g o</span></a>
         <a href="#/hardware" data-r="hardware" ><span class="ic">⌗</span>Hardware Setup<span class="k">g w</span></a>
         <a href="#/hooks"    data-r="hooks"    ><span class="ic">⊟</span>Hooks Glossary<span class="k">g k</span></a>
+        <a href="#/network"  data-r="network"  ><span class="ic">⤢</span>Network Topology<span class="k">g n</span></a>
       </nav>
       <div class="side-foot">
         <div class="fontsize" id="fontsize">
@@ -637,7 +638,7 @@ function route(){ const h=location.hash.replace(/^#\/?/,"");
   if(!r) return pageHome();
   if(r==="repos"&&arg) return pageRepoDetail(arg);
   const pages={repos:pageRepos,search:pageSearch,chat:pageChat,drive:pageDrive,topics:pageTopics,
-    infra:pageInfra,projects:pageProjects,tools:pageTools,hardware:pageHardware,hooks:pageHooks};
+    infra:pageInfra,projects:pageProjects,tools:pageTools,hardware:pageHardware,hooks:pageHooks,network:pageNetwork};
   (pages[r]||pageHome)(arg);
 }
 addEventListener("hashchange",route);
@@ -670,6 +671,53 @@ function pageHooks(){
   <div class="glass panel"><h2>Walls standing (live)</h2>${walls.map(w=>`<div class="actrow"><span class="an" style="min-width:200px;color:var(--cyan)">${w[0]}</span><span class="ad" style="min-width:140px">${w[1]}</span><span class="ad" style="flex:1">${w[2]}</span></div>`).join("")}</div>
   <div class="glass panel"><h2>Candidate walls — build when the failure recurs</h2>${candidates.map(c=>`<div class="actrow"><span class="ad">▸ ${c}</span></div>`).join("")}</div>
   <div class="glass panel"><h2>Source of truth</h2><p style="font-size:13px">Canonical: <code>My Hierarchy/AI Tooling/references/hooks-glossary.md</code>. This page mirrors it.</p></div>`;
+}
+function pageNetwork(){
+  const DIAGRAM =
+`              Internet
+     primary uplink  ·  failover uplink (metered)
+                    │
+            ┌────────────────┐
+            │    gateway     │   routing · NAT · DHCP · Wi-Fi
+            └────────────────┘
+                    │
+            ┌────────────────┐
+            │ OPNsense bridge │  dedicated node · bare-metal
+            │  Suricata IDS   │  transparent L2 · filters inline
+            └────────────────┘
+                    │
+            ┌────────────────┐
+            │   LAN switch    │
+            └────────────────┘
+                    │
+          nodes · storage · clients`;
+  const phases=[
+    ["1 · Evacuate","Move the services off the bridge node onto other cluster nodes — leaf services first, reverse-proxy last, each service keeps its address."],
+    ["2 · Detach","Remove the node from the compute cluster once it is empty and verified."],
+    ["3 · Rebuild","Install OPNsense bare-metal; configure a transparent Layer-2 filtering bridge with Suricata / ZenArmor IDS-IPS."],
+    ["4 · Cutover","Insert the bridge inline between the gateway and the LAN switch, with a labelled bypass cable staged."],
+    ["5 · Failover WAN","Add the secondary uplink as failover-only on the gateway."],
+  ];
+  const bridge=[
+    ["Bridge members","two onboard NICs, no IP — traffic passes through and is filtered inline"],
+    ["Management","a separate NIC for the admin UI, kept off the data path"],
+    ["Filtering","enabled at the bridge, not the members — firewall rules live on the bridge"],
+    ["Caveats","bare-metal only (a virtual macvlan NIC can't bridge L2) · no auto-bypass · no traffic shaper"],
+  ];
+  const todos=[
+    ["Reclaim a 1.8 TB drive","dead storage volume on the bridge node — confirm empty, clear signature, repurpose"],
+    ["Add failover WAN","wire the secondary uplink as failover-only on the gateway"],
+  ];
+  const arow=(c,w)=>`<div class="actrow"><span class="an" style="min-width:${w||150}px;color:var(--cyan)">${c[0]}</span><span class="ad" style="flex:1">${c[1]}</span></div>`;
+  M.innerHTML = head("NETWORK TOPOLOGY","Edge Hardening // OPNsense Transparent Filtering Bridge")+`
+  <div class="glass panel"><h2>The plan</h2>
+    <p style="font-size:13px;line-height:1.6">Stand up a dedicated <b>OPNsense transparent filtering bridge</b> in front of the LAN, <i>behind</i> the existing gateway. The gateway keeps routing, NAT, DHCP and Wi-Fi; the bridge adds <b>Suricata / ZenArmor IDS-IPS</b> as an inline Layer-2 filter — no double-NAT, no re-addressing. One node is evacuated and dedicated to it. Chosen over making OPNsense the edge router because it keeps the stable gateway, fails gracefully (re-cable bypass), and isolates the firewall on its own hardware.</p></div>
+  <div class="glass panel"><h2>Topology</h2><div class="asciibox">${esc(DIAGRAM)}</div></div>
+  <div class="glass panel"><h2>Order of operations</h2>${phases.map(p=>arow(p,118)).join("")}</div>
+  <div class="glass panel"><h2>Bridge design</h2>${bridge.map(b=>arow(b,140)).join("")}</div>
+  <div class="glass panel"><h2>Status</h2>
+    <p style="font-size:13px;line-height:1.6">Compute cluster healthy. Gateway on its primary uplink. The bridge node is identified with the NICs it needs. Plan locked Jun 18 2026; build not yet started — production services still live on the node, pending evacuation.</p></div>
+  <div class="glass panel"><h2>Open items</h2>${todos.map(t=>arow(t,190)).join("")}</div>`;
 }
 function pageHome(){
   const langs=langCounts().slice(0,3);
@@ -940,7 +988,7 @@ addEventListener("keydown",e=>{
     const inp=document.querySelector('#rfilter,#q,#cin'); if(inp) return inp.focus();
     location.hash="#/search"; return; }
   if(gPend){ gPend=false; clearTimeout(gTimer);
-    const map={h:"#/",r:"#/repos",s:"#/search",c:"#/chat",d:"#/drive",t:"#/topics",i:"#/infra",p:"#/projects",o:"#/tools",w:"#/hardware"};
+    const map={h:"#/",r:"#/repos",s:"#/search",c:"#/chat",d:"#/drive",t:"#/topics",i:"#/infra",p:"#/projects",o:"#/tools",w:"#/hardware",n:"#/network"};
     if(map[e.key]){ e.preventDefault(); location.hash=map[e.key]; } return; }
   if(e.key==="g"){ gPend=true; gTimer=setTimeout(()=>gPend=false,900); return; }
   if(["ArrowRight","ArrowLeft","ArrowUp","ArrowDown"].includes(e.key)){
