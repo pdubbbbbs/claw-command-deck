@@ -25,11 +25,11 @@ NETWORK = [
     ("NAS", "10.10.10.188", "Synology origin host"),
 ]
 COMPUTE = [
-    ("pineapple", "10.10.10.109"),
+    ("pineapple", "10.10.10.126"),
     ("jellybean", "10.10.10.107"),
-    ("nutella", "10.10.10.108"),
-    ("sriracha", "10.10.10.158"),
-    ("peanutbutter", "10.10.10.191"),
+    ("nutella", "10.10.10.139"),
+    ("sriracha", "10.10.10.243"),
+    ("peanutbutter", "10.10.10.150"),
 ]
 SERVICES = [
     ("multicast", "10.10.10.188", 8002, "multicast controller"),
@@ -84,21 +84,35 @@ def https_ok(url: str) -> float | None:
     return None
 
 
+def seg(host: str) -> str:
+    """Map an internal address to a non-identifying network segment label.
+
+    The public feed (claw.outtatime.dev, GitHub Pages) must NOT publish the
+    internal LAN IP map. We still probe by the real IP below, but only the
+    segment label is ever written into the published JSON.
+    """
+    if host.startswith("10.10.10."):
+        return "LAN"
+    if host.startswith("192.168.12."):
+        return "WAN"
+    return host  # 'tunnel', etc.
+
+
 def build_homelab() -> dict:
     groups = []
 
-    net = [{"name": n, "host": h, "up": (ms := ping(h)) is not None, "ms": ms, "note": note}
+    net = [{"name": n, "host": seg(h), "up": (ms := ping(h)) is not None, "ms": ms, "note": note}
            for n, h, note in NETWORK]
     groups.append({"name": "Network", "nodes": net})
 
     comp = []
     for n, h in COMPUTE:
         ms = ping(h)
-        comp.append({"name": n, "host": h, "up": ms is not None, "ms": ms,
-                     "note": "ok" if ms is not None else "cluster down — rebuild pending"})
+        comp.append({"name": n, "host": seg(h), "up": ms is not None, "ms": ms,
+                     "note": "ok" if ms is not None else "unreachable"})
     groups.append({"name": "Compute", "nodes": comp})
 
-    svc = [{"name": n, "host": f"{h}:{p}", "up": (ms := tcp_ms(h, p)) is not None, "ms": ms, "note": note}
+    svc = [{"name": n, "host": f"{seg(h)}:{p}", "up": (ms := tcp_ms(h, p)) is not None, "ms": ms, "note": note}
            for n, h, p, note in SERVICES]
     tun = https_ok("https://roku.philipwright.me")
     svc.append({"name": "cloudflared", "host": "tunnel", "up": tun is not None, "ms": tun,
@@ -107,14 +121,14 @@ def build_homelab() -> dict:
 
     nas_up = ping("10.10.10.188") is not None
     groups.append({"name": "Storage", "nodes": [
-        {"name": "NAS reachable", "host": "10.10.10.188", "up": nas_up, "ms": None,
+        {"name": "NAS reachable", "host": seg("10.10.10.188"), "up": nas_up, "ms": None,
          "note": "checked from Mac (ping + ssh port)" if nas_up else "NAS unreachable"},
     ]})
 
     rokus = []
     for n, h in ROKUS:
         ms = ping(h)
-        rokus.append({"name": n, "host": h, "up": ms is not None, "ms": ms, "note": "Roku player"})
+        rokus.append({"name": n, "host": seg(h), "up": ms is not None, "ms": ms, "note": "Roku player"})
     groups.append({"name": "Roku", "nodes": rokus})
 
     nodes = [x for g in groups for x in g["nodes"]]

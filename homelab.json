@@ -1,7 +1,7 @@
 {
-  "generated": "2026-06-07T16:36:12Z",
+  "generated": "2026-06-19T00:58:01Z",
   "summary": {
-    "up": 9,
+    "up": 14,
     "total": 15
   },
   "groups": [
@@ -10,30 +10,30 @@
       "nodes": [
         {
           "name": "UCG-Ultra",
-          "host": "10.10.10.1",
+          "host": "LAN",
           "up": true,
-          "ms": 0.0,
+          "ms": 0.719,
           "note": "gateway / router"
         },
         {
           "name": "DGS-1100 switch",
-          "host": "10.10.10.10",
+          "host": "LAN",
           "up": true,
           "ms": 0.0,
           "note": "D-Link 24-port"
         },
         {
           "name": "WAX210PA AP",
-          "host": "10.10.10.219",
+          "host": "LAN",
           "up": true,
           "ms": 0.0,
           "note": "Netgear Wi-Fi AP"
         },
         {
           "name": "NAS",
-          "host": "10.10.10.188",
+          "host": "LAN",
           "up": true,
-          "ms": 0.851,
+          "ms": 0.448,
           "note": "Synology origin host"
         }
       ]
@@ -43,38 +43,38 @@
       "nodes": [
         {
           "name": "pineapple",
-          "host": "10.10.10.109",
-          "up": false,
-          "ms": null,
-          "note": "cluster down \u2014 rebuild pending"
+          "host": "LAN",
+          "up": true,
+          "ms": 0.52,
+          "note": "ok"
         },
         {
           "name": "jellybean",
-          "host": "10.10.10.107",
-          "up": false,
-          "ms": null,
-          "note": "cluster down \u2014 rebuild pending"
+          "host": "LAN",
+          "up": true,
+          "ms": 0.359,
+          "note": "ok"
         },
         {
           "name": "nutella",
-          "host": "10.10.10.108",
-          "up": false,
-          "ms": null,
-          "note": "cluster down \u2014 rebuild pending"
+          "host": "LAN",
+          "up": true,
+          "ms": 0.708,
+          "note": "ok"
         },
         {
           "name": "sriracha",
-          "host": "10.10.10.158",
-          "up": false,
-          "ms": null,
-          "note": "cluster down \u2014 rebuild pending"
+          "host": "LAN",
+          "up": true,
+          "ms": 0.596,
+          "note": "ok"
         },
         {
           "name": "peanutbutter",
-          "host": "10.10.10.191",
-          "up": false,
-          "ms": null,
-          "note": "cluster down \u2014 rebuild pending"
+          "host": "LAN",
+          "up": true,
+          "ms": 0.484,
+          "note": "ok"
         }
       ]
     },
@@ -83,23 +83,23 @@
       "nodes": [
         {
           "name": "multicast",
-          "host": "10.10.10.188:8002",
+          "host": "LAN:8002",
           "up": true,
-          "ms": 7.7,
+          "ms": 5.2,
           "note": "multicast controller"
         },
         {
           "name": "roku-origin",
-          "host": "10.10.10.188:8090",
+          "host": "LAN:8090",
           "up": true,
-          "ms": 1.0,
+          "ms": 0.4,
           "note": "static HTTP origin"
         },
         {
           "name": "cloudflared",
           "host": "tunnel",
           "up": true,
-          "ms": 239.5,
+          "ms": 764.9,
           "note": "Cloudflare tunnel healthy"
         }
       ]
@@ -109,7 +109,7 @@
       "nodes": [
         {
           "name": "NAS reachable",
-          "host": "10.10.10.188",
+          "host": "LAN",
           "up": true,
           "ms": null,
           "note": "checked from Mac (ping + ssh port)"
@@ -121,14 +121,14 @@
       "nodes": [
         {
           "name": "Roku-1",
-          "host": "192.168.12.182",
+          "host": "WAN",
           "up": true,
           "ms": 0.0,
           "note": "Roku player"
         },
         {
           "name": "Roku-2",
-          "host": "192.168.12.189",
+          "host": "WAN",
           "up": false,
           "ms": null,
           "note": "Roku player"
