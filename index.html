@@ -628,6 +628,14 @@ const store=(k)=>({ get:()=>new Set(JSON.parse(localStorage.getItem(k)||"[]")),
   toggle(id){ const s=this.get(); s.has(id)?s.delete(id):s.add(id);
     localStorage.setItem(k,JSON.stringify([...s])); return s; } });
 const projStore=store("claw-project-progress"), hwStore=store("claw-hardware-progress"), appleStore=store("claw-apple-progress");
+/* seed Apple-initiative steps completed as of 2026-06-18 (idempotent, versioned) */
+(function(){ try{ if(localStorage.getItem("claw-apple-seed-v")!=="2"){
+  const seed=["a-0a","a-0b","a-1a","a-1b","a-1c","a-1d","a-1f","a-2a","a-2b","a-3a"];
+  const cur=new Set(JSON.parse(localStorage.getItem("claw-apple-progress")||"[]"));
+  seed.forEach(id=>cur.add(id));
+  localStorage.setItem("claw-apple-progress",JSON.stringify([...cur]));
+  localStorage.setItem("claw-apple-seed-v","2");
+} }catch(e){} })();
 
 /* ═══════════════ router ═══════════════ */
 const M=$("main");
