@@ -352,6 +352,7 @@
         <a href="#/topics"   data-r="topics"   ><span class="ic">#</span>Topics<span class="k">g t</span></a>
         <a href="#/infra"    data-r="infra"    ><span class="ic">▣</span>Infrastructure<span class="k">g i</span></a>
         <a href="#/projects" data-r="projects" ><span class="ic">☰</span>Projects<span class="k">g p</span></a>
+        <a href="#/appledev" data-r="appledev" ><span class="ic">⌘</span>Apple Developer<span class="k">g a</span></a>
         <a href="#/tools"    data-r="tools"    ><span class="ic">⚙</span>Tools &amp; Scripts<span class="k">g o</span></a>
         <a href="#/hardware" data-r="hardware" ><span class="ic">⌗</span>Hardware Setup<span class="k">g w</span></a>
         <a href="#/hooks"    data-r="hooks"    ><span class="ic">⊟</span>Hooks Glossary<span class="k">g k</span></a>
@@ -626,7 +627,7 @@ function langCounts(){ const c={}; for(const r of repos) c[r.lang]=(c[r.lang]||0
 const store=(k)=>({ get:()=>new Set(JSON.parse(localStorage.getItem(k)||"[]")),
   toggle(id){ const s=this.get(); s.has(id)?s.delete(id):s.add(id);
     localStorage.setItem(k,JSON.stringify([...s])); return s; } });
-const projStore=store("claw-project-progress"), hwStore=store("claw-hardware-progress");
+const projStore=store("claw-project-progress"), hwStore=store("claw-hardware-progress"), appleStore=store("claw-apple-progress");
 
 /* ═══════════════ router ═══════════════ */
 const M=$("main");
@@ -638,7 +639,7 @@ function route(){ const h=location.hash.replace(/^#\/?/,"");
   if(!r) return pageHome();
   if(r==="repos"&&arg) return pageRepoDetail(arg);
   const pages={repos:pageRepos,search:pageSearch,chat:pageChat,drive:pageDrive,topics:pageTopics,
-    infra:pageInfra,projects:pageProjects,tools:pageTools,hardware:pageHardware,hooks:pageHooks,network:pageNetwork};
+    infra:pageInfra,projects:pageProjects,appledev:pageAppleDev,tools:pageTools,hardware:pageHardware,hooks:pageHooks,network:pageNetwork};
   (pages[r]||pageHome)(arg);
 }
 addEventListener("hashchange",route);
@@ -737,6 +738,7 @@ function pageHome(){
     <a href="#/chat" style="--i:3"><div class="t"><span class="qi">✦</span>Ask CLAW</div><div class="d">Query the local index — grounded answers from the deck's data</div></a>
     <a href="#/projects" style="--i:4"><div class="t"><span class="qi">☰</span>Projects</div><div class="d">Homelab rebuild runbook — 5 phases, 48 steps, progress tracking</div></a>
     <a href="#/hardware" style="--i:5"><div class="t"><span class="qi">⌗</span>Hardware Setup</div><div class="d">Physical wiring checklist, port map, power-on sequence</div></a>
+    <a href="#/appledev" style="--i:6"><div class="t"><span class="qi">⌘</span>Apple Developer</div><div class="d">Whole-account initiative — 7 tracks incl. BlueGuard App Store launch, progress tracking</div></a>
   </div></div>
   <div class="glass panel"><h2>Topic Clusters</h2><div class="chips">${
     clusters.map(([t,rs])=>`<span class="chip" onclick="location.hash='#/topics/${encodeURIComponent(t)}'">${esc(t)} <b>${rs.length}</b></span>`).join("")||'<span class="loadtxt">indexing…</span>'
@@ -893,7 +895,7 @@ function pageInfra(){
   $("irefresh").onclick=async()=>{ $("irefresh").textContent="↻ …"; await loadInfra(); pageInfra(); };
 }
 
-window.__toggleStep=(storeName,id)=>{ (storeName==="p"?projStore:hwStore).toggle(id); route(); };
+window.__toggleStep=(storeName,id)=>{ ({p:projStore,h:hwStore,a:appleStore}[storeName]||projStore).toggle(id); route(); };
 
 function pageProjects(){
   const allIds=new Set([...PRE_HW.map((_,i)=>"pre-"+(i+1)),...PHASES.flatMap(p=>p.steps.map(s=>s.id))]);
@@ -924,6 +926,78 @@ function pageProjects(){
           <span class="ck" onclick="__toggleStep('p','${s.id}')"></span>
           <div style="flex:1;min-width:0"><div class="st">${esc(s.t)}</div><div class="sd">${esc(s.d||"")}</div>
           ${s.c?`<pre>${esc(s.c)}<button class="copybtn" onclick="navigator.clipboard.writeText(this.parentNode.textContent.replace(/COPY|✓/g,'').trim());this.textContent='✓'">COPY</button></pre>`:""}
+          ${s.n?`<div class="warn">⚠ ${esc(s.n)}</div>`:""}</div></div>`).join("")}
+      </div></div>`; }).join("");
+}
+
+const APPLE_TRACKS = [
+  { id:"at-0", t:"Step 0 — Persist & Publish", verify:"Memory file written; this page live; apple-developer repo card in Repositories.", steps:[
+    {id:"a-0a", t:"Write Claude long-term memory file", d:"apple-developer-initiative.md + MEMORY.md pointer — survives across sessions"},
+    {id:"a-0b", t:"Publish this Command Deck page + button", d:"#/appledev runbook with localStorage progress"},
+    {id:"a-0c", t:"Create apple-developer backing repo", d:"Master plan, per-track docs, sign/notarize toolkit; push to gitea"},
+  ]},
+  { id:"at-1", t:"Track 1 — BlueGuard → App Store", est:"ACTIVE", verify:"App archives; Pro unlock + restore work; build submitted for review in App Store Connect.", steps:[
+    {id:"a-1a", t:"Fix broken LaunchScreen assets", d:"Add LaunchIcon image + LaunchScreenBackground color (referenced in Info.plist but missing)"},
+    {id:"a-1b", t:"Add PrivacyInfo.xcprivacy", d:"Required privacy manifest (Keychain/UserDefaults/file-timestamp API reasons)"},
+    {id:"a-1c", t:"Reconcile build number", d:"Info.plist 28 vs pbxproj 20 — confirm latest in ASC, bump above it"},
+    {id:"a-1d", t:"Build StoreKit 2 paywall", d:"StoreManager + PaywallView, isPro gating. Free: scan+ID+basic score. Pro: monitoring, threat engine, audits, AR, honeypots, Siri, geofencing"},
+    {id:"a-1e", t:"Create App Store Connect products", d:"pro_monthly $6.99 · pro_annual $49.99 (7-day trial) · optional pro_lifetime $129"},
+    {id:"a-1f", t:"Gate offensive tooling for v1", d:"Disable BLE fuzzer + GATT interrogation; write App Review notes", n:"Re-enable in a later update"},
+    {id:"a-1g", t:"Publish privacy policy", d:"Live page at bluetoothdefense.com/privacy"},
+    {id:"a-1h", t:"Generate App Store screenshots", d:"6.7\"/6.5\"/iPad via simulator capture"},
+    {id:"a-1i", t:"Archive → upload → submit", d:"Existing GitHub Actions build.yml → App Store Connect → Submit for Review"},
+  ]},
+  { id:"at-2", t:"Track 2 — Developer tooling", verify:"sign-and-notarize.sh verify passes codesign + spctl + stapler.", steps:[
+    {id:"a-2a", t:"sign-and-notarize.sh", d:"setup-keychain / sign / notarize (notarytool --wait) / staple / verify"},
+    {id:"a-2b", t:"Gitea Actions workflow (macOS runner)", d:"Run on a Mac mini node; push to gitea", n:"Needs a Developer ID Application identity installed (keychain has 0)"},
+    {id:"a-2c", t:"fastlane + TestFlight automation", d:"App Store Connect API key based"},
+  ]},
+  { id:"at-3", t:"Track 3 — Endpoint Security (macOS EDR)", est:"long lead", verify:"Entitlement-approval email received.", steps:[
+    {id:"a-3a", t:"Request Endpoint Security entitlement", d:"developer.apple.com → System Extension form; describe BlueGuard LLC + BLE/EDR use case", n:"Fire early — Apple review takes days–weeks"},
+    {id:"a-3b", t:"Build macOS system extension", d:"ES + Network Extension, Developer ID signed, notarized via Track 2"},
+  ]},
+  { id:"at-4", t:"Track 4 — Philip Wright TV / The Third Stanza", steps:[
+    {id:"a-4a", t:"tvOS app", d:"Reuse Roku/MultiCast content pipeline → Apple TV"},
+    {id:"a-4b", t:"Wallet passes (PassKit)", d:"Screening tickets / BlueGuard membership"},
+    {id:"a-4c", t:"Universal Links + TestFlight screenings", d:"thethirdstanza.com associated domains"},
+  ]},
+  { id:"at-5", t:"Track 5 — Homelab (Apple fleet)", steps:[
+    {id:"a-5a", t:"APNs push alerts", d:"Native node-down / exposure / backup alerts to iPhone/Watch"},
+    {id:"a-5b", t:"App Intents / Siri control", d:"e.g. reboot a node, ask what is exposed"},
+    {id:"a-5c", t:"Signed config profiles / light MDM + HomeKit", d:"Manage Mac-mini/iMac nodes de-googled"},
+  ]},
+  { id:"at-6", t:"Track 6 — AI tooling", steps:[
+    {id:"a-6a", t:"Foundation Models on-device AI", d:"Swift; WWDC26 allows swapping in Anthropic behind same API"},
+  ]},
+  { id:"at-7", t:"Track 7 — Web + account perks", steps:[
+    {id:"a-7a", t:"Sign in with Apple", d:"bluetoothdefense.com / thethirdstanza.com / andthenitdidhappen.com"},
+    {id:"a-7b", t:"Safari Web Extensions", d:"Privacy stack"},
+    {id:"a-7c", t:"Use the perks", d:"2 Technical Support Incidents/yr, beta OS+Xcode, WWDC videos, ASC API"},
+  ]},
+];
+
+function pageAppleDev(){
+  const allIds=new Set(APPLE_TRACKS.flatMap(p=>p.steps.map(s=>s.id)));
+  const done=appleStore.get();
+  const total=allIds.size;
+  const dc=[...done].filter(id=>allIds.has(id)).length;
+  const pct=total?Math.round(dc/total*100):0;
+  const open=new Set(JSON.parse(sessionStorage.getItem("claw-apple-open")||'["at-1"]'));
+  window.__toggleTrack=(id)=>{ open.has(id)?open.delete(id):open.add(id);
+    sessionStorage.setItem("claw-apple-open",JSON.stringify([...open])); route(); };
+  M.innerHTML = head("Apple Developer Initiative","Whole-account plan (Team 2PV5B37GLP) — 7 tracks · BlueGuard freemium $6.99/mo")
+   + `<div class="glass panel"><div style="display:flex;justify-content:space-between;font-size:12px">
+      <span style="color:var(--cyan);letter-spacing:.12em">PROGRESS</span><span>${dc}/${total} steps (${pct}%)</span></div>
+      <div class="progress"><i style="width:${pct}%"></i></div></div>`
+   + APPLE_TRACKS.map(p=>{ const pdone=p.steps.every(s=>done.has(s.id)); const isOpen=open.has(p.id);
+      return `<div class="glass phase ${isOpen?"open":""}">
+      <div class="ph" onclick="__toggleTrack('${p.id}')"><span class="pt">${esc(p.t)} ${pdone?'<span style="color:var(--green)">✓</span>':""}</span>
+        ${p.est?`<span class="est">${esc(p.est)}</span>`:""}<span class="chev">›</span></div>
+      <div class="body">
+        ${p.verify?`<div class="verify"><div class="vt">✓ Verification Check</div><p>${esc(p.verify)}</p></div>`:""}
+        ${p.steps.map(s=>`<div class="step ${done.has(s.id)?"done":""}">
+          <span class="ck" onclick="__toggleStep('a','${s.id}')"></span>
+          <div style="flex:1;min-width:0"><div class="st">${esc(s.t)}</div><div class="sd">${esc(s.d||"")}</div>
           ${s.n?`<div class="warn">⚠ ${esc(s.n)}</div>`:""}</div></div>`).join("")}
       </div></div>`; }).join("");
 }
@@ -988,7 +1062,7 @@ addEventListener("keydown",e=>{
     const inp=document.querySelector('#rfilter,#q,#cin'); if(inp) return inp.focus();
     location.hash="#/search"; return; }
   if(gPend){ gPend=false; clearTimeout(gTimer);
-    const map={h:"#/",r:"#/repos",s:"#/search",c:"#/chat",d:"#/drive",t:"#/topics",i:"#/infra",p:"#/projects",o:"#/tools",w:"#/hardware",n:"#/network"};
+    const map={h:"#/",r:"#/repos",s:"#/search",c:"#/chat",d:"#/drive",t:"#/topics",i:"#/infra",p:"#/projects",a:"#/appledev",o:"#/tools",w:"#/hardware",n:"#/network"};
     if(map[e.key]){ e.preventDefault(); location.hash=map[e.key]; } return; }
   if(e.key==="g"){ gPend=true; gTimer=setTimeout(()=>gPend=false,900); return; }
   if(["ArrowRight","ArrowLeft","ArrowUp","ArrowDown"].includes(e.key)){
