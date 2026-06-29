@@ -1,0 +1,772 @@
+{
+  "generated_at": "2026-06-29T11:16:11.699343+00:00",
+  "source": "multi-agent synthesis (full owner repo inventory baseline)",
+  "scope_note": "85 owner repos ranked for MicroCloud install suitability.",
+  "ranking": [
+    {
+      "rank": 1,
+      "repo": "claude-code-server",
+      "score": 24,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/claude-code-server",
+      "priority_reason": "High immediate cluster utility with low integration friction",
+      "reason": "has packaging/deploy artifacts; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 5/5, cluster 5/5, security 4/5, ops 5/5, fit 5/5)"
+    },
+    {
+      "rank": 2,
+      "repo": "synology-media-server",
+      "score": 24,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/synology-media-server",
+      "priority_reason": "High immediate cluster utility with low integration friction",
+      "reason": "has packaging/deploy artifacts; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 5/5, cluster 5/5, security 5/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 3,
+      "repo": "bluebubbles-server-config",
+      "score": 23,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/bluebubbles-server-config",
+      "priority_reason": "High immediate cluster utility with low integration friction",
+      "reason": "has packaging/deploy artifacts; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 5/5, cluster 5/5, security 5/5, ops 4/5, fit 4/5)"
+    },
+    {
+      "rank": 4,
+      "repo": "ferdium-selfhost",
+      "score": 23,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/ferdium-selfhost",
+      "priority_reason": "High immediate cluster utility with low integration friction",
+      "reason": "has packaging/deploy artifacts; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 5/5, cluster 4/5, security 5/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 5,
+      "repo": "proxmox-helper-script",
+      "score": 22,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/proxmox-helper-script",
+      "priority_reason": "High immediate cluster utility with low integration friction",
+      "reason": "has packaging/deploy artifacts; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 5/5, cluster 4/5, security 5/5, ops 5/5, fit 3/5)"
+    },
+    {
+      "rank": 6,
+      "repo": "blueguard",
+      "score": 21,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/blueguard",
+      "priority_reason": "High immediate cluster utility with low integration friction",
+      "reason": "has packaging/deploy artifacts; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 5/5, cluster 4/5, security 4/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 7,
+      "repo": "orangepi-vpn-hotspot",
+      "score": 21,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/orangepi-vpn-hotspot",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 2/5, cluster 5/5, security 5/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 8,
+      "repo": "zfs-backup-docs",
+      "score": 21,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/zfs-backup-docs",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 2/5, cluster 5/5, security 5/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 9,
+      "repo": "linux-security-dashboard",
+      "score": 20,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/linux-security-dashboard",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 2/5, cluster 5/5, security 5/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 10,
+      "repo": "fastmail-tui",
+      "score": 19,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/fastmail-tui",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; aligns with self-hosted security/privacy goals; docs/config readiness is decent; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 2/5, cluster 3/5, security 5/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 11,
+      "repo": "homelab",
+      "score": 19,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/homelab",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 1/5, cluster 5/5, security 5/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 12,
+      "repo": "homelab-tooling",
+      "score": 19,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/homelab-tooling",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 2/5, cluster 5/5, security 4/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 13,
+      "repo": "linux-security-dashboard-part-deux",
+      "score": 19,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/linux-security-dashboard-part-deux",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 2/5, cluster 5/5, security 4/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 14,
+      "repo": "orange-pi-vpn-server",
+      "score": 19,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/orange-pi-vpn-server",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 2/5, cluster 5/5, security 5/5, ops 3/5, fit 4/5)"
+    },
+    {
+      "rank": 15,
+      "repo": "reports-tree",
+      "score": 19,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/reports-tree",
+      "priority_reason": "High immediate cluster utility with low integration friction",
+      "reason": "has packaging/deploy artifacts; strong persistent cluster utility; aligns with self-hosted security/privacy goals; resource profile appears homelab-friendly (deploy 4/5, cluster 4/5, security 4/5, ops 2/5, fit 5/5)"
+    },
+    {
+      "rank": 16,
+      "repo": "security-dashboard",
+      "score": 19,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/security-dashboard",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 2/5, cluster 5/5, security 4/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 17,
+      "repo": "ssl-cert-generator",
+      "score": 19,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/ssl-cert-generator",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent; no clear Linux server deploy path (deploy 2/5, cluster 4/5, security 4/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 18,
+      "repo": "macos-desktop-status-widget",
+      "score": 18,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/macos-desktop-status-widget",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "has packaging/deploy artifacts; looks more local/app/site oriented; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 4/5, cluster 2/5, security 5/5, ops 3/5, fit 4/5)"
+    },
+    {
+      "rank": 19,
+      "repo": "blueguard-mcp-server",
+      "score": 17,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/blueguard-mcp-server",
+      "priority_reason": "Eligible now; deploy after higher-value services if capacity is constrained",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; resource profile appears homelab-friendly (deploy 2/5, cluster 5/5, security 3/5, ops 2/5, fit 5/5)"
+    },
+    {
+      "rank": 20,
+      "repo": "blueguard-security",
+      "score": 16,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/blueguard-security",
+      "priority_reason": "Eligible now; deploy after higher-value services if capacity is constrained",
+      "reason": "has packaging/deploy artifacts; docs/config readiness is decent (deploy 4/5, cluster 3/5, security 3/5, ops 3/5, fit 3/5)"
+    },
+    {
+      "rank": 21,
+      "repo": "session-continuation-system",
+      "score": 16,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/session-continuation-system",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 1/5, cluster 4/5, security 2/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 22,
+      "repo": "teslamate-setup",
+      "score": 16,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/teslamate-setup",
+      "priority_reason": "Eligible now; deploy after higher-value services if capacity is constrained",
+      "reason": "has packaging/deploy artifacts; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent (deploy 4/5, cluster 1/5, security 2/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 23,
+      "repo": "warp-task-tracker",
+      "score": 16,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/warp-task-tracker",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 2/5, cluster 4/5, security 2/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 24,
+      "repo": "bluetooth-hardening-toolkit",
+      "score": 15,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/bluetooth-hardening-toolkit",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; aligns with self-hosted security/privacy goals; docs/config readiness is decent; no clear Linux server deploy path (deploy 2/5, cluster 3/5, security 4/5, ops 3/5, fit 3/5)"
+    },
+    {
+      "rank": 25,
+      "repo": "claude-session-db",
+      "score": 15,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/claude-session-db",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 4/5, security 3/5, ops 2/5, fit 5/5)"
+    },
+    {
+      "rank": 26,
+      "repo": "docker-osx-proxmox",
+      "score": 15,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/docker-osx-proxmox",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; aligns with self-hosted security/privacy goals; docs/config readiness is decent (deploy 1/5, cluster 4/5, security 5/5, ops 3/5, fit 2/5)"
+    },
+    {
+      "rank": 27,
+      "repo": "manus-toolkit",
+      "score": 15,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/manus-toolkit",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; limited explicit security/privacy posture; docs/config readiness is decent; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 3/5, security 2/5, ops 4/5, fit 5/5)"
+    },
+    {
+      "rank": 28,
+      "repo": "nginx-reverse-proxy-ufw",
+      "score": 15,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/nginx-reverse-proxy-ufw",
+      "priority_reason": "Eligible now; deploy after higher-value services if capacity is constrained",
+      "reason": "deploy path is unclear; strong persistent cluster utility; docs/config readiness is decent; resource profile appears homelab-friendly (deploy 1/5, cluster 4/5, security 3/5, ops 3/5, fit 4/5)"
+    },
+    {
+      "rank": 29,
+      "repo": "philipwright-me",
+      "score": 15,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/philipwright-me",
+      "priority_reason": "Eligible now; deploy after higher-value services if capacity is constrained",
+      "reason": "has packaging/deploy artifacts; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent (deploy 5/5, cluster 0/5, security 2/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 30,
+      "repo": "proxmox-backup",
+      "score": 15,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/proxmox-backup",
+      "priority_reason": "Strong security/privacy alignment for homelab-first deployment",
+      "reason": "deploy path is unclear; aligns with self-hosted security/privacy goals; docs/config readiness is decent; resource profile appears homelab-friendly (deploy 0/5, cluster 3/5, security 4/5, ops 4/5, fit 4/5)"
+    },
+    {
+      "rank": 31,
+      "repo": "claw-command-deck",
+      "score": 14,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/claw-command-deck",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 4/5, security 3/5, ops 2/5, fit 4/5)"
+    },
+    {
+      "rank": 32,
+      "repo": "homelab-utm",
+      "score": 14,
+      "eligible": true,
+      "url": "https://github.com/pdubbbbbs/homelab-utm",
+      "priority_reason": "Eligible now; deploy after higher-value services if capacity is constrained",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; resource profile appears homelab-friendly (deploy 1/5, cluster 4/5, security 3/5, ops 2/5, fit 4/5)"
+    },
+    {
+      "rank": 33,
+      "repo": "rayque-config-manager",
+      "score": 14,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/rayque-config-manager",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; docs/config readiness is decent; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 2/5, security 3/5, ops 4/5, fit 4/5)"
+    },
+    {
+      "rank": 34,
+      "repo": "usb-drive-wiper-iso",
+      "score": 14,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/usb-drive-wiper-iso",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; docs/config readiness is decent; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 2/5, security 3/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 35,
+      "repo": "github-repo-manager",
+      "score": 13,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/github-repo-manager",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; aligns with self-hosted security/privacy goals; docs/config readiness is decent; no clear Linux server deploy path (deploy 2/5, cluster 0/5, security 4/5, ops 3/5, fit 4/5)"
+    },
+    {
+      "rank": 36,
+      "repo": "jellyfin-rec-post-process",
+      "score": 13,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/jellyfin-rec-post-process",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 1/5, cluster 2/5, security 2/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 37,
+      "repo": "nginx-reverse-proxy",
+      "score": 13,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/nginx-reverse-proxy",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; strong persistent cluster utility; ops/docs signals are thin; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 4/5, security 3/5, ops 1/5, fit 4/5)"
+    },
+    {
+      "rank": 38,
+      "repo": "truenas-gmktec-homelab",
+      "score": 13,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/truenas-gmktec-homelab",
+      "priority_reason": "Defer: below eligibility threshold for near-term cluster value",
+      "reason": "mentions runnable service workflow; docs/config readiness is decent (deploy 0/5, cluster 3/5, security 3/5, ops 4/5, fit 3/5)"
+    },
+    {
+      "rank": 39,
+      "repo": "w-hollywood-proposal",
+      "score": 13,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/w-hollywood-proposal",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; docs/config readiness is decent; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 0/5, cluster 2/5, security 3/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 40,
+      "repo": "workspace-launcher",
+      "score": 13,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/workspace-launcher",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 2/5, cluster 2/5, security 2/5, ops 3/5, fit 4/5)"
+    },
+    {
+      "rank": 41,
+      "repo": "42toluca-website",
+      "score": 12,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/42toluca-website",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 2/5, cluster 0/5, security 2/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 42,
+      "repo": "bass-lake-rentals",
+      "score": 12,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/bass-lake-rentals",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 2/5, cluster 0/5, security 2/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 43,
+      "repo": "cyber-harassment-evidence",
+      "score": 12,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/cyber-harassment-evidence",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; docs/config readiness is decent; no clear Linux server deploy path (deploy 1/5, cluster 2/5, security 3/5, ops 3/5, fit 3/5)"
+    },
+    {
+      "rank": 44,
+      "repo": "wallpaper-browser",
+      "score": 12,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/wallpaper-browser",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; docs/config readiness is decent; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 3/5, ops 3/5, fit 5/5)"
+    },
+    {
+      "rank": 45,
+      "repo": "blueguard-patent-portal",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/blueguard-patent-portal",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 1/5, cluster 1/5, security 2/5, ops 3/5, fit 4/5)"
+    },
+    {
+      "rank": 46,
+      "repo": "blueguard-sso-server",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/blueguard-sso-server",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; limited explicit security/privacy posture; ops/docs signals are thin; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 3/5, security 2/5, ops 1/5, fit 4/5)"
+    },
+    {
+      "rank": 47,
+      "repo": "claw-desktop",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/claw-desktop",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; docs/config readiness is decent; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 0/5, security 3/5, ops 3/5, fit 4/5)"
+    },
+    {
+      "rank": 48,
+      "repo": "court-narrator",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/court-narrator",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 1/5, cluster 2/5, security 2/5, ops 1/5, fit 5/5)"
+    },
+    {
+      "rank": 49,
+      "repo": "jane",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/jane",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 1/5, cluster 2/5, security 2/5, ops 2/5, fit 4/5)"
+    },
+    {
+      "rank": 50,
+      "repo": "kali-security-mcp",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/kali-security-mcp",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; strong persistent cluster utility; ops/docs signals are thin; resource footprint may be heavy for small cluster; no clear Linux server deploy path (deploy 1/5, cluster 4/5, security 3/5, ops 1/5, fit 2/5)"
+    },
+    {
+      "rank": 51,
+      "repo": "mcp-servers",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/mcp-servers",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; strong persistent cluster utility; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 1/5, cluster 4/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 52,
+      "repo": "project-template",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/project-template",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 2/5, ops 4/5, fit 4/5)"
+    },
+    {
+      "rank": 53,
+      "repo": "the-third-stanza",
+      "score": 11,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/the-third-stanza",
+      "priority_reason": "Defer: below eligibility threshold for near-term cluster value",
+      "reason": "has packaging/deploy artifacts; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin (deploy 4/5, cluster 0/5, security 2/5, ops 1/5, fit 4/5)"
+    },
+    {
+      "rank": 54,
+      "repo": "de-googled-bluebubbles-server",
+      "score": 10,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/de-googled-bluebubbles-server",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 1/5, cluster 3/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 55,
+      "repo": "jane-app",
+      "score": 10,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/jane-app",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; no clear Linux server deploy path (deploy 1/5, cluster 2/5, security 2/5, ops 2/5, fit 3/5)"
+    },
+    {
+      "rank": 56,
+      "repo": "jiggler_desktop_app",
+      "score": 10,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/jiggler_desktop_app",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; resource profile appears homelab-friendly; no clear Linux server deploy path (deploy 2/5, cluster 0/5, security 2/5, ops 2/5, fit 4/5)"
+    },
+    {
+      "rank": 57,
+      "repo": "ollama-server-setup",
+      "score": 10,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/ollama-server-setup",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; strong persistent cluster utility; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 1/5, cluster 4/5, security 2/5, ops 1/5, fit 2/5)"
+    },
+    {
+      "rank": 58,
+      "repo": "proxmox-homelab-guide-public",
+      "score": 10,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/proxmox-homelab-guide-public",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 3/5, security 3/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 59,
+      "repo": "blueguard-firmware",
+      "score": 9,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/blueguard-firmware",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 2/5, security 3/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 60,
+      "repo": "idevicemanager-web",
+      "score": 9,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/idevicemanager-web",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 1/5, cluster 1/5, security 2/5, ops 1/5, fit 4/5)"
+    },
+    {
+      "rank": 61,
+      "repo": "kali-desktop-docker",
+      "score": 9,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/kali-desktop-docker",
+      "priority_reason": "Defer: below eligibility threshold for near-term cluster value",
+      "reason": "has packaging/deploy artifacts; looks more local/app/site oriented; limited explicit security/privacy posture; resource footprint may be heavy for small cluster (deploy 3/5, cluster 0/5, security 2/5, ops 2/5, fit 2/5)"
+    },
+    {
+      "rank": 62,
+      "repo": "PDFCombiner",
+      "score": 9,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/PDFCombiner",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; no clear Linux server deploy path (deploy 1/5, cluster 0/5, security 3/5, ops 2/5, fit 3/5)"
+    },
+    {
+      "rank": 63,
+      "repo": "blueguard-meet",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/blueguard-meet",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; ops/docs signals are thin; no clear Linux server deploy path (deploy 1/5, cluster 1/5, security 3/5, ops 0/5, fit 3/5)"
+    },
+    {
+      "rank": 64,
+      "repo": "fuck2fa-ios",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/fuck2fa-ios",
+      "priority_reason": "Defer: below eligibility threshold for near-term cluster value",
+      "reason": "has packaging/deploy artifacts; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin (deploy 3/5, cluster 0/5, security 2/5, ops 1/5, fit 2/5)"
+    },
+    {
+      "rank": 65,
+      "repo": "gitea-learning",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/gitea-learning",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 2/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 66,
+      "repo": "MyAndroidApp",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/MyAndroidApp",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; docs/config readiness is decent; no clear Linux server deploy path (deploy 1/5, cluster 0/5, security 2/5, ops 3/5, fit 2/5)"
+    },
+    {
+      "rank": 67,
+      "repo": "password-store",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/password-store",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 3/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 68,
+      "repo": "personal-claw",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/personal-claw",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 1/5, cluster 2/5, security 2/5, ops 0/5, fit 3/5)"
+    },
+    {
+      "rank": 69,
+      "repo": "philip-command-deck",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/philip-command-deck",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 1/5, cluster 0/5, security 2/5, ops 0/5, fit 5/5)"
+    },
+    {
+      "rank": 70,
+      "repo": "philipwright-me-site",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/philipwright-me-site",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 2/5, ops 1/5, fit 4/5)"
+    },
+    {
+      "rank": 71,
+      "repo": "test-seamless-integration",
+      "score": 8,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/test-seamless-integration",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 2/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 72,
+      "repo": "desktop-media-toggle",
+      "score": 7,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/desktop-media-toggle",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 2/5, ops 2/5, fit 3/5)"
+    },
+    {
+      "rank": 73,
+      "repo": "keep-alive-tray",
+      "score": 7,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/keep-alive-tray",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 74,
+      "repo": "multisearch-homepage",
+      "score": 7,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/multisearch-homepage",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 75,
+      "repo": "PW-8A",
+      "score": 7,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/PW-8A",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 76,
+      "repo": "blueguard-investor-deck",
+      "score": 6,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/blueguard-investor-deck",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 77,
+      "repo": "BlueGuard-iOS",
+      "score": 6,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/BlueGuard-iOS",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; ops/docs signals are thin; resource footprint may be heavy for small cluster; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 3/5, ops 1/5, fit 2/5)"
+    },
+    {
+      "rank": 78,
+      "repo": "ca-beach-rentals",
+      "score": 6,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/ca-beach-rentals",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 79,
+      "repo": "claude-rules",
+      "score": 6,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/claude-rules",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 2/5, ops 0/5, fit 3/5)"
+    },
+    {
+      "rank": 80,
+      "repo": "jim-twins-project",
+      "score": 6,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/jim-twins-project",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 1/5, security 2/5, ops 0/5, fit 3/5)"
+    },
+    {
+      "rank": 81,
+      "repo": "pdubbbbbs.github.io",
+      "score": 6,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/pdubbbbbs.github.io",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 2/5, ops 0/5, fit 4/5)"
+    },
+    {
+      "rank": 82,
+      "repo": "philipwright-portfolio",
+      "score": 6,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/philipwright-portfolio",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 2/5, ops 1/5, fit 3/5)"
+    },
+    {
+      "rank": 83,
+      "repo": "BlueBubbles-Android",
+      "score": 5,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/BlueBubbles-Android",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "mentions runnable service workflow; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 2/5, ops 1/5, fit 2/5)"
+    },
+    {
+      "rank": 84,
+      "repo": "BlueGuard-Android",
+      "score": 5,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/BlueGuard-Android",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 2/5, ops 1/5, fit 2/5)"
+    },
+    {
+      "rank": 85,
+      "repo": "wellness-invoice",
+      "score": 5,
+      "eligible": false,
+      "url": "https://github.com/pdubbbbbs/wellness-invoice",
+      "priority_reason": "Defer: package as a Linux service/container first",
+      "reason": "deploy path is unclear; looks more local/app/site oriented; limited explicit security/privacy posture; ops/docs signals are thin; no clear Linux server deploy path (deploy 0/5, cluster 0/5, security 2/5, ops 0/5, fit 3/5)"
+    }
+  ]
+}
